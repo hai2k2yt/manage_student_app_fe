@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 // utils
 import axios from '../utils/axios';
 import { isValidToken, setSession } from '../utils/jwt';
+import { loginUser } from '../api/auth';
 
 // ----------------------------------------------------------------------
 
@@ -108,21 +109,10 @@ function AuthProvider({ children }) {
     initialize();
   }, []);
 
-  const login = async (email, password) => {
-    // const response = await axios.post('/api/account/login', {
-    //   email,
-    //   password,
-    // });
-    const response = {
-      data: {
-        accessToken: 'qwer',
-        user: {
-          name: 1,
-          avatar: 2
-        }
-      }
-    }
-    const { accessToken, user } = response.data;
+  const login = async (username, password) => {
+    const response = await loginUser(username, password);
+
+    const { access_token: accessToken, user } = response.data;
 
     setSession(accessToken);
     dispatch({
