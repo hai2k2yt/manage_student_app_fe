@@ -11,9 +11,7 @@ export async function getStudents(params) {
 }
 
 export async function storeStudent(params) {
-  return axios.post('/student', {
-    params
-  });
+  return axios.post('/student', params);
 }
 
 export async function showStudent(id) {
@@ -21,9 +19,7 @@ export async function showStudent(id) {
 }
 
 export async function updateStudent(id, params) {
-  return axios.put(`/student/${id}`, {
-    params
-  })
+  return axios.put(`/student/${id}`, params)
 }
 
 export async function destroyStudent(id) {

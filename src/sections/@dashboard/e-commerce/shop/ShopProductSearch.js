@@ -53,7 +53,7 @@ export default function ShopProductSearch() {
   };
 
   const handleClick = (name) => {
-    navigate(`${PATH_DASHBOARD.eCommerce.root}/product/${paramCase(name)}`);
+    navigate(`${PATH_DASHBOARD.class.list}/product/${paramCase(name)}`);
   };
 
   const handleKeyUp = (event) => {

@@ -11,9 +11,7 @@ export async function getClubs(params) {
 }
 
 export async function storeClub(params) {
-  return axios.post('/club', {
-    params
-  });
+  return axios.post('/club', params);
 }
 
 export async function showClub(id) {
@@ -21,9 +19,7 @@ export async function showClub(id) {
 }
 
 export async function updateClub(id, params) {
-  return axios.put(`/club/${id}`, {
-    params
-  })
+  return axios.put(`/club/${id}`, params)
 }
 
 export async function destroyClub(id) {

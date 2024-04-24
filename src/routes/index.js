@@ -69,20 +69,6 @@ export default function Router() {
         { path: 'analytics', element: <GeneralAnalytics /> },
         { path: 'banking', element: <GeneralBanking /> },
         { path: 'booking', element: <GeneralBooking /> },
-
-        {
-          path: 'e-commerce',
-          children: [
-            { element: <Navigate to="/dashboard/e-commerce/shop" replace />, index: true },
-            { path: 'shop', element: <EcommerceShop /> },
-            { path: 'product/:name', element: <EcommerceProductDetails /> },
-            { path: 'list', element: <EcommerceProductList /> },
-            { path: 'product/new', element: <EcommerceProductCreate /> },
-            { path: 'product/:name/edit', element: <EcommerceProductCreate /> },
-            { path: 'checkout', element: <EcommerceCheckout /> },
-            { path: 'invoice', element: <EcommerceInvoice /> },
-          ],
-        },
         {
           path: 'user',
           children: [
@@ -91,8 +77,41 @@ export default function Router() {
             { path: 'cards', element: <UserCards /> },
             { path: 'list', element: <UserList /> },
             { path: 'new', element: <UserCreate /> },
-            { path: ':name/edit', element: <UserCreate /> },
+            { path: ':id/edit', element: <UserUpdate /> },
             { path: 'account', element: <UserAccount /> },
+          ],
+        },
+        {
+          path: 'class',
+          children: [
+            { element: <Navigate to="/dashboard/class/shop" replace />, index: true },
+            { path: 'shop', element: <EcommerceShop /> },
+            { path: 'product/:name', element: <EcommerceProductDetails /> },
+            { path: 'list', element: <ClassList /> },
+            { path: 'create', element: <ClassCreate /> },
+            { path: ':class_code/edit', element: <ClassUpdate /> },
+            { path: 'checkout', element: <EcommerceCheckout /> },
+            { path: 'invoice', element: <EcommerceInvoice /> },
+          ],
+        },
+        {
+          path: 'club',
+          children: [
+            { element: <Navigate to="/dashboard/club/list" replace />, index: true },
+            { path: 'list', element: <ClubList /> },
+            { path: 'create', element: <ClubCreate /> },
+            { path: ':club_code/edit', element: <ClubUpdate /> },
+            { path: ':club_code/detail', element: <ClubDetail /> },
+            { path: ':club_code/session/create', element: <ClubSessionCreate /> },
+            { path: ':club_code/session/:session_code/detail', element: <ClubSessionDetail /> },
+            { path: ':club_code/session/:session_code/edit', element: <ClubSessionUpdate /> },
+            { path: ':club_code/session/:session_code/absence-report', element: <AbsenceReportList /> },
+            { path: ':club_code/session/:session_code/absence-report/create', element: <AbsenceReportCreate /> },
+            { path: ':club_code/session/:session_code/attendance', element: <AttendanceList /> },
+            { path: ':club_code/session/:session_code/attendance/create', element: <AttendanceCreate /> },
+            { path: ':club_code/session/:session_code/notification', element: <ClubNotificationList /> },
+            { path: ':club_code/session/:session_code/notification/create', element: <ClubNotificationCreate /> },
+            { path: ':club_code/session/:session_code/notification/:noti_id/edit', element: <ClubNotificationList /> },
           ],
         },
         {
@@ -105,16 +124,6 @@ export default function Router() {
           ],
         },
         {
-          path: 'mail',
-          children: [
-            { element: <Navigate to="/dashboard/mail/all" replace />, index: true },
-            { path: 'label/:customLabel', element: <Mail /> },
-            { path: 'label/:customLabel/:mailId', element: <Mail /> },
-            { path: ':systemLabel', element: <Mail /> },
-            { path: ':systemLabel/:mailId', element: <Mail /> },
-          ],
-        },
-        {
           path: 'chat',
           children: [
             { element: <Chat />, index: true },
@@ -123,7 +132,6 @@ export default function Router() {
           ],
         },
         { path: 'calendar', element: <Calendar /> },
-        { path: 'kanban', element: <Kanban /> },
       ],
     },
 
@@ -132,10 +140,6 @@ export default function Router() {
       path: '*',
       element: <LogoOnlyLayout />,
       children: [
-        { path: 'coming-soon', element: <ComingSoon /> },
-        { path: 'maintenance', element: <Maintenance /> },
-        { path: 'pricing', element: <Pricing /> },
-        { path: 'payment', element: <Payment /> },
         { path: '500', element: <Page500 /> },
         { path: '404', element: <NotFound /> },
         { path: '*', element: <Navigate to="/404" replace /> },
@@ -145,10 +149,7 @@ export default function Router() {
       path: '/',
       element: <MainLayout />,
       children: [
-        { element: <HomePage />, index: true },
-        { path: 'about-us', element: <About /> },
-        { path: 'contact-us', element: <Contact /> },
-        { path: 'faqs', element: <Faqs /> },
+        { element: <Navigate to="/auth/login" replace />, index: true },
       ],
     },
     { path: '*', element: <Navigate to="/404" replace /> },
@@ -170,30 +171,52 @@ const GeneralBanking = Loadable(lazy(() => import('../pages/dashboard/GeneralBan
 const GeneralBooking = Loadable(lazy(() => import('../pages/dashboard/GeneralBooking')));
 const EcommerceShop = Loadable(lazy(() => import('../pages/dashboard/EcommerceShop')));
 const EcommerceProductDetails = Loadable(lazy(() => import('../pages/dashboard/EcommerceProductDetails')));
-const EcommerceProductList = Loadable(lazy(() => import('../pages/dashboard/EcommerceProductList')));
-const EcommerceProductCreate = Loadable(lazy(() => import('../pages/dashboard/EcommerceProductCreate')));
+
+const ClassList = Loadable(lazy(() => import('../pages/dashboard/class/ClassList')));
+const ClassCreate = Loadable(lazy(() => import('../pages/dashboard/class/ClassCreate')));
+const ClassUpdate = Loadable(lazy(() => import('../pages/dashboard/class/ClassUpdate')));
+
+const ClubList = Loadable(lazy(() => import('../pages/dashboard/club/ClubList')));
+const ClubCreate = Loadable(lazy(() => import('../pages/dashboard/club/ClubCreate')));
+const ClubUpdate = Loadable(lazy(() => import('../pages/dashboard/club/ClubUpdate')));
+const ClubDetail = Loadable(lazy(() => import('../pages/dashboard/club/ClubDetail')));
+
+const ClubSessionCreate = Loadable(lazy(() => import('../pages/dashboard/club-session/ClubSessionCreate')));
+const ClubSessionUpdate = Loadable(lazy(() => import('../pages/dashboard/club-session/ClubSessionUpdate')));
+const ClubSessionDetail = Loadable(lazy(() => import('../pages/dashboard/club-session/ClubSessionDetail')));
+
+
+const AbsenceReportList = Loadable(lazy(() => import('../pages/dashboard/absence-report/AbsenceReportList')));
+const AbsenceReportCreate = Loadable(lazy(() => import('../pages/dashboard/absence-report/AbsenceReportCreate')));
+
+const AttendanceList = Loadable(lazy(() => import('../pages/dashboard/attendance/AttendanceList')));
+const AttendanceCreate = Loadable(lazy(() => import('../pages/dashboard/attendance/AttendanceCreate')));
+
+const ClubNotificationList = Loadable(lazy(() => import('../pages/dashboard/club-notification/ClubNotificationList')));
+const ClubNotificationCreate = Loadable(lazy(() => import('../pages/dashboard/club-notification/ClubNotificationCreate')));
+const ClubNotificationUpdate = Loadable(lazy(() => import('../pages/dashboard/club-notification/ClubNotificationUpdate')));
+
+const ClubSessionPhotoList = Loadable(lazy(() => import('../pages/dashboard/club-session-photo/ClubSessionPhotoList')));
+const ClubSessionPhotoCreate = Loadable(lazy(() => import('../pages/dashboard/club-session-photo/ClubSessionPhotoCreate')));
+
+const StatisticOverall = Loadable(lazy(() => import('../pages/dashboard/statistics/StatisticOverall')));
+const StatisticStudent = Loadable(lazy(() => import('../pages/dashboard/statistics/StatisticStudent')));
+const StatisticTeacher = Loadable(lazy(() => import('../pages/dashboard/statistics/StatisticTeacher')));
+
 const EcommerceCheckout = Loadable(lazy(() => import('../pages/dashboard/EcommerceCheckout')));
 const EcommerceInvoice = Loadable(lazy(() => import('../pages/dashboard/EcommerceInvoice')));
 const BlogPosts = Loadable(lazy(() => import('../pages/dashboard/BlogPosts')));
 const BlogPost = Loadable(lazy(() => import('../pages/dashboard/BlogPost')));
 const BlogNewPost = Loadable(lazy(() => import('../pages/dashboard/BlogNewPost')));
-const UserProfile = Loadable(lazy(() => import('../pages/dashboard/UserProfile')));
-const UserCards = Loadable(lazy(() => import('../pages/dashboard/UserCards')));
-const UserList = Loadable(lazy(() => import('../pages/dashboard/UserList')));
-const UserAccount = Loadable(lazy(() => import('../pages/dashboard/UserAccount')));
-const UserCreate = Loadable(lazy(() => import('../pages/dashboard/UserCreate')));
+const UserProfile = Loadable(lazy(() => import('../pages/dashboard/user/UserProfile')));
+const UserCards = Loadable(lazy(() => import('../pages/dashboard/user/UserCards')));
+const UserList = Loadable(lazy(() => import('../pages/dashboard/user/UserList')));
+const UserUpdate = Loadable(lazy(() => import('../pages/dashboard/user/UserUpdate')));
+
+const UserAccount = Loadable(lazy(() => import('../pages/dashboard/user/UserAccount')));
+const UserCreate = Loadable(lazy(() => import('../pages/dashboard/user/UserCreate')));
 const Chat = Loadable(lazy(() => import('../pages/dashboard/Chat')));
-const Mail = Loadable(lazy(() => import('../pages/dashboard/Mail')));
 const Calendar = Loadable(lazy(() => import('../pages/dashboard/Calendar')));
-const Kanban = Loadable(lazy(() => import('../pages/dashboard/Kanban')));
 // Main
-const HomePage = Loadable(lazy(() => import('../pages/Home')));
-const About = Loadable(lazy(() => import('../pages/About')));
-const Contact = Loadable(lazy(() => import('../pages/Contact')));
-const Faqs = Loadable(lazy(() => import('../pages/Faqs')));
-const ComingSoon = Loadable(lazy(() => import('../pages/ComingSoon')));
-const Maintenance = Loadable(lazy(() => import('../pages/Maintenance')));
-const Pricing = Loadable(lazy(() => import('../pages/Pricing')));
-const Payment = Loadable(lazy(() => import('../pages/Payment')));
 const Page500 = Loadable(lazy(() => import('../pages/Page500')));
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));

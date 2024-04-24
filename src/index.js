@@ -43,9 +43,7 @@ import { CollapseDrawerProvider } from './contexts/CollapseDrawerContext';
 // https://docs-minimals.vercel.app/authentication/ts-version
 
 import { AuthProvider } from './contexts/JWTContext';
-// import { AuthProvider } from './contexts/Auth0Context';
-// import { AuthProvider } from './contexts/FirebaseContext';
-// import { AuthProvider } from './contexts/AwsCognitoContext';
+
 
 //
 import App from './App';

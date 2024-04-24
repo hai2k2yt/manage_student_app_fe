@@ -61,16 +61,18 @@ export const PATH_DASHBOARD = {
     editById: path(ROOTS_DASHBOARD, `/user/reece-chung/edit`),
     account: path(ROOTS_DASHBOARD, '/user/account')
   },
-  eCommerce: {
-    root: path(ROOTS_DASHBOARD, '/e-commerce'),
-    shop: path(ROOTS_DASHBOARD, '/e-commerce/shop'),
-    product: path(ROOTS_DASHBOARD, '/e-commerce/product/:name'),
-    productById: path(ROOTS_DASHBOARD, '/e-commerce/product/nike-air-force-1-ndestrukt'),
-    list: path(ROOTS_DASHBOARD, '/e-commerce/list'),
-    newProduct: path(ROOTS_DASHBOARD, '/e-commerce/product/new'),
-    editById: path(ROOTS_DASHBOARD, '/e-commerce/product/nike-blazer-low-77-vintage/edit'),
-    checkout: path(ROOTS_DASHBOARD, '/e-commerce/checkout'),
-    invoice: path(ROOTS_DASHBOARD, '/e-commerce/invoice')
+  class: {
+    root: path(ROOTS_DASHBOARD, '/class'),
+    list: path(ROOTS_DASHBOARD, '/class/list'),
+    shop: path(ROOTS_DASHBOARD, '/class/shop'),
+    create: path(ROOTS_DASHBOARD, '/class/create'),
+    checkout: path(ROOTS_DASHBOARD, '/class/checkout'),
+    invoice: path(ROOTS_DASHBOARD, '/class/invoice')
+  },
+  club: {
+    root: path(ROOTS_DASHBOARD, '/club'),
+    list: path(ROOTS_DASHBOARD, '/club/list'),
+    create: path(ROOTS_DASHBOARD, '/club/create')
   },
   blog: {
     root: path(ROOTS_DASHBOARD, '/blog'),

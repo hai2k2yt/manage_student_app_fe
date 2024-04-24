@@ -11,9 +11,7 @@ export async function getClubEnrollments(params) {
 }
 
 export async function storeClubEnrollment(params) {
-  return axios.post('/club-enrollment', {
-    params
-  });
+  return axios.post('/club-enrollment', params);
 }
 
 export async function destroyClubEnrollment(id) {

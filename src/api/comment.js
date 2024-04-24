@@ -11,15 +11,11 @@ export async function getComments(params) {
 }
 
 export async function storeComment(params) {
-  return axios.post('/comment', {
-    params
-  });
+  return axios.post('/comment', params);
 }
 
 export async function updateComment(id, params) {
-  return axios.put(`/comment/${id}`, {
-    params
-  })
+  return axios.put(`/comment/${id}`, params)
 }
 
 export async function destroyComment(id) {

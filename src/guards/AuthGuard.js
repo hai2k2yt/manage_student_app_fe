@@ -8,6 +8,7 @@ import Login from '../pages/auth/Login';
 // components
 import LoadingScreen from '../components/LoadingScreen';
 
+
 // ----------------------------------------------------------------------
 
 AuthGuard.propTypes = {

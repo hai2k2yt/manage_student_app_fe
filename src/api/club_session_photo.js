@@ -11,15 +11,11 @@ export async function getClubSessionPhotos(params) {
 }
 
 export async function storeClubSessionPhoto(params) {
-  return axios.post('/club-session-photo', {
-    params
-  });
+  return axios.post('/club-session-photo', params);
 }
 
 export async function updateClubSessionPhoto(id, params) {
-  return axios.put(`/club-session-photo/${id}`, {
-    params
-  })
+  return axios.put(`/club-session-photo/${id}`, params)
 }
 
 export async function destroyClubSessionPhoto(id) {

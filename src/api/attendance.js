@@ -11,15 +11,11 @@ export async function getAttendances(params) {
 }
 
 export async function storeAttendance(params) {
-  return axios.post('/attendance', {
-    params
-  });
+  return axios.post('/attendance', params);
 }
 
 export async function updateAttendance(id, params) {
-  return axios.put(`/attendance/${id}`, {
-    params
-  })
+  return axios.put(`/attendance/${id}`, params)
 }
 
 export async function destroyAttendance(id) {
@@ -31,9 +27,7 @@ export async function getAttendanceBySession(id) {
 }
 
 export async function updateManyAttendances(sessionId, params) {
-  return axios.put(`/attendance/update-many/${sessionId}`, {
-    params
-  })
+  return axios.put(`/attendance/update-many/${sessionId}`, params)
 }
 
 export async function statisticStudentAttendances(clubId, studentId) {

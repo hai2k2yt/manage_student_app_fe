@@ -1,9 +1,8 @@
 import { createContext, useEffect, useReducer } from 'react';
 import PropTypes from 'prop-types';
 // utils
-import axios from '../utils/axios';
 import { isValidToken, setSession } from '../utils/jwt';
-import { loginUser } from '../api/auth';
+import { getAuthUser, loginUser, registerUser } from '../api/auth';
 
 // ----------------------------------------------------------------------
 
@@ -75,8 +74,7 @@ function AuthProvider({ children }) {
         if (accessToken && isValidToken(accessToken)) {
           setSession(accessToken);
 
-          const response = await axios.get('/api/account/my-account');
-          const { user } = response.data;
+          const user= await getAuthUser();
 
           dispatch({
             type: 'INITIALIZE',
@@ -112,7 +110,7 @@ function AuthProvider({ children }) {
   const login = async (username, password) => {
     const response = await loginUser(username, password);
 
-    const { access_token: accessToken, user } = response.data;
+    const { access_token: accessToken, user } = response;
 
     setSession(accessToken);
     dispatch({
@@ -123,13 +121,8 @@ function AuthProvider({ children }) {
     });
   };
 
-  const register = async (email, password, firstName, lastName) => {
-    const response = await axios.post('/api/account/register', {
-      email,
-      password,
-      firstName,
-      lastName,
-    });
+  const register = async (username, password, name, role) => {
+    const response = await registerUser(username, password, name, role);
     const { accessToken, user } = response.data;
 
     window.localStorage.setItem('accessToken', accessToken);

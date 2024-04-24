@@ -5,15 +5,11 @@ export async function getAllClasses() {
 }
 
 export async function getClasses(params) {
-  return axios.get('/class', {
-    params
-  });
+  return axios.get('/class', { params });
 }
 
 export async function storeClass(params) {
-  return axios.post(`/class`, {
-    params
-  });
+  return axios.post(`/class`, params);
 }
 
 export async function showClass(id) {
@@ -21,19 +17,14 @@ export async function showClass(id) {
 }
 
 
-
 export async function updateClass(id, params) {
-  return axios.put(`/class/${id}`, {
-    params
-  })
+  return axios.put(`/class/${id}`, params);
 }
 
 export async function destroyClass(id) {
-  return axios.delete(`/class/${id}`)
+  return axios.delete(`/class/${id}`);
 }
 
 export async function assignStudentToClass(params) {
-  return axios.post(`/class/assign-students`, {
-    params
-  })
+  return axios.post(`/class/assign-students`, params);
 }

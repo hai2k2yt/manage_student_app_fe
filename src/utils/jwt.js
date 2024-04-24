@@ -27,7 +27,7 @@ const isValidToken = (accessToken) => {
 //   console.log(timeLeft);
 //   expiredTimer = window.setTimeout(() => {
 //     console.log('expired');
-//     // You can do what ever you want here, like show a notification
+//     // You can do what ever you want here, like show a club-notification
 //   }, timeLeft);
 // };
 

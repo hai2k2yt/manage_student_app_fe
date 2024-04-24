@@ -58,7 +58,7 @@ export default function ProductMoreMenu({ onDelete, productName }) {
           Delete
         </MenuItem>
 
-        <MenuItem component={RouterLink} to={`${PATH_DASHBOARD.eCommerce.root}/product/${paramCase(productName)}/edit`}>
+        <MenuItem component={RouterLink} to={`${PATH_DASHBOARD.class.list}/product/${paramCase(productName)}/edit`}>
           <Iconify icon={'eva:edit-fill'} sx={{ ...ICON }} />
           Edit
         </MenuItem>

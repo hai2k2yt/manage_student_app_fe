@@ -6,14 +6,12 @@ export async function getAllClubSchedules() {
 
 export async function getClubSchedules(params) {
   return axios.get('/club-schedule', {
-    params
+    params,
   });
 }
 
 export async function storeClubSchedule(params) {
-  return axios.post('/club-schedule', {
-    params
-  });
+  return axios.post('/club-schedule', params);
 }
 
 export async function showClubSchedule(id) {
@@ -21,15 +19,13 @@ export async function showClubSchedule(id) {
 }
 
 export async function updateClubSchedule(id, params) {
-  return axios.put(`/club-schedule/${id}`, {
-    params
-  })
+  return axios.put(`/club-schedule/${id}`, params);
 }
 
 export async function destroyClubSchedule(id) {
-  return axios.delete(`/club-schedule/${id}`)
+  return axios.delete(`/club-schedule/${id}`);
 }
 
 export async function getScheduleByClub(id) {
-  return axios.get(`/club-schedule/club/${id}`)
+  return axios.get(`/club-schedule/club/${id}`);
 }

@@ -11,15 +11,11 @@ export async function getAbsenceReports(params) {
 }
 
 export async function storeAbsenceReport(params) {
-  return axios.post('/absence-report', {
-    params
-  });
+  return axios.post('/absence-report', params);
 }
 
 export async function updateAbsenceReport(id, params) {
-  return axios.put(`/absence-report/${id}`, {
-    params
-  })
+  return axios.put(`/absence-report/${id}`, params)
 }
 
 export async function destroyAbsenceReport(id) {

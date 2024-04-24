@@ -41,7 +41,7 @@ export default function BlogPost() {
 
   const getPost = useCallback(async () => {
     try {
-      const response = await axios.get('/api/blog/post', {
+      const response = await axios.get('/blog/post', {
         params: { title },
       });
 
@@ -56,7 +56,7 @@ export default function BlogPost() {
 
   const getRecentPosts = useCallback(async () => {
     try {
-      const response = await axios.get('/api/blog/posts/recent', {
+      const response = await axios.get('/blog/posts/recent', {
         params: { title },
       });
 

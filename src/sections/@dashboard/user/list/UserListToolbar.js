@@ -56,20 +56,6 @@ export default function UserListToolbar({ numSelected, filterName, onFilterName,
           }}
         />
       )}
-
-      {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton onClick={onDeleteUsers}>
-            <Iconify icon={'eva:trash-2-outline'} />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <Iconify icon={'ic:round-filter-list'} />
-          </IconButton>
-        </Tooltip>
-      )}
     </RootStyle>
   );
 }
