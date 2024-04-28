@@ -24,7 +24,7 @@ export default function ClassCreate() {
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
             {
-              name: 'E-Commerce',
+              name: 'Class',
               href: PATH_DASHBOARD.class.root,
             },
             { name: 'New class'},

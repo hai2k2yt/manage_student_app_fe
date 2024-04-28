@@ -43,10 +43,15 @@ export default function AbsenceReportFormList() {
         _sort,
         session_code,
       };
-      const absenceReports = await getAbsenceReports(params);
-      const records = absenceReports?.data?.records || [];
-      setTotal(absenceReports?.data?.total || 0);
-      setAbsenceReportList(records);
+      try {
+        const absenceReports = await getAbsenceReports(params);
+        const records = absenceReports?.data?.records || [];
+        setTotal(absenceReports?.data?.total || 0);
+        setAbsenceReportList(records);
+      } catch (e) {
+        enqueueSnackbar('Get absence report list failed', { variant: 'error' });
+        console.error(e);
+      }
     }
 
     fetchAbsenceReports();
@@ -59,22 +64,23 @@ export default function AbsenceReportFormList() {
   };
 
   const renderStatus = (status) => {
-    if(status == 1) {
-      return <Chip label="Đang chờ" color="warning" />
+    if (status == 1) {
+      return <Chip label="Đang chờ" color="warning" />;
     }
-    if(status == 2) {
-      return <Chip label="Chấp nhận" color="primary" />
-    }if(status == 3) {
-      return <Chip label="Từ chối" color="error" />
+    if (status == 2) {
+      return <Chip label="Chấp nhận" color="primary" />;
     }
-  }
+    if (status == 3) {
+      return <Chip label="Từ chối" color="error" />;
+    }
+  };
   const handleChangeRowsPerPage = (event) => {
     setLimit(parseInt(event.target.value, 10));
     setPage(0);
   };
 
   const handleDeleteAbsenceReport = async (reportId) => {
-    console.log(reportId)
+    console.log(reportId);
   };
 
   const handleUpdateAbsenceReport = async (status, reportId) => {
@@ -91,9 +97,9 @@ export default function AbsenceReportFormList() {
       const records = absenceReports?.data?.records || [];
       setTotal(absenceReports?.data?.total || 0);
       setAbsenceReportList(records);
-      enqueueSnackbar('Update absence report successfully')
+      enqueueSnackbar('Update absence report successfully');
     } catch (e) {
-      enqueueSnackbar(e?.message || 'Update absence report failed', {variant: 'error'})
+      enqueueSnackbar('Update absence report failed', { variant: 'error' });
     }
   };
 
@@ -115,7 +121,7 @@ export default function AbsenceReportFormList() {
             />
             <TableBody>
               {absenceReportList.map((row) => {
-                const {id, student_code, student: { name }, reason, status } = row;
+                const { id, student_code, student: { name }, reason, status } = row;
 
                 return (
                   <TableRow
@@ -131,7 +137,8 @@ export default function AbsenceReportFormList() {
                       {renderStatus(status)}
                     </TableCell>
                     <TableCell align="right">
-                      <AbsenceReportMoreMenu id={id} onDelete={handleDeleteAbsenceReport} onUpdate={handleUpdateAbsenceReport} />
+                      <AbsenceReportMoreMenu id={id} onDelete={handleDeleteAbsenceReport}
+                                             onUpdate={handleUpdateAbsenceReport} />
                     </TableCell>
                   </TableRow>
                 );

@@ -12,7 +12,7 @@ import { PATH_DASHBOARD } from '../../../routes/paths';
 // components
 import { FormProvider, RHFSelect, RHFTextField } from '../../../components/hook-form';
 import { registerUser } from '../../../api/auth';
-import { getUser, showUser } from '../../../api/user';
+import { getUser, showUser, updateUser } from '../../../api/user';
 import { showClub } from '../../../api/club';
 
 // ----------------------------------------------------------------------
@@ -53,20 +53,26 @@ export default function UserUpdateForm() {
   useEffect(() => {
     reset(defaultValues);
     async function fetchUserInfo() {
-      const userDetail = await showUser(id);
-      const { username, name, role } = userDetail.data;
-      reset({ username, name, role });
+      try {
+        const userDetail = await showUser(id);
+        const { username, name, role } = userDetail.data;
+        reset({ username, name, role });
+      } catch (e) {
+        enqueueSnackbar('Get user failed', {variant: 'error'});
+        console.error(e)
+      }
     }
     fetchUserInfo();
   }, []);
 
   const onSubmit = async (formData) => {
     try {
-      // const res = await registerUser(formData);
-      // reset();
-      // enqueueSnackbar(res.message || 'Create success!');
+      const res = await updateUser(id, formData);
+      reset();
+      enqueueSnackbar(res.message || 'Update user success!');
       navigate(PATH_DASHBOARD.user.list);
     } catch (error) {
+      enqueueSnackbar('Update user failed', {variant: 'error'});
       console.error(error);
     }
   };

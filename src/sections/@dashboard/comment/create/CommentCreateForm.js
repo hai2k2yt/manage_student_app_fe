@@ -13,31 +13,31 @@ import { PATH_DASHBOARD } from '../../../../routes/paths';
 import { FormProvider, RHFSelect, RHFTextField } from '../../../../components/hook-form';
 import { getClubStudents } from '../../../../api/club';
 import { storeAbsenceReport } from '../../../../api/absence_report';
+import { storeComment } from '../../../../api/comment';
 
 // ----------------------------------------------------------------------
 
-export default function AbsenceReportCreateForm() {
+export default function CommentCreateForm() {
   const navigate = useNavigate();
   const [studentList, setStudentList] = useState([]);
   const { enqueueSnackbar } = useSnackbar();
   const {session_code, club_code} = useParams();
 
-  const CreateAbsenceReportSchema = Yup.object().shape({
+  const CreateCommentSchema = Yup.object().shape({
     session_code: Yup.string().required('Session is required'),
     student_code: Yup.string().required('Student is required'),
-    reason: Yup.string().required('Reason is required'),
-    status: Yup.string().required('Status is required')
+    content: Yup.string().required('Reason is required'),
   });
 
   const defaultValues = {
     session_code: session_code,
     student_code: '',
-    reason: '',
-    status: 1
+    content: '',
+
   };
 
   const methods = useForm({
-    resolver: yupResolver(CreateAbsenceReportSchema),
+    resolver: yupResolver(CreateCommentSchema),
     defaultValues,
   });
 
@@ -70,12 +70,12 @@ export default function AbsenceReportCreateForm() {
 
   const onSubmit = async (formData) => {
     try {
-      const res = await storeAbsenceReport(formData);
+      const res = await storeComment(formData);
       reset();
-      enqueueSnackbar(res.message || 'Create absence report success!');
+      enqueueSnackbar(res.message || 'Create comment success!');
       navigate(`${PATH_DASHBOARD.club.root}/${club_code}/session/${session_code}/detail`);
     } catch (e) {
-      enqueueSnackbar('Create absence report failed!', {variant: 'error'});
+      enqueueSnackbar('Create comment failed!', {variant: 'error'});
       console.error(e)
     }
   };
@@ -104,25 +104,8 @@ export default function AbsenceReportCreateForm() {
                 </RHFSelect>
               </Stack>
               <Stack direction='column' spacing={1}>
-                <Typography>Reason</Typography>
-                <RHFTextField name="reason" />
-              </Stack>
-              <Stack direction='column' spacing={1}>
-                <Typography>Status</Typography>
-                <RHFSelect name="status" disabled>
-                  <option key="" value="">
-                    -- Choose status --
-                  </option>
-                  <option key="1" value="1">
-                    Pending
-                  </option>
-                  <option key="2" value="2">
-                    Approved
-                  </option>
-                  <option key="3" value="3">
-                    Reject
-                  </option>
-                </RHFSelect>
+                <Typography>Content</Typography>
+                <RHFTextField name="content" />
               </Stack>
               <Stack direction='row' justifyContent='flex-end' spacing={3}>
                 <Button variant="outlined" type="submit">Submit</Button>

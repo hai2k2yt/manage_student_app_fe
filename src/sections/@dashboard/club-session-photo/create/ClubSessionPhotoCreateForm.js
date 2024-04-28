@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 import { useSnackbar } from 'notistack';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 // form
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -10,30 +10,35 @@ import { Button, Card, Grid, Stack, Typography } from '@mui/material';
 // routes
 import { PATH_DASHBOARD } from '../../../../routes/paths';
 // components
-import { FormProvider, RHFSelect, RHFTextField } from '../../../../components/hook-form';
+import {
+  FormProvider,
+  RHFSelect,
+  RHFTextField,
+  RHFUploadMultiFile,
+  RHFUploadSingleFile,
+} from '../../../../components/hook-form';
 import { getClubStudents } from '../../../../api/club';
 import { storeAbsenceReport } from '../../../../api/absence_report';
+import { storeClubSessionPhoto } from '../../../../api/club_session_photo';
 
 // ----------------------------------------------------------------------
 
-export default function AbsenceReportCreateForm() {
+export default function ClubSessionPhotoCreateForm() {
   const navigate = useNavigate();
   const [studentList, setStudentList] = useState([]);
+  const [photo, setPhoto] = useState(null);
   const { enqueueSnackbar } = useSnackbar();
   const {session_code, club_code} = useParams();
 
   const CreateAbsenceReportSchema = Yup.object().shape({
     session_code: Yup.string().required('Session is required'),
-    student_code: Yup.string().required('Student is required'),
-    reason: Yup.string().required('Reason is required'),
-    status: Yup.string().required('Status is required')
+    photo_url: Yup.mixed().required('Photo is required'),
   });
 
   const defaultValues = {
     session_code: session_code,
-    student_code: '',
-    reason: '',
-    status: 1
+    photo_url: null,
+
   };
 
   const methods = useForm({
@@ -51,31 +56,41 @@ export default function AbsenceReportCreateForm() {
     formState: { isSubmitting },
   } = methods;
 
+  const handleDrop = useCallback(
+    (acceptedFiles) => {
+      const file = acceptedFiles[0];
+      if (file) {
+        setPhoto(file);
+        setValue(
+          'photo_url',
+          Object.assign(file, {
+            preview: URL.createObjectURL(file),
+          })
+        );
+      }
+      console.log(file)
+
+    },
+    [setValue]
+  );
 
   useEffect(() => {
     reset(defaultValues);
 
-
-    async function fetchStudent() {
-      try {
-        const students = await getClubStudents(club_code);
-        setStudentList(students.data)
-      } catch (e) {
-        enqueueSnackbar('Get student list failed!', {variant: 'error'});
-        console.error(e)
-      }
-    }
-    fetchStudent();
   }, []);
 
   const onSubmit = async (formData) => {
     try {
-      const res = await storeAbsenceReport(formData);
+      let data = new FormData();
+
+      data.append('session_code', formData.session_code);
+      data.append('photo_url', formData.photo_url);
+      const res = await storeClubSessionPhoto(data);
       reset();
-      enqueueSnackbar(res.message || 'Create absence report success!');
+      enqueueSnackbar(res.message || 'Create photo success!');
       navigate(`${PATH_DASHBOARD.club.root}/${club_code}/session/${session_code}/detail`);
     } catch (e) {
-      enqueueSnackbar('Create absence report failed!', {variant: 'error'});
+      enqueueSnackbar('Create photo failed!', {variant: 'error'});
       console.error(e)
     }
   };
@@ -91,38 +106,13 @@ export default function AbsenceReportCreateForm() {
                 <RHFTextField name="session_code" disabled />
               </Stack>
               <Stack direction='column' spacing={1}>
-                <Typography>Student</Typography>
-                <RHFSelect name="student_code">
-                  <option key='' value=''>
-                    -- Choose student --
-                  </option>
-                  {studentList.map((student) => (
-                    <option key={student.student_code} value={student.student_code}>
-                      {student.name}
-                    </option>
-                  ))}
-                </RHFSelect>
-              </Stack>
-              <Stack direction='column' spacing={1}>
-                <Typography>Reason</Typography>
-                <RHFTextField name="reason" />
-              </Stack>
-              <Stack direction='column' spacing={1}>
-                <Typography>Status</Typography>
-                <RHFSelect name="status" disabled>
-                  <option key="" value="">
-                    -- Choose status --
-                  </option>
-                  <option key="1" value="1">
-                    Pending
-                  </option>
-                  <option key="2" value="2">
-                    Approved
-                  </option>
-                  <option key="3" value="3">
-                    Reject
-                  </option>
-                </RHFSelect>
+                <Typography>Photo</Typography>
+                <RHFUploadSingleFile
+                  name='photo_url'
+                  accept="image/*"
+                  maxSize={3145728}
+                  onDrop={handleDrop}
+                />
               </Stack>
               <Stack direction='row' justifyContent='flex-end' spacing={3}>
                 <Button variant="outlined" type="submit">Submit</Button>

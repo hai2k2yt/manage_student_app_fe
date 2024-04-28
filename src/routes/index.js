@@ -109,6 +109,9 @@ export default function Router() {
             { path: ':club_code/session/:session_code/absence-report/create', element: <AbsenceReportCreate /> },
             { path: ':club_code/session/:session_code/attendance', element: <AttendanceList /> },
             { path: ':club_code/session/:session_code/attendance/create', element: <AttendanceCreate /> },
+            { path: ':club_code/session/:session_code/comment/create', element: <CommentCreate /> },
+            { path: ':club_code/session/:session_code/comment/:comment_id/edit', element: <CommentUpdate /> },
+            { path: ':club_code/session/:session_code/photo/create', element: <ClubSessionPhotoCreate /> },
             { path: ':club_code/session/:session_code/notification', element: <ClubNotificationList /> },
             { path: ':club_code/session/:session_code/notification/create', element: <ClubNotificationCreate /> },
             { path: ':club_code/session/:session_code/notification/:noti_id/edit', element: <ClubNotificationList /> },
@@ -191,6 +194,9 @@ const AbsenceReportCreate = Loadable(lazy(() => import('../pages/dashboard/absen
 
 const AttendanceList = Loadable(lazy(() => import('../pages/dashboard/attendance/AttendanceList')));
 const AttendanceCreate = Loadable(lazy(() => import('../pages/dashboard/attendance/AttendanceCreate')));
+
+const CommentCreate = Loadable(lazy(() => import('../pages/dashboard/comment/CommentCreate')));
+const CommentUpdate = Loadable(lazy(() => import('../pages/dashboard/comment/CommentUpdate')));
 
 const ClubNotificationList = Loadable(lazy(() => import('../pages/dashboard/club-notification/ClubNotificationList')));
 const ClubNotificationCreate = Loadable(lazy(() => import('../pages/dashboard/club-notification/ClubNotificationCreate')));

@@ -1,6 +1,3 @@
-import { useEffect } from 'react';
-import { paramCase } from 'change-case';
-import { useParams, useLocation } from 'react-router-dom';
 // @mui
 import { Container } from '@mui/material';
 // routes
@@ -10,7 +7,6 @@ import useSettings from '../../../hooks/useSettings';
 // components
 import Page from '../../../components/Page';
 import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
-import ClassNewForm from '../../../sections/@dashboard/e-commerce/ClassNewForm';
 import ClubUpdateForm from '../../../sections/@dashboard/club/update/ClubUpdateForm';
 
 // ----------------------------------------------------------------------

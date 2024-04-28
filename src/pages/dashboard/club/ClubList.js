@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 // @mui
 import {
-  Button,
   Card,
   Container,
   Table,
@@ -19,13 +18,14 @@ import useSettings from '../../../hooks/useSettings';
 // _mock_
 // components
 import Page from '../../../components/Page';
-import Iconify from '../../../components/Iconify';
 import Scrollbar from '../../../components/Scrollbar';
 import SearchNotFound from '../../../components/SearchNotFound';
 import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
 // sections
-import { getClubs } from '../../../api/club';
+import { destroyClub, getClubs } from '../../../api/club';
 import { ClubListHead, ClubListToolbar, ClubMoreMenu } from '../../../sections/@dashboard/club/list';
+import { useSnackbar } from 'notistack';
+import { destroyClass } from '../../../api/class';
 
 // ----------------------------------------------------------------------
 
@@ -43,6 +43,7 @@ const TABLE_HEAD = [
 export default function ClubList() {
   const { themeStretch } = useSettings();
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
 
   const [clubList, setClubList] = useState([]);
   const [_page, setPage] = useState(0);
@@ -52,20 +53,26 @@ export default function ClubList() {
   const [_limit, setLimit] = useState(5);
   const [total, setTotal] = useState(0);
 
-  useEffect( () => {
+  useEffect(() => {
     async function fetchData() {
       const params = {
         _page: _page + 1,
         _limit,
         _order,
         _sort,
-        name_like: filterName
+        name_like: filterName,
+      };
+      try {
+        const clubs = await getClubs(params);
+        const records = clubs?.data?.records || [];
+        setTotal(clubs?.data?.total || 0);
+        setClubList(records);
+      } catch (e) {
+        enqueueSnackbar('Get club list failed', { variant: 'error' });
+        console.error(e);
       }
-      const clubs = await getClubs(params);
-      const records = clubs?.data?.records || [];
-      setTotal(clubs?.data?.total || 0)
-      setClubList(records);
     }
+
     fetchData();
   }, [_page, _limit, _order, _sort, filterName]);
 
@@ -74,7 +81,6 @@ export default function ClubList() {
     setOrder(isAsc ? 'desc' : 'asc');
     setSort(property);
   };
-
 
 
   const handleChangeRowsPerPage = (event) => {
@@ -87,8 +93,15 @@ export default function ClubList() {
     setPage(0);
   };
 
-  const handleDeleteClub = (clubId) => {
-    navigate(0)
+  const handleDeleteClub = async (club_code) => {
+    try {
+      await destroyClub(club_code);
+      navigate(0);
+      enqueueSnackbar('Delete club successfully')
+    } catch (e) {
+      enqueueSnackbar('Delete club failed', {variant: 'error'})
+      console.error(e)
+    }
   };
 
   const emptyRows = _page > 0 ? Math.max(0, _limit - clubList.length) : 0;
@@ -125,7 +138,7 @@ export default function ClubList() {
                 />
                 <TableBody>
                   {clubList.map((row) => {
-                    const { club_code, name, teacher: {teacher_name}, created_at, updated_at } = row;
+                    const { club_code, name, teacher: { teacher_name }, created_at, updated_at } = row;
 
                     return (
                       <TableRow

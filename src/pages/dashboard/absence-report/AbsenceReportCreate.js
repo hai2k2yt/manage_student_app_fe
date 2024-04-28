@@ -15,7 +15,7 @@ import AbsenceReportCreateForm from '../../../sections/@dashboard/absence-report
 
 export default function AbsenceReportCreate() {
   const { themeStretch } = useSettings();
-  const {id, session_id} = useParams()
+  const {club_code, session_code} = useParams();
 
   return (
     <Page title="Club Session: Create">
@@ -30,7 +30,11 @@ export default function AbsenceReportCreate() {
             },
             {
               name: 'Club detail',
-              href: `${PATH_DASHBOARD.club.root}/${id}/detail`,
+              href: `${PATH_DASHBOARD.club.root}/${club_code}/detail`,
+            },
+            {
+              name: 'Session detail',
+              href: `${PATH_DASHBOARD.club.root}/${club_code}/session/${session_code}`,
             },
             { name: 'New Absence Report'},
           ]}

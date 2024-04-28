@@ -54,18 +54,27 @@ export default function ClubUpdateForm() {
   useEffect(() => {
     reset(defaultValues);
     async function fetchTeacher() {
-      const teachers = await getAllTeachers();
-      setTeacherList(teachers.data);
+      try {
+        const teachers = await getAllTeachers();
+        setTeacherList(teachers.data);
+      } catch (e) {
+        enqueueSnackbar('Get teacher list failed', {variant: 'error'});
+        console.error(e)
+      }
     }
 
     fetchTeacher();
 
     async function fetchClubInfo() {
-      const classDetail = await showClub(club_code);
-      const { club_code: clubcode, name, teacher_code } = classDetail.data;
-      reset({ club_code: clubcode, name, teacher_code });
+      try {
+        const classDetail = await showClub(club_code);
+        const { club_code: clubcode, name, teacher_code } = classDetail.data;
+        reset({ club_code: clubcode, name, teacher_code });
+      } catch (e) {
+        enqueueSnackbar('Get club info failed', {variant: 'error'});
+        console.error(e)
+      }
     }
-
     fetchClubInfo();
   }, []);
 
@@ -76,6 +85,7 @@ export default function ClubUpdateForm() {
       enqueueSnackbar(res.message || 'Update club success!');
       navigate(PATH_DASHBOARD.club.list);
     } catch (error) {
+      enqueueSnackbar('Update club failed', {variant: 'error'});
       console.error(error);
     }
   };

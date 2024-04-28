@@ -54,15 +54,25 @@ export default function ClassUpdateForm() {
     reset(defaultValues);
 
     async function fetchTeacher() {
-      const teachers = await getAllTeachers();
-      setTeacherList(teachers.data)
+      try {
+        const teachers = await getAllTeachers();
+        setTeacherList(teachers.data);
+      }catch (e) {
+        enqueueSnackbar('Get teacher list failed', {variant: 'error'});
+        console.error(e)
+      }
     }
     fetchTeacher();
 
     async function fetchClassInfo() {
-      const classDetail = await showClass(class_code);
-      const { class_name, teacher_code } = classDetail.data;
-      reset({ class_name, teacher_code });
+      try {
+        const classDetail = await showClass(class_code);
+        const { class_name, teacher_code } = classDetail.data;
+        reset({ class_name, teacher_code });
+      } catch (e) {
+        enqueueSnackbar('Get class info failed', {variant: 'error'});
+        console.error(e)
+      }
     }
     fetchClassInfo();
   }, []);
@@ -74,6 +84,7 @@ export default function ClassUpdateForm() {
       enqueueSnackbar(res.message && 'Update class success!');
       navigate(PATH_DASHBOARD.class.list);
     } catch (error) {
+      enqueueSnackbar('Update class failed!', {variant: 'error'});
       console.error(error);
     }
   };

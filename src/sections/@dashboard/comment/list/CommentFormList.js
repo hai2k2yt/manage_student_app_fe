@@ -6,26 +6,24 @@ import { useEffect, useState } from 'react';
 // components
 import Scrollbar from '../../../../components/Scrollbar';
 import { Card, Chip, Table, TableBody, TableCell, TableContainer, TablePagination, TableRow } from '@mui/material';
-import AbsenceReportListHead from './AbsenceReportListHead';
+import CommentListHead from './CommentListHead';
 import { getAbsenceReports, updateAbsenceReport } from '../../../../api/absence_report';
-import ClubSessionMoreMenu from '../../club-session/list/ClubSessionMoreMenu';
-import AbsenceReportMoreMenu from './AbsenceReportMoreMenu';
-import { getAttendances, updateAttendance } from '../../../../api/attendance';
+import CommentMoreMenu from './CommentMoreMenu';
 import { useSnackbar } from 'notistack';
+import { getCommentBySession, updateComment } from '../../../../api/comment';
 
 // ----------------------------------------------------------------------
 const TABLE_HEAD = [
   { id: 'student_code', label: 'Student code', alignRight: false, sortable: true },
   { id: 'student.name', label: 'Student name', alignRight: false, sortable: false },
-  { id: 'reason', label: 'Reason', alignRight: false, sortable: false },
-  { id: 'status', label: 'Status', alignRight: false, sortable: true },
+  { id: 'content', label: 'Content', alignRight: false, sortable: false },
   { id: '', label: '', alignRight: false, sortable: false },
 ];
-export default function AbsenceReportFormList() {
+export default function CommentFormList() {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
-  const [absenceReportList, setAbsenceReportList] = useState([]);
+  const [commentList, setCommentList] = useState([]);
   const [_page, setPage] = useState(0);
   const [_order, setOrder] = useState('asc');
   const [_sort, setSort] = useState('name');
@@ -35,21 +33,25 @@ export default function AbsenceReportFormList() {
   const { session_code } = useParams();
 
   useEffect(() => {
-    async function fetchAbsenceReports() {
+    async function fetchComments() {
       const params = {
         _page: _page + 1,
         _limit,
         _order,
         _sort,
-        session_code,
       };
-      const absenceReports = await getAbsenceReports(params);
-      const records = absenceReports?.data?.records || [];
-      setTotal(absenceReports?.data?.total || 0);
-      setAbsenceReportList(records);
+      try {
+        const absenceReports = await getCommentBySession(session_code, params);
+        const records = absenceReports?.data?.records || [];
+        setTotal(absenceReports?.data?.total || 0);
+        setCommentList(records);
+      } catch (e) {
+        enqueueSnackbar('Get comment list failed', {variant: 'error'});
+        console.error(e)
+      }
     }
 
-    fetchAbsenceReports();
+    fetchComments();
   }, [_page, _limit, _order, _sort, session_code]);
 
   const handleRequestSort = (event, property) => {
@@ -58,64 +60,33 @@ export default function AbsenceReportFormList() {
     setSort(property);
   };
 
-  const renderStatus = (status) => {
-    if(status == 1) {
-      return <Chip label="Đang chờ" color="warning" />
-    }
-    if(status == 2) {
-      return <Chip label="Chấp nhận" color="primary" />
-    }if(status == 3) {
-      return <Chip label="Từ chối" color="error" />
-    }
-  }
   const handleChangeRowsPerPage = (event) => {
     setLimit(parseInt(event.target.value, 10));
     setPage(0);
   };
 
-  const handleDeleteAbsenceReport = async (reportId) => {
-    console.log(reportId)
+  const handleDeleteComment = async (id) => {
+    console.log(id)
   };
 
-  const handleUpdateAbsenceReport = async (status, reportId) => {
-    try {
-      await updateAbsenceReport(reportId, { status });
-      const params = {
-        _page: _page + 1,
-        _limit,
-        _order,
-        _sort,
-        session_code,
-      };
-      const absenceReports = await getAbsenceReports(params);
-      const records = absenceReports?.data?.records || [];
-      setTotal(absenceReports?.data?.total || 0);
-      setAbsenceReportList(records);
-      enqueueSnackbar('Update absence report successfully')
-    } catch (e) {
-      enqueueSnackbar(e?.message || 'Update absence report failed', {variant: 'error'})
-    }
-  };
-
-  const emptyRows = _page > 0 ? Math.max(0, _limit - absenceReportList.length) : 0;
+  const emptyRows = _page > 0 ? Math.max(0, _limit - commentList.length) : 0;
 
 
   return (
     <Card>
-
       <Scrollbar>
         <TableContainer sx={{ minWidth: 800 }}>
           <Table>
-            <AbsenceReportListHead
+            <CommentListHead
               order={_order}
               orderBy={_sort}
               headLabel={TABLE_HEAD}
-              rowCount={absenceReportList.length}
+              rowCount={commentList.length}
               onRequestSort={handleRequestSort}
             />
             <TableBody>
-              {absenceReportList.map((row) => {
-                const {id, student_code, student: { name }, reason, status } = row;
+              {commentList.map((row) => {
+                const {id, student_code, student: { name }, content } = row;
 
                 return (
                   <TableRow
@@ -126,12 +97,9 @@ export default function AbsenceReportFormList() {
                   >
                     <TableCell align="left">{student_code}</TableCell>
                     <TableCell align="left">{name}</TableCell>
-                    <TableCell align="left">{reason}</TableCell>
-                    <TableCell align="left">
-                      {renderStatus(status)}
-                    </TableCell>
+                    <TableCell align="left">{content}</TableCell>
                     <TableCell align="right">
-                      <AbsenceReportMoreMenu id={id} onDelete={handleDeleteAbsenceReport} onUpdate={handleUpdateAbsenceReport} />
+                      <CommentMoreMenu id={id} onDelete={handleDeleteComment} />
                     </TableCell>
                   </TableRow>
                 );

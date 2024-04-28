@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 import { useSnackbar } from 'notistack';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 // form
 import { useForm } from 'react-hook-form';
@@ -12,30 +12,31 @@ import { PATH_DASHBOARD } from '../../../../routes/paths';
 // components
 import { FormProvider, RHFSelect, RHFTextField } from '../../../../components/hook-form';
 import { getUser } from '../../../../api/user';
-import { storeClub } from '../../../../api/club';
+import { showClub, updateClub } from '../../../../api/club';
 import { getAllTeachers } from '../../../../api/teacher';
+import { showComment, updateComment } from '../../../../api/comment';
 
 // ----------------------------------------------------------------------
 
-export default function ClubCreateForm() {
+export default function CommentUpdateForm() {
   const navigate = useNavigate();
-  const [teacherList, setTeacherList] = useState([]);
   const { enqueueSnackbar } = useSnackbar();
+  const { club_code, session_code, comment_id } = useParams();
 
-  const NewClubSchema = Yup.object().shape({
-    club_code: Yup.string().required('Club code is required'),
-    name: Yup.string().required('Club name is required'),
-    teacher_code: Yup.string().required('Teacher is required'),
+  const UpdateCommentSchema = Yup.object().shape({
+    student_code: Yup.string().required('Student code is required'),
+    student_name: Yup.string().required('Club name is required'),
+    content: Yup.string().required('Teacher is required'),
   });
 
   const defaultValues = {
-    club_code: '',
-    name: '',
-    teacher_code: '',
+    student_code: '',
+    student_name: '',
+    content: '',
   };
 
   const methods = useForm({
-    resolver: yupResolver(NewClubSchema),
+    resolver: yupResolver(UpdateCommentSchema),
     defaultValues,
   });
 
@@ -53,26 +54,22 @@ export default function ClubCreateForm() {
   useEffect(() => {
     reset(defaultValues);
 
-    async function fetchTeacher() {
-      try {
-        const teachers = await getAllTeachers();
-        setTeacherList(teachers.data)
-      } catch (e) {
-        enqueueSnackbar('Get teacher list failed', {variant: 'error'});
-        console.error(e)
-      }
+    async function fetchCommentInfo() {
+      const commentDetail = await showComment(comment_id);
+      const { student_code, student: {name}, content } = commentDetail.data;
+      reset({ student_code, student_name: name, content });
     }
-    fetchTeacher();
+
+    fetchCommentInfo();
   }, []);
 
   const onSubmit = async (formData) => {
     try {
-      const res = await storeClub(formData);
+      const res = await updateComment(comment_id, { content: formData.content });
       reset();
-      enqueueSnackbar(res.message || 'Create club success!');
+      enqueueSnackbar(res.message || 'Update comment success!');
       navigate(PATH_DASHBOARD.club.list);
     } catch (error) {
-      enqueueSnackbar('Create club failed!', {variant: 'error'});
       console.error(error);
     }
   };
@@ -83,26 +80,17 @@ export default function ClubCreateForm() {
         <Grid item xs={12} md={8}>
           <Card sx={{ p: 3 }}>
             <Stack spacing={3}>
-              <Stack direction='column' spacing={1}>
-                <Typography>Club code</Typography>
-                <RHFTextField name="club_code"/>
+              <Stack direction="column" spacing={1}>
+                <Typography>Student code</Typography>
+                <RHFTextField name="student_code" disabled />
               </Stack>
-              <Stack direction='column' spacing={1}>
-                <Typography>Club name</Typography>
-                <RHFTextField name="name"/>
+              <Stack direction="column" spacing={1}>
+                <Typography>Student name</Typography>
+                <RHFTextField name="student_name" disabled />
               </Stack>
-              <Stack direction='column' spacing={1}>
-                <Typography>Teacher</Typography>
-                <RHFSelect name="teacher_code">
-                  <option key='' value=''>
-                    -- Choose teacher --
-                  </option>
-                  {teacherList.map((teacher) => (
-                    <option key={teacher.teacher_code} value={teacher.teacher_code}>
-                      {teacher.teacher_name}
-                    </option>
-                  ))}
-                </RHFSelect>
+              <Stack direction="column" spacing={1}>
+                <Typography>Content</Typography>
+                <RHFTextField name="content" />
               </Stack>
               <Stack direction='row' justifyContent='flex-end' spacing={3}>
                 <Button variant="outlined" type="submit">Submit</Button>

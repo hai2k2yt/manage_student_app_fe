@@ -19,11 +19,15 @@ import { getAttendanceBySession } from '../../../api/attendance';
 import { showClubSession } from '../../../api/club_session';
 import AbsenceReportFormList from '../../../sections/@dashboard/absence-report/list/AbsenceReportFormList';
 import AttendanceFormList from '../../../sections/@dashboard/attendance/list/AttendanceFormList';
+import CommentFormList from '../../../sections/@dashboard/comment/list/CommentFormList';
+import { useSnackbar } from 'notistack';
+import ClubSessionPhotoList from '../../../sections/@dashboard/club-session-photo/list/ClubSessionPhotoList';
 
 // ----------------------------------------------------------------------
 
 export default function ClubSessionDetail() {
   const { themeStretch } = useSettings();
+  const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
   const { club_code,session_code } = useParams();
 
@@ -31,8 +35,13 @@ export default function ClubSessionDetail() {
 
   useEffect(() => {
     async function fetchClubSessionDetail() {
-      const session = await showClubSession(session_code);
-      setSessionDetail(session);
+      try {
+        const session = await showClubSession(session_code);
+        setSessionDetail(session);
+      } catch (e) {
+        enqueueSnackbar('Get session detail failed', {variant: 'error'});
+        console.error(e)
+      }
     }
 
     fetchClubSessionDetail();
@@ -56,14 +65,57 @@ export default function ClubSessionDetail() {
 
         <Typography>Club session detail</Typography>
 
-        <Stack direction='row' justifyContent='space-between'>
+        <Stack direction="row" justifyContent="space-between">
           <Typography>Absence report</Typography>
+          <Button
+            variant="contained"
+            component={RouterLink}
+            to={`${PATH_DASHBOARD.club.root}/${club_code}/session/${session_code}/absence-report/create`}
+            startIcon={<Iconify icon={'eva:plus-fill'} />}
+          >
+            New absence report
+          </Button>
         </Stack>
-
         <AbsenceReportFormList />
-        <Typography>Attendance</Typography>
 
+        <Stack direction="row" justifyContent="space-between">
+          <Typography>Attendance</Typography>
+          <Button
+            variant="contained"
+            component={RouterLink}
+            to={`${PATH_DASHBOARD.club.root}/${club_code}/session/${session_code}/attendance/create`}
+            startIcon={<Iconify icon={'eva:plus-fill'} />}
+          >
+            New attendance
+          </Button>
+        </Stack>
         <AttendanceFormList />
+
+        <Stack direction="row" justifyContent="space-between">
+          <Typography>Comment</Typography>
+          <Button
+            variant="contained"
+            component={RouterLink}
+            to={`${PATH_DASHBOARD.club.root}/${club_code}/session/${session_code}/comment/create`}
+            startIcon={<Iconify icon={'eva:plus-fill'} />}
+          >
+            New comment
+          </Button>
+        </Stack>
+        <CommentFormList />
+
+        <Stack direction="row" justifyContent="space-between">
+          <Typography>Photo</Typography>
+          <Button
+            variant="contained"
+            component={RouterLink}
+            to={`${PATH_DASHBOARD.club.root}/${club_code}/session/${session_code}/photo/create`}
+            startIcon={<Iconify icon={'eva:plus-fill'} />}
+          >
+            New photo
+          </Button>
+        </Stack>
+        <ClubSessionPhotoList />
       </Container>
     </Page>
   );

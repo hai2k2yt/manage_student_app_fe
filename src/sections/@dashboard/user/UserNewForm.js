@@ -62,6 +62,7 @@ export default function UserNewForm() {
       enqueueSnackbar(res.message || 'Create success!');
       navigate(PATH_DASHBOARD.user.list);
     } catch (error) {
+      enqueueSnackbar('Create user failed!', {variant: 'error'});
       console.error(error);
     }
   };

@@ -28,6 +28,7 @@ import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
 // sections
 import { UserListHead, UserListToolbar, UserMoreMenu } from '../../../sections/@dashboard/user/list';
 import { getUser } from '../../../api/user';
+import { useSnackbar } from 'notistack';
 
 // ----------------------------------------------------------------------
 
@@ -44,11 +45,11 @@ const TABLE_HEAD = [
 
 export default function UserList() {
   const { themeStretch } = useSettings();
+  const { enqueueSnackbar } = useSnackbar();
 
   const [userList, setUserList] = useState([]);
   const [_page, setPage] = useState(0);
   const [_order, setOrder] = useState('asc');
-  const [selected, setSelected] = useState([]);
   const [_sort, setSort] = useState('name');
   const [filterName, setFilterName] = useState('');
   const [_limit, setLimit] = useState(5);
@@ -63,10 +64,15 @@ export default function UserList() {
         _sort,
         name_like: filterName
       }
-      const users = await getUser(params);
-      const records = users?.data?.records || [];
-      setTotal(users?.data?.total || 0)
-      setUserList(records);
+      try {
+        const users = await getUser(params);
+        const records = users?.data?.records || [];
+        setTotal(users?.data?.total || 0)
+        setUserList(records);
+      } catch (e) {
+        enqueueSnackbar('Get user list failed', {variant: 'error'});
+        console.error(e)
+      }
     }
     fetchData();
   }, [_page, _limit, _order, _sort, filterName]);
@@ -88,15 +94,7 @@ export default function UserList() {
   };
 
   const handleDeleteUser = (userId) => {
-    const deleteUser = userList.filter((user) => user.id !== userId);
-    setSelected([]);
-    setUserList(deleteUser);
-  };
 
-  const handleDeleteMultiUser = (selected) => {
-    const deleteUsers = userList.filter((user) => !selected.includes(user.name));
-    setSelected([]);
-    setUserList(deleteUsers);
   };
 
   const emptyRows = _page > 0 ? Math.max(0, _limit - userList.length) : 0;
@@ -127,10 +125,8 @@ export default function UserList() {
 
         <Card>
           <UserListToolbar
-            numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
-            onDeleteUsers={() => handleDeleteMultiUser(selected)}
           />
 
           <Scrollbar>
@@ -141,13 +137,11 @@ export default function UserList() {
                   orderBy={_sort}
                   headLabel={TABLE_HEAD}
                   rowCount={userList.length}
-                  numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                 />
                 <TableBody>
                   {userList.map((row) => {
                     const { id, username, name, role, created_at, updated_at } = row;
-                    const isItemSelected = selected.indexOf(name) !== -1;
 
                     return (
                       <TableRow
@@ -155,8 +149,6 @@ export default function UserList() {
                         key={id}
                         tabIndex={-1}
                         role="checkbox"
-                        selected={isItemSelected}
-                        aria-checked={isItemSelected}
                       >
                         <TableCell>
                             {name}

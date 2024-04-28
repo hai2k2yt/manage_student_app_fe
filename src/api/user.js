@@ -14,3 +14,7 @@ export async function showUser(id) {
   return axios.get(`/user/${id}`);
 }
 
+export async function updateUser(id, params) {
+  return axios.get(`/user/${id}`, params);
+}
+

@@ -16,7 +16,7 @@ const visuallyHidden = {
   width: '1px',
 };
 
-AbsenceReportListHead.propTypes = {
+CommentListHead.propTypes = {
   order: PropTypes.oneOf(['asc', 'desc']),
   orderBy: PropTypes.string,
   rowCount: PropTypes.number,
@@ -24,7 +24,7 @@ AbsenceReportListHead.propTypes = {
   onRequestSort: PropTypes.func,
 };
 
-export default function AbsenceReportListHead({
+export default function CommentListHead({
   order,
   orderBy,
   rowCount,

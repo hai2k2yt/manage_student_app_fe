@@ -65,8 +65,13 @@ export default function ClassNewForm() {
     reset(defaultValues);
 
     async function fetchTeacher() {
-      const teachers = await getAllTeachers();
-      setTeacherList(teachers.data)
+      try {
+        const teachers = await getAllTeachers();
+        setTeacherList(teachers.data)
+      } catch (e) {
+        enqueueSnackbar('Get teachers failed', {variant: 'error'});
+        console.error(e)
+      }
     }
     fetchTeacher();
   }, []);
@@ -75,9 +80,10 @@ export default function ClassNewForm() {
     try {
       const res = await storeClass(formData);
       reset();
-      enqueueSnackbar(res.message || 'Create success!');
+      enqueueSnackbar(res.message || 'Create class success!');
       navigate(PATH_DASHBOARD.class.list);
     } catch (error) {
+      enqueueSnackbar('Create class failed!', {variant: 'error'});
       console.error(error);
     }
   };

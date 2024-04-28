@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useParams } from 'react-router-dom';
 // @mui
 import { MenuItem, IconButton } from '@mui/material';
 // routes
@@ -11,15 +11,16 @@ import MenuPopover from '../../../../components/MenuPopover';
 
 // ----------------------------------------------------------------------
 
-AbsenceReportMoreMenu.propTypes = {
+CommentMoreMenu.propTypes = {
   id: PropTypes.any,
   onUpdate: PropTypes.func,
   onDelete: PropTypes.func
 };
 
-export default function AbsenceReportMoreMenu({ id, onUpdate, onDelete }) {
+export default function CommentMoreMenu({ id, onDelete }) {
   const [open, setOpen] = useState(null);
 
+  const {club_code, session_code} = useParams();
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
   };
@@ -58,20 +59,11 @@ export default function AbsenceReportMoreMenu({ id, onUpdate, onDelete }) {
           Delete
         </MenuItem>
 
-        <MenuItem onClick={() => onUpdate(1, id)}>
+        <MenuItem component={RouterLink} to={`${PATH_DASHBOARD.club.root}/${club_code}/session/${session_code}/comment/${id}/edit`}>
           <Iconify icon={'eva:edit-fill'} sx={{ ...ICON }} />
-          Đang chờ
+          Edit
         </MenuItem>
 
-        <MenuItem onClick={() => onUpdate(2, id)}>
-          <Iconify icon={'eva:edit-fill'} sx={{ ...ICON }} />
-          Chấp nhận
-        </MenuItem>
-
-        <MenuItem onClick={() => onUpdate(3, id)}>
-          <Iconify icon={'eva:edit-fill'} sx={{ ...ICON }} />
-          Từ chối
-        </MenuItem>
       </MenuPopover>
     </>
   );

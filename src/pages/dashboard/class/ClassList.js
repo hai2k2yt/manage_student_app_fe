@@ -92,7 +92,8 @@ export default function ClassList() {
       navigate(0);
       enqueueSnackbar('Delete class successfully')
     } catch (e) {
-      enqueueSnackbar(e?.message || 'Delete class failed', {variant: 'error'})
+      enqueueSnackbar('Delete class failed', {variant: 'error'})
+      console.error(e)
     }
   };
 

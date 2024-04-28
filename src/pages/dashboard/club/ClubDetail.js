@@ -14,11 +14,13 @@ import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
 import { getScheduleByClub } from '../../../api/club_schedule';
 import { ClubSessionList } from '../../../sections/@dashboard/club-session/list';
 import Iconify from '../../../components/Iconify';
+import { useSnackbar } from 'notistack';
 
 // ----------------------------------------------------------------------
 
 export default function ClubDetail() {
   const { themeStretch } = useSettings();
+  const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
   const { club_code } = useParams();
 
@@ -26,13 +28,18 @@ export default function ClubDetail() {
 
   useEffect(() => {
     async function fetchClubSchedule() {
-      const res = await getScheduleByClub(club_code);
-      const schedules = res?.data?.data;
-      setClubScheduleList(schedules);
+      try {
+        const res = await getScheduleByClub(club_code);
+        const schedules = res?.data?.data;
+        setClubScheduleList(schedules);
+      } catch (e) {
+        enqueueSnackbar('Get club schedule failed', { variant: 'error' });
+        console.error(e);
+      }
     }
 
     fetchClubSchedule();
-    }, []);
+  }, []);
 
   function renderDay(day) {
     let text = '';
@@ -96,7 +103,7 @@ export default function ClubDetail() {
 
         </List>
 
-        <Stack direction='row' justifyContent='space-between'>
+        <Stack direction="row" justifyContent="space-between">
           <Typography>Club session</Typography>
           <Button
             variant="contained"

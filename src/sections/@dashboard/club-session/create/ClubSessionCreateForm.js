@@ -20,7 +20,7 @@ export default function ClubSessionCreateForm() {
   const navigate = useNavigate();
   const [scheduleList, setScheduleList] = useState([]);
   const { enqueueSnackbar } = useSnackbar();
-  const {club_code} = useParams();
+  const { club_code } = useParams();
 
   const NewSessionSchema = Yup.object().shape({
     session_code: Yup.string().required('Session code is required'),
@@ -56,9 +56,15 @@ export default function ClubSessionCreateForm() {
     reset(defaultValues);
 
     async function fetchSchedule() {
-      const schedules = await getScheduleByClub(club_code);
-      setScheduleList(schedules.data.data)
+      try {
+        const schedules = await getScheduleByClub(club_code);
+        setScheduleList(schedules.data.data);
+      } catch (e) {
+        enqueueSnackbar('Get schedule list failed', {variant: 'error'});
+        console.error(e)
+      }
     }
+
     fetchSchedule();
   }, []);
 
@@ -73,6 +79,7 @@ export default function ClubSessionCreateForm() {
       enqueueSnackbar(res.message || 'Create session success!');
       navigate(`${PATH_DASHBOARD.club.root}/${club_code}/detail`);
     } catch (error) {
+      enqueueSnackbar('Create session failed', {variant: 'error'});
       console.error(error);
     }
   };
@@ -83,36 +90,36 @@ export default function ClubSessionCreateForm() {
         <Grid item xs={12} md={8}>
           <Card sx={{ p: 3 }}>
             <Stack spacing={3}>
-              <Stack direction='column' spacing={1}>
+              <Stack direction="column" spacing={1}>
                 <Typography>Session code</Typography>
-                <RHFTextField name="session_code"/>
+                <RHFTextField name="session_code" />
               </Stack>
-              <Stack direction='column' spacing={1}>
+              <Stack direction="column" spacing={1}>
                 <Typography>Session name</Typography>
-                <RHFTextField name="session_name"/>
+                <RHFTextField name="session_name" />
               </Stack>
-              <Stack direction='column' spacing={1}>
+              <Stack direction="column" spacing={1}>
                 <Typography>Schedule</Typography>
                 <RHFSelect name="schedule_code">
-                  <option key='' value=''>
+                  <option key="" value="">
                     -- Choose schedule --
                   </option>
                   {scheduleList.map((schedule) => (
                     <option key={schedule.schedule_code} value={schedule.schedule_code}>
-                        {schedule.schedule_name}
+                      {schedule.schedule_name}
                     </option>
                   ))}
                 </RHFSelect>
               </Stack>
-              <Stack direction='column' spacing={1}>
+              <Stack direction="column" spacing={1}>
                 <Typography>Date</Typography>
                 <RHFDate
                   inputFormat="yyyy-MM-dd"
-                  format='yyyy-MM-dd'
+                  format="yyyy-MM-dd"
                   name="date"
                 />
               </Stack>
-              <Stack direction='row' justifyContent='flex-end' spacing={3}>
+              <Stack direction="row" justifyContent="flex-end" spacing={3}>
                 <Button variant="outlined" type="submit">Submit</Button>
                 <Button variant="outlined" onClick={() => navigate(PATH_DASHBOARD.club.list)}>Cancel</Button>
               </Stack>

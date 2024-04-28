@@ -51,10 +51,15 @@ export default function AttendanceFormList() {
         _sort,
         session_code
       };
-      const attendances = await getAttendances(params);
-      const records = attendances?.data?.records || [];
-      setTotal(attendances?.data?.total || 0);
-      setAttendanceList(records);
+      try {
+        const attendances = await getAttendances(params);
+        const records = attendances?.data?.records || [];
+        setTotal(attendances?.data?.total || 0);
+        setAttendanceList(records);
+      } catch (e) {
+        enqueueSnackbar('Get attendance list failed', {variant: 'error'});
+        console.error(e)
+      }
     }
 
     fetchAttendances();

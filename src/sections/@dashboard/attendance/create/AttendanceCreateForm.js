@@ -12,11 +12,11 @@ import { PATH_DASHBOARD } from '../../../../routes/paths';
 // components
 import { FormProvider, RHFSelect, RHFTextField } from '../../../../components/hook-form';
 import { getClubStudents } from '../../../../api/club';
-import { storeAbsenceReport } from '../../../../api/absence_report';
+import { storeAttendance } from '../../../../api/attendance';
 
 // ----------------------------------------------------------------------
 
-export default function AbsenceReportCreateForm() {
+export default function AttendanceCreateForm() {
   const navigate = useNavigate();
   const [studentList, setStudentList] = useState([]);
   const { enqueueSnackbar } = useSnackbar();
@@ -25,15 +25,13 @@ export default function AbsenceReportCreateForm() {
   const CreateAbsenceReportSchema = Yup.object().shape({
     session_code: Yup.string().required('Session is required'),
     student_code: Yup.string().required('Student is required'),
-    reason: Yup.string().required('Reason is required'),
-    status: Yup.string().required('Status is required')
+    present: Yup.string().required('Present status is required')
   });
 
   const defaultValues = {
     session_code: session_code,
     student_code: '',
-    reason: '',
-    status: 1
+    present: 1
   };
 
   const methods = useForm({
@@ -55,11 +53,10 @@ export default function AbsenceReportCreateForm() {
   useEffect(() => {
     reset(defaultValues);
 
-
     async function fetchStudent() {
       try {
-        const students = await getClubStudents(club_code);
-        setStudentList(students.data)
+        const schedules = await getClubStudents(club_code);
+        setStudentList(schedules.data)
       } catch (e) {
         enqueueSnackbar('Get student list failed!', {variant: 'error'});
         console.error(e)
@@ -70,12 +67,12 @@ export default function AbsenceReportCreateForm() {
 
   const onSubmit = async (formData) => {
     try {
-      const res = await storeAbsenceReport(formData);
+      const res = await storeAttendance(formData);
       reset();
-      enqueueSnackbar(res.message || 'Create absence report success!');
+      enqueueSnackbar(res.message || 'Create attendance success!');
       navigate(`${PATH_DASHBOARD.club.root}/${club_code}/session/${session_code}/detail`);
     } catch (e) {
-      enqueueSnackbar('Create absence report failed!', {variant: 'error'});
+      enqueueSnackbar('Create attendance failed!', {variant: 'error'});
       console.error(e)
     }
   };
@@ -104,23 +101,19 @@ export default function AbsenceReportCreateForm() {
                 </RHFSelect>
               </Stack>
               <Stack direction='column' spacing={1}>
-                <Typography>Reason</Typography>
-                <RHFTextField name="reason" />
-              </Stack>
-              <Stack direction='column' spacing={1}>
                 <Typography>Status</Typography>
-                <RHFSelect name="status" disabled>
+                <RHFSelect name="present">
                   <option key="" value="">
-                    -- Choose status --
+                    -- Choose present status --
                   </option>
                   <option key="1" value="1">
-                    Pending
+                    Present
                   </option>
                   <option key="2" value="2">
-                    Approved
+                    Permission absence
                   </option>
                   <option key="3" value="3">
-                    Reject
+                    Unexcused absence
                   </option>
                 </RHFSelect>
               </Stack>

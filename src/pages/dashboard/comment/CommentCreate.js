@@ -10,19 +10,19 @@ import Page from '../../../components/Page';
 import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
 import { useParams } from 'react-router-dom';
 import AbsenceReportCreateForm from '../../../sections/@dashboard/absence-report/create/AbsenceReportCreateForm';
-import AttendanceCreateForm from '../../../sections/@dashboard/attendance/create/AttendanceCreateForm';
+import CommentCreateForm from '../../../sections/@dashboard/comment/create/CommentCreateForm';
 
 // ----------------------------------------------------------------------
 
-export default function AttendanceCreate() {
+export default function CommentCreate() {
   const { themeStretch } = useSettings();
-  const {club_code, session_code} = useParams()
+  const {club_code, session_code} = useParams();
 
   return (
-    <Page title="Club Session: Create">
+    <Page title="Comment: Create">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading='Create new absence report'
+          heading='Create new comment'
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
             {
@@ -37,11 +37,11 @@ export default function AttendanceCreate() {
               name: 'Session detail',
               href: `${PATH_DASHBOARD.club.root}/${club_code}/session/${session_code}`,
             },
-            { name: 'New Absence Report'},
+            { name: 'New comment'},
           ]}
         />
 
-        <AttendanceCreateForm />
+        <CommentCreateForm />
       </Container>
     </Page>
   );

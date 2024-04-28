@@ -9,7 +9,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
 import { styled } from '@mui/material/styles';
 import { LoadingButton } from '@mui/lab';
-import { Card, Chip, Grid, Stack, TextField, Typography, Autocomplete, InputAdornment } from '@mui/material';
+import { Card, Chip, Grid, Stack, TextField, Typography, Autocomplete, InputAdornment, Button } from '@mui/material';
 // routes
 import { PATH_DASHBOARD } from '../../../../routes/paths';
 // components
@@ -100,6 +100,10 @@ export default function ClassCreateForm() {
                     </option>
                   ))}
                 </RHFSelect>
+              </Stack>
+              <Stack direction='row' justifyContent='flex-end' spacing={3}>
+                <Button variant="outlined" type="submit">Submit</Button>
+                <Button variant="outlined" onClick={() => navigate(PATH_DASHBOARD.class.list)}>Cancel</Button>
               </Stack>
             </Stack>
           </Card>

@@ -14,6 +14,10 @@ export async function storeComment(params) {
   return axios.post('/comment', params);
 }
 
+export async function showComment(id) {
+  return axios.get(`/comment/${id}`);
+}
+
 export async function updateComment(id, params) {
   return axios.put(`/comment/${id}`, params)
 }
@@ -22,6 +26,6 @@ export async function destroyComment(id) {
   return axios.delete(`/comment/${id}`)
 }
 
-export async function getCommentBySession(id) {
-  return axios.get(`/comment/club-session/${id}`)
+export async function getCommentBySession(id, params) {
+  return axios.get(`/comment/club-session/${id}`, {params})
 }
