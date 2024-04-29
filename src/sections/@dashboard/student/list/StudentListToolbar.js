@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 // @mui
-import { styled } from '@mui/material/styles';
-import { InputAdornment, Toolbar } from '@mui/material';
+import { useTheme, styled } from '@mui/material/styles';
+import { Toolbar, Tooltip, IconButton, Typography, InputAdornment } from '@mui/material';
 // components
 import Iconify from '../../../../components/Iconify';
 import InputStyle from '../../../../components/InputStyle';
@@ -17,12 +17,12 @@ const RootStyle = styled(Toolbar)(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-ClassListToolbar.propTypes = {
+StudentListToolbar.propTypes = {
   filterName: PropTypes.string,
   onFilterName: PropTypes.func,
 };
 
-export default function ClassListToolbar({filterName, onFilterName}) {
+export default function StudentListToolbar({filterName, onFilterName}) {
 
   return (
     <RootStyle>
@@ -30,7 +30,7 @@ export default function ClassListToolbar({filterName, onFilterName}) {
         stretchStart={240}
         value={filterName}
         onChange={(event) => onFilterName(event.target.value)}
-        placeholder="Search class name..."
+        placeholder="Search student name..."
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">

@@ -61,6 +61,11 @@ export const PATH_DASHBOARD = {
     editById: path(ROOTS_DASHBOARD, `/user/reece-chung/edit`),
     account: path(ROOTS_DASHBOARD, '/user/account')
   },
+  student: {
+    root: path(ROOTS_DASHBOARD, '/student'),
+    create: path(ROOTS_DASHBOARD, '/student/create'),
+    list: path(ROOTS_DASHBOARD, '/student/list'),
+  },
   class: {
     root: path(ROOTS_DASHBOARD, '/class'),
     list: path(ROOTS_DASHBOARD, '/class/list'),
@@ -73,6 +78,11 @@ export const PATH_DASHBOARD = {
     root: path(ROOTS_DASHBOARD, '/club'),
     list: path(ROOTS_DASHBOARD, '/club/list'),
     create: path(ROOTS_DASHBOARD, '/club/create')
+  },
+  statistic: {
+    root: path(ROOTS_DASHBOARD, '/statistic'),
+    student: path(ROOTS_DASHBOARD, '/statistic/student'),
+    teacher: path(ROOTS_DASHBOARD, '/statistic/teacher')
   },
   blog: {
     root: path(ROOTS_DASHBOARD, '/blog'),

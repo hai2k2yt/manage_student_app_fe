@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 // @mui
-import { IconButton, MenuItem } from '@mui/material';
+import { MenuItem, IconButton } from '@mui/material';
 // routes
 import { PATH_DASHBOARD } from '../../../../routes/paths';
 // components
@@ -11,12 +11,12 @@ import MenuPopover from '../../../../components/MenuPopover';
 
 // ----------------------------------------------------------------------
 
-ClassMoreMenu.propTypes = {
+StudentMoreMenu.propTypes = {
   onDelete: PropTypes.func,
-  classCode: PropTypes.string,
+  studentCode: PropTypes.string,
 };
 
-export default function ClassMoreMenu({ onDelete, classCode }) {
+export default function StudentMoreMenu({ onDelete, studentCode }) {
   const [open, setOpen] = useState(null);
 
   const handleOpen = (event) => {
@@ -57,7 +57,7 @@ export default function ClassMoreMenu({ onDelete, classCode }) {
           Delete
         </MenuItem>
 
-        <MenuItem component={RouterLink} to={`${PATH_DASHBOARD.class.root}/${classCode}/edit`}>
+        <MenuItem component={RouterLink} to={`${PATH_DASHBOARD.student.root}/${studentCode}/edit`}>
           <Iconify icon={'eva:edit-fill'} sx={{ ...ICON }} />
           Edit
         </MenuItem>

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 // @mui
-import { Box, TableCell, TableHead, TableRow, TableSortLabel } from '@mui/material';
+import { Box, Checkbox, TableRow, TableCell, TableHead, TableSortLabel } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -16,7 +16,7 @@ const visuallyHidden = {
   width: '1px',
 };
 
-ClassListHead.propTypes = {
+StudentListHead.propTypes = {
   order: PropTypes.oneOf(['asc', 'desc']),
   orderBy: PropTypes.string,
   rowCount: PropTypes.number,
@@ -24,7 +24,7 @@ ClassListHead.propTypes = {
   onRequestSort: PropTypes.func,
 };
 
-export default function ClassListHead({
+export default function StudentListHead({
   order,
   orderBy,
   rowCount,

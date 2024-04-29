@@ -82,6 +82,16 @@ export default function Router() {
           ],
         },
         {
+          path: 'student',
+          children: [
+            { element: <Navigate to="/dashboard/student/list" replace />, index: true },
+            { path: 'list', element: <StudentList /> },
+            { path: 'create', element: <StudentCreate /> },
+            { path: ':student_code/edit', element: <StudentUpdate /> },
+
+          ],
+        },
+        {
           path: 'class',
           children: [
             { element: <Navigate to="/dashboard/class/shop" replace />, index: true },
@@ -115,6 +125,14 @@ export default function Router() {
             { path: ':club_code/session/:session_code/notification', element: <ClubNotificationList /> },
             { path: ':club_code/session/:session_code/notification/create', element: <ClubNotificationCreate /> },
             { path: ':club_code/session/:session_code/notification/:noti_id/edit', element: <ClubNotificationList /> },
+          ],
+        },
+        {
+          path: 'statistic',
+          children: [
+            { element: <Navigate to="/statistic/student" replace />, index: true },
+            { path: 'student', element: <StatisticStudent /> },
+            { path: 'teacher', element: <StatisticTeacher /> },
           ],
         },
         {
@@ -175,6 +193,11 @@ const GeneralBooking = Loadable(lazy(() => import('../pages/dashboard/GeneralBoo
 const EcommerceShop = Loadable(lazy(() => import('../pages/dashboard/EcommerceShop')));
 const EcommerceProductDetails = Loadable(lazy(() => import('../pages/dashboard/EcommerceProductDetails')));
 
+const StudentList = Loadable(lazy(() => import('../pages/dashboard/student/StudentList')));
+const StudentCreate = Loadable(lazy(() => import('../pages/dashboard/student/StudentCreate')));
+const StudentUpdate = Loadable(lazy(() => import('../pages/dashboard/student/StudentUpdate')));
+
+
 const ClassList = Loadable(lazy(() => import('../pages/dashboard/class/ClassList')));
 const ClassCreate = Loadable(lazy(() => import('../pages/dashboard/class/ClassCreate')));
 const ClassUpdate = Loadable(lazy(() => import('../pages/dashboard/class/ClassUpdate')));
@@ -187,7 +210,6 @@ const ClubDetail = Loadable(lazy(() => import('../pages/dashboard/club/ClubDetai
 const ClubSessionCreate = Loadable(lazy(() => import('../pages/dashboard/club-session/ClubSessionCreate')));
 const ClubSessionUpdate = Loadable(lazy(() => import('../pages/dashboard/club-session/ClubSessionUpdate')));
 const ClubSessionDetail = Loadable(lazy(() => import('../pages/dashboard/club-session/ClubSessionDetail')));
-
 
 const AbsenceReportList = Loadable(lazy(() => import('../pages/dashboard/absence-report/AbsenceReportList')));
 const AbsenceReportCreate = Loadable(lazy(() => import('../pages/dashboard/absence-report/AbsenceReportCreate')));
@@ -205,7 +227,6 @@ const ClubNotificationUpdate = Loadable(lazy(() => import('../pages/dashboard/cl
 const ClubSessionPhotoList = Loadable(lazy(() => import('../pages/dashboard/club-session-photo/ClubSessionPhotoList')));
 const ClubSessionPhotoCreate = Loadable(lazy(() => import('../pages/dashboard/club-session-photo/ClubSessionPhotoCreate')));
 
-const StatisticOverall = Loadable(lazy(() => import('../pages/dashboard/statistics/StatisticOverall')));
 const StatisticStudent = Loadable(lazy(() => import('../pages/dashboard/statistics/StatisticStudent')));
 const StatisticTeacher = Loadable(lazy(() => import('../pages/dashboard/statistics/StatisticTeacher')));
 

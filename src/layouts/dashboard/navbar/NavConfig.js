@@ -56,6 +56,17 @@ const navConfig = [
         ],
       },
 
+      // MANAGEMENT : student
+      {
+        title: 'student',
+        path: PATH_DASHBOARD.student.root,
+        icon: ICONS.cart,
+        children: [
+          { title: 'list', path: PATH_DASHBOARD.student.list },
+          { title: 'create', path: PATH_DASHBOARD.student.create },
+        ],
+      },
+
       // MANAGEMENT : class
       {
         title: 'class',
@@ -67,6 +78,17 @@ const navConfig = [
           { title: 'create', path: PATH_DASHBOARD.class.create },
           { title: 'checkout', path: PATH_DASHBOARD.class.checkout },
           { title: 'invoice', path: PATH_DASHBOARD.class.invoice },
+        ],
+      },
+
+      {
+        title: 'statistic',
+        path: PATH_DASHBOARD.statistic.root,
+        icon: ICONS.cart,
+        children: [
+          { title: 'student', path: PATH_DASHBOARD.statistic.student },
+          { title: 'teacher', path: PATH_DASHBOARD.statistic.teacher },
+
         ],
       },
 

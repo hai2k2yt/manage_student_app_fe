@@ -11,7 +11,6 @@ import { Button, Card, Grid, Stack, Typography } from '@mui/material';
 import { PATH_DASHBOARD } from '../../../../routes/paths';
 // components
 import { FormProvider, RHFSelect, RHFTextField } from '../../../../components/hook-form';
-import { getUser } from '../../../../api/user';
 import { showClass, updateClass } from '../../../../api/class';
 import { getAllTeachers } from '../../../../api/teacher';
 
