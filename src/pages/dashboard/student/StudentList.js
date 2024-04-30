@@ -22,8 +22,6 @@ import Scrollbar from '../../../components/Scrollbar';
 import SearchNotFound from '../../../components/SearchNotFound';
 import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
 // sections
-import { ClassListHead, ClassListToolbar, ClassMoreMenu } from '../../../sections/@dashboard/class/list';
-import { destroyClass, getClasses } from '../../../api/class';
 import { useSnackbar } from 'notistack';
 import { destroyStudent, getStudents } from '../../../api/student';
 import StudentListToolbar from '../../../sections/@dashboard/student/list/StudentListToolbar';

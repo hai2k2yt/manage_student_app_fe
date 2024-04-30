@@ -66,8 +66,8 @@ function NavListSub({ list }) {
 
         <Collapse in={open} timeout="auto" unmountOnExit>
           <List component="div" disablePadding sx={{ pl: 3 }}>
-            {(list.children || []).map((item) => (
-              <NavItemSub key={item.title} item={item} active={getActive(item.path, pathname)} />
+            {list?.children && (list?.children).map((item) => (
+              item ? <NavItemSub key={item.title} item={item} active={getActive(item.path, pathname)} /> : <></>
             ))}
           </List>
         </Collapse>

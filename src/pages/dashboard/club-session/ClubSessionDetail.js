@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
 // @mui
-import { Button, Container, Divider, List, ListItem, ListItemText, Stack, Typography } from '@mui/material';
+import { Button, Container, Stack, Typography } from '@mui/material';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // hooks
@@ -11,11 +11,7 @@ import useSettings from '../../../hooks/useSettings';
 import Page from '../../../components/Page';
 import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
 // sections
-import { getScheduleByClub } from '../../../api/club_schedule';
-import { ClubSessionList } from '../../../sections/@dashboard/club-session/list';
 import Iconify from '../../../components/Iconify';
-import { getAbsenceReportBySession } from '../../../api/absence_report';
-import { getAttendanceBySession } from '../../../api/attendance';
 import { showClubSession } from '../../../api/club_session';
 import AbsenceReportFormList from '../../../sections/@dashboard/absence-report/list/AbsenceReportFormList';
 import AttendanceFormList from '../../../sections/@dashboard/attendance/list/AttendanceFormList';

@@ -50,11 +50,13 @@ export default function CommentUpdate() {
 
   useEffect(() => {
     reset(defaultValues);
-
     async function fetchCommentInfo() {
       try {
         const commentDetail = await showComment(comment_id);
-        const { student_code, student: {name}, content } = commentDetail.data;
+        const { session_code: comment_session_code, student_code, student: {name}, content } = commentDetail.data;
+        if(comment_session_code !== session_code) {
+          navigate('/404');
+        }
         reset({ student_code, student_name: name, content });
       } catch (e) {
         enqueueSnackbar('Get comment detail failed', {variant: 'error'});

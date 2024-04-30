@@ -73,7 +73,6 @@ function AuthProvider({ children }) {
 
         if (accessToken && isValidToken(accessToken)) {
           setSession(accessToken);
-
           const user= await getAuthUser();
 
           dispatch({
@@ -94,6 +93,7 @@ function AuthProvider({ children }) {
         }
       } catch (err) {
         console.error(err);
+        window.localStorage.removeItem('user')
         dispatch({
           type: 'INITIALIZE',
           payload: {
@@ -111,7 +111,7 @@ function AuthProvider({ children }) {
     const response = await loginUser(username, password);
 
     const { access_token: accessToken, user } = response;
-
+    window.localStorage.setItem('user', JSON.stringify(user))
     setSession(accessToken);
     dispatch({
       type: 'LOGIN',

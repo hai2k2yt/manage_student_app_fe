@@ -65,6 +65,7 @@ export const PATH_DASHBOARD = {
     root: path(ROOTS_DASHBOARD, '/student'),
     create: path(ROOTS_DASHBOARD, '/student/create'),
     list: path(ROOTS_DASHBOARD, '/student/list'),
+    me: path(ROOTS_DASHBOARD, '/student/me'),
   },
   class: {
     root: path(ROOTS_DASHBOARD, '/class'),

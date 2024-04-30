@@ -10,6 +10,10 @@ export async function getStudents(params) {
   });
 }
 
+export async function getStudentsByParentCode(user_id) {
+  return axios.get(`/student/parent/${user_id}`);
+}
+
 export async function storeStudent(params) {
   return axios.post('/student', params);
 }

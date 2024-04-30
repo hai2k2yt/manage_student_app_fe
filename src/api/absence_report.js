@@ -10,6 +10,12 @@ export async function getAbsenceReports(params) {
   });
 }
 
+export async function getClubStudentAbsenceReports(params) {
+  return axios.get('/absence-report/club-student', {
+    params
+  });
+}
+
 export async function storeAbsenceReport(params) {
   return axios.post('/absence-report', params);
 }

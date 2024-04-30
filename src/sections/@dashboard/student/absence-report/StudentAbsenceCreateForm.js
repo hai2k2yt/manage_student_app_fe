@@ -13,29 +13,30 @@ import { PATH_DASHBOARD } from '../../../../routes/paths';
 import { FormProvider, RHFSelect, RHFTextField } from '../../../../components/hook-form';
 import { getClubStudents } from '../../../../api/club';
 import { storeAbsenceReport } from '../../../../api/absence_report';
+import { getSessionByClub } from '../../../../api/club_session';
 
 // ----------------------------------------------------------------------
 
-export default function AbsenceReportCreateForm() {
+export default function StudentAbsenceCreateForm() {
   const navigate = useNavigate();
-  const [studentList, setStudentList] = useState([]);
+  const [sessionList, setSessionList] = useState([]);
   const { enqueueSnackbar } = useSnackbar();
-  const {session_code, club_code} = useParams();
+  const {student_code, club_code} = useParams();
 
-  const CreateAbsenceReportSchema = Yup.object().shape({
+  const StudentCreateAbsenceSchema = Yup.object().shape({
     session_code: Yup.string().required('Session is required'),
     student_code: Yup.string().required('Student is required'),
     reason: Yup.string().required('Reason is required'),
   });
 
   const defaultValues = {
-    session_code: session_code,
-    student_code: '',
+    session_code: '',
+    student_code: student_code,
     reason: ''
   };
 
   const methods = useForm({
-    resolver: yupResolver(CreateAbsenceReportSchema),
+    resolver: yupResolver(StudentCreateAbsenceSchema),
     defaultValues,
   });
 
@@ -56,10 +57,10 @@ export default function AbsenceReportCreateForm() {
 
     async function fetchStudent() {
       try {
-        const students = await getClubStudents(club_code);
-        setStudentList(students.data)
+        const sessions = await getSessionByClub(club_code);
+        setSessionList(sessions?.data?.records)
       } catch (e) {
-        enqueueSnackbar('Get student list failed!', {variant: 'error'});
+        enqueueSnackbar('Get sessions by club failed!', {variant: 'error'});
         console.error(e)
       }
     }
@@ -71,7 +72,7 @@ export default function AbsenceReportCreateForm() {
       const res = await storeAbsenceReport(formData);
       reset();
       enqueueSnackbar(res.message || 'Create absence report success!');
-      navigate(`${PATH_DASHBOARD.club.root}/${club_code}/session/${session_code}/detail`);
+      navigate(`${PATH_DASHBOARD.student.root}/${student_code}/detail`);
     } catch (e) {
       enqueueSnackbar('Create absence report failed!', {variant: 'error'});
       console.error(e)
@@ -84,22 +85,23 @@ export default function AbsenceReportCreateForm() {
         <Grid item xs={12} md={8}>
           <Card sx={{ p: 3 }}>
             <Stack spacing={3}>
-              <Stack direction='column' spacing={1}>
-                <Typography>Session code</Typography>
-                <RHFTextField name="session_code" disabled />
-              </Stack>
+
               <Stack direction='column' spacing={1}>
                 <Typography>Student</Typography>
-                <RHFSelect name="student_code">
+                <RHFSelect name="session_code">
                   <option key='' value=''>
-                    -- Choose student --
+                    -- Choose session --
                   </option>
-                  {studentList.map((student) => (
-                    <option key={student.student_code} value={student.student_code}>
-                      {student.name}
+                  {sessionList?.map((session) => (
+                    <option key={session.session_code} value={session.session_code}>
+                      {session.session_name}
                     </option>
                   ))}
                 </RHFSelect>
+              </Stack>
+              <Stack direction='column' spacing={1}>
+                <Typography>Student code</Typography>
+                <RHFTextField name="student_code" disabled />
               </Stack>
               <Stack direction='column' spacing={1}>
                 <Typography>Reason</Typography>
@@ -107,7 +109,7 @@ export default function AbsenceReportCreateForm() {
               </Stack>
               <Stack direction='row' justifyContent='flex-end' spacing={3}>
                 <Button variant="outlined" type="submit">Submit</Button>
-                <Button variant="outlined" onClick={() => navigate(`${PATH_DASHBOARD.club.root}/${club_code}/session/${session_code}/detail`)}>Cancel</Button>
+                <Button variant="outlined" onClick={() => navigate(`${PATH_DASHBOARD.student.root}/${student_code}/detail`)}>Cancel</Button>
               </Stack>
             </Stack>
           </Card>

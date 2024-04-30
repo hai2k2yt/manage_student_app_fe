@@ -1,5 +1,5 @@
-import { Suspense, lazy } from 'react';
-import { Navigate, useRoutes, useLocation } from 'react-router-dom';
+import { lazy, Suspense } from 'react';
+import { Navigate, useLocation, useRoutes } from 'react-router-dom';
 // layouts
 import MainLayout from '../layouts/main';
 import DashboardLayout from '../layouts/dashboard';
@@ -12,6 +12,7 @@ import AuthGuard from '../guards/AuthGuard';
 import { PATH_AFTER_LOGIN } from '../config';
 // components
 import LoadingScreen from '../components/LoadingScreen';
+import ClubSessionGuard from '../guards/ClubSessionGuard';
 
 // ----------------------------------------------------------------------
 
@@ -27,6 +28,7 @@ const Loadable = (Component) => (props) => {
 };
 
 export default function Router() {
+  const user = JSON.parse(window.localStorage.getItem('user'))
   return useRoutes([
     {
       path: 'auth',
@@ -69,16 +71,13 @@ export default function Router() {
         { path: 'analytics', element: <GeneralAnalytics /> },
         { path: 'banking', element: <GeneralBanking /> },
         { path: 'booking', element: <GeneralBooking /> },
-        {
+        (user?.role === 1) && {
           path: 'user',
           children: [
-            { element: <Navigate to="/dashboard/user/profile" replace />, index: true },
-            { path: 'profile', element: <UserProfile /> },
-            { path: 'cards', element: <UserCards /> },
+            { element: <Navigate to="/dashboard/user/list" replace />, index: true },
             { path: 'list', element: <UserList /> },
             { path: 'new', element: <UserCreate /> },
             { path: ':id/edit', element: <UserUpdate /> },
-            { path: 'account', element: <UserAccount /> },
           ],
         },
         {
@@ -86,22 +85,20 @@ export default function Router() {
           children: [
             { element: <Navigate to="/dashboard/student/list" replace />, index: true },
             { path: 'list', element: <StudentList /> },
-            { path: 'create', element: <StudentCreate /> },
-            { path: ':student_code/edit', element: <StudentUpdate /> },
-
+            { path: ':student_code/detail', element: <StudentDetail /> },
+            (user?.role === 1) && { path: 'create', element: <StudentCreate /> },
+            (user?.role === 1) && { path: ':student_code/edit', element: <StudentUpdate /> },
+            (user?.role === 2) && { path: 'me', element: <StudentMe /> },
+            (user?.role === 2) && { path: ':student_code/club/:club_code/absence-report/create', element: <StudentAbsenceCreate /> },
           ],
         },
-        {
+        (user?.role !== 4) && {
           path: 'class',
           children: [
-            { element: <Navigate to="/dashboard/class/shop" replace />, index: true },
-            { path: 'shop', element: <EcommerceShop /> },
-            { path: 'product/:name', element: <EcommerceProductDetails /> },
+            { element: <Navigate to="/dashboard/class/list" replace />, index: true },
             { path: 'list', element: <ClassList /> },
-            { path: 'create', element: <ClassCreate /> },
-            { path: ':class_code/edit', element: <ClassUpdate /> },
-            { path: 'checkout', element: <EcommerceCheckout /> },
-            { path: 'invoice', element: <EcommerceInvoice /> },
+            (user?.role === 1) && { path: 'create', element: <ClassCreate /> },
+            (user?.role === 1) && { path: ':class_code/edit', element: <ClassUpdate /> },
           ],
         },
         {
@@ -109,50 +106,56 @@ export default function Router() {
           children: [
             { element: <Navigate to="/dashboard/club/list" replace />, index: true },
             { path: 'list', element: <ClubList /> },
-            { path: 'create', element: <ClubCreate /> },
-            { path: ':club_code/edit', element: <ClubUpdate /> },
+            (user?.role === 1) && { path: 'create', element: <ClubCreate /> },
+            (user?.role === 1 || user?.role === 3) && { path: ':club_code/edit', element: <ClubUpdate /> },
             { path: ':club_code/detail', element: <ClubDetail /> },
             { path: ':club_code/session/create', element: <ClubSessionCreate /> },
-            { path: ':club_code/session/:session_code/detail', element: <ClubSessionDetail /> },
-            { path: ':club_code/session/:session_code/edit', element: <ClubSessionUpdate /> },
-            { path: ':club_code/session/:session_code/absence-report', element: <AbsenceReportList /> },
-            { path: ':club_code/session/:session_code/absence-report/create', element: <AbsenceReportCreate /> },
-            { path: ':club_code/session/:session_code/attendance', element: <AttendanceList /> },
-            { path: ':club_code/session/:session_code/attendance/create', element: <AttendanceCreate /> },
-            { path: ':club_code/session/:session_code/comment/create', element: <CommentCreate /> },
-            { path: ':club_code/session/:session_code/comment/:comment_id/edit', element: <CommentUpdate /> },
-            { path: ':club_code/session/:session_code/photo/create', element: <ClubSessionPhotoCreate /> },
-            { path: ':club_code/session/:session_code/notification', element: <ClubNotificationList /> },
-            { path: ':club_code/session/:session_code/notification/create', element: <ClubNotificationCreate /> },
-            { path: ':club_code/session/:session_code/notification/:noti_id/edit', element: <ClubNotificationList /> },
+            {
+              path: ':club_code/session/:session_code',
+              element: (
+                <ClubSessionGuard />
+              ),
+              children: [
+                { element: <Navigate to="/dashboard/club/:club_code/session/:session_code" replace />, index: true },
+                { path: 'detail', element: <ClubSessionDetail /> },
+                { path: 'edit', element: <ClubSessionUpdate /> },
+                { path: 'absence-report', element: <AbsenceReportList /> },
+                { path: 'absence-report/create', element: <AbsenceReportCreate /> },
+                { path: 'attendance', element: <AttendanceList /> },
+                { path: 'attendance/create', element: <AttendanceCreate /> },
+                { path: 'comment/create', element: <CommentCreate /> },
+                { path: 'comment/:comment_id/edit', element: <CommentUpdate /> },
+                { path: 'photo/create', element: <ClubSessionPhotoCreate /> },
+                { path: 'notification', element: <ClubNotificationList /> },
+                { path: 'notification/create', element: <ClubNotificationCreate /> },
+                { path: 'notification/:noti_id/edit', element: <ClubNotificationList />}
+              ]
+
+            },
+
+
+            // { path: ':club_code/session/:session_code/detail', element: <ClubSessionDetail /> },
+            // { path: ':club_code/session/:session_code/edit', element: <ClubSessionUpdate /> },
+            // { path: ':club_code/session/:session_code/absence-report', element: <AbsenceReportList /> },
+            // { path: ':club_code/session/:session_code/absence-report/create', element: <AbsenceReportCreate /> },
+            // { path: ':club_code/session/:session_code/attendance', element: <AttendanceList /> },
+            // { path: ':club_code/session/:session_code/attendance/create', element: <AttendanceCreate /> },
+            // { path: ':club_code/session/:session_code/comment/create', element: <CommentCreate /> },
+            // { path: ':club_code/session/:session_code/comment/:comment_id/edit', element: <CommentUpdate /> },
+            // { path: ':club_code/session/:session_code/photo/create', element: <ClubSessionPhotoCreate /> },
+            // { path: ':club_code/session/:session_code/notification', element: <ClubNotificationList /> },
+            // { path: ':club_code/session/:session_code/notification/create', element: <ClubNotificationCreate /> },
+            // { path: ':club_code/session/:session_code/notification/:noti_id/edit', element: <ClubNotificationList /> },
           ],
         },
-        {
+        (user?.role === 1 || user?.role === 4) && {
           path: 'statistic',
           children: [
             { element: <Navigate to="/statistic/student" replace />, index: true },
             { path: 'student', element: <StatisticStudent /> },
             { path: 'teacher', element: <StatisticTeacher /> },
           ],
-        },
-        {
-          path: 'blog',
-          children: [
-            { element: <Navigate to="/dashboard/blog/posts" replace />, index: true },
-            { path: 'posts', element: <BlogPosts /> },
-            { path: 'post/:title', element: <BlogPost /> },
-            { path: 'new-post', element: <BlogNewPost /> },
-          ],
-        },
-        {
-          path: 'chat',
-          children: [
-            { element: <Chat />, index: true },
-            { path: 'new', element: <Chat /> },
-            { path: ':conversationKey', element: <Chat /> },
-          ],
-        },
-        { path: 'calendar', element: <Calendar /> },
+        }
       ],
     },
 
@@ -190,12 +193,13 @@ const GeneralEcommerce = Loadable(lazy(() => import('../pages/dashboard/GeneralE
 const GeneralAnalytics = Loadable(lazy(() => import('../pages/dashboard/GeneralAnalytics')));
 const GeneralBanking = Loadable(lazy(() => import('../pages/dashboard/GeneralBanking')));
 const GeneralBooking = Loadable(lazy(() => import('../pages/dashboard/GeneralBooking')));
-const EcommerceShop = Loadable(lazy(() => import('../pages/dashboard/EcommerceShop')));
-const EcommerceProductDetails = Loadable(lazy(() => import('../pages/dashboard/EcommerceProductDetails')));
 
 const StudentList = Loadable(lazy(() => import('../pages/dashboard/student/StudentList')));
+const StudentDetail = Loadable(lazy(() => import('../pages/dashboard/student/StudentDetail')));
 const StudentCreate = Loadable(lazy(() => import('../pages/dashboard/student/StudentCreate')));
 const StudentUpdate = Loadable(lazy(() => import('../pages/dashboard/student/StudentUpdate')));
+const StudentMe = Loadable(lazy(() => import('../pages/dashboard/student/StudentMe')));
+const StudentAbsenceCreate = Loadable(lazy(() => import('../pages/dashboard/student/StudentAbsenceCreate')));
 
 
 const ClassList = Loadable(lazy(() => import('../pages/dashboard/class/ClassList')));
@@ -230,20 +234,10 @@ const ClubSessionPhotoCreate = Loadable(lazy(() => import('../pages/dashboard/cl
 const StatisticStudent = Loadable(lazy(() => import('../pages/dashboard/statistics/StatisticStudent')));
 const StatisticTeacher = Loadable(lazy(() => import('../pages/dashboard/statistics/StatisticTeacher')));
 
-const EcommerceCheckout = Loadable(lazy(() => import('../pages/dashboard/EcommerceCheckout')));
-const EcommerceInvoice = Loadable(lazy(() => import('../pages/dashboard/EcommerceInvoice')));
-const BlogPosts = Loadable(lazy(() => import('../pages/dashboard/BlogPosts')));
-const BlogPost = Loadable(lazy(() => import('../pages/dashboard/BlogPost')));
-const BlogNewPost = Loadable(lazy(() => import('../pages/dashboard/BlogNewPost')));
-const UserProfile = Loadable(lazy(() => import('../pages/dashboard/user/UserProfile')));
-const UserCards = Loadable(lazy(() => import('../pages/dashboard/user/UserCards')));
+
 const UserList = Loadable(lazy(() => import('../pages/dashboard/user/UserList')));
 const UserUpdate = Loadable(lazy(() => import('../pages/dashboard/user/UserUpdate')));
-
-const UserAccount = Loadable(lazy(() => import('../pages/dashboard/user/UserAccount')));
 const UserCreate = Loadable(lazy(() => import('../pages/dashboard/user/UserCreate')));
-const Chat = Loadable(lazy(() => import('../pages/dashboard/Chat')));
-const Calendar = Loadable(lazy(() => import('../pages/dashboard/Calendar')));
 // Main
 const Page500 = Loadable(lazy(() => import('../pages/Page500')));
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));

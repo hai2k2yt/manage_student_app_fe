@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 // @mui
 import { styled, useTheme } from '@mui/material/styles';
-import { Box, Stack, Drawer } from '@mui/material';
+import { Box, Drawer, Stack } from '@mui/material';
 // hooks
 import useResponsive from '../../../hooks/useResponsive';
 import useCollapseDrawer from '../../../hooks/useCollapseDrawer';
@@ -16,10 +16,13 @@ import Logo from '../../../components/Logo';
 import Scrollbar from '../../../components/Scrollbar';
 import { NavSectionVertical } from '../../../components/nav-section';
 //
-import navConfig from './NavConfig';
 import NavbarDocs from './NavbarDocs';
 import NavbarAccount from './NavbarAccount';
 import CollapseButton from './CollapseButton';
+import { PATH_DASHBOARD } from '../../../routes/paths';
+import Label from '../../../components/Label';
+import SvgIconStyle from '../../../components/SvgIconStyle';
+import useAuth from '../../../hooks/useAuth';
 
 // ----------------------------------------------------------------------
 
@@ -39,8 +42,27 @@ NavbarVertical.propTypes = {
   onCloseSidebar: PropTypes.func,
 };
 
+const getIcon = (name) => <SvgIconStyle src={`/icons/${name}.svg`} sx={{ width: 1, height: 1 }} />;
+
+const ICONS = {
+  blog: getIcon('ic_blog'),
+  cart: getIcon('ic_cart'),
+  chat: getIcon('ic_chat'),
+  mail: getIcon('ic_mail'),
+  user: getIcon('ic_user'),
+  kanban: getIcon('ic_kanban'),
+  banking: getIcon('ic_banking'),
+  calendar: getIcon('ic_calendar'),
+  ecommerce: getIcon('ic_ecommerce'),
+  analytics: getIcon('ic_analytics'),
+  dashboard: getIcon('ic_dashboard'),
+  booking: getIcon('ic_booking'),
+};
+
 export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
   const theme = useTheme();
+
+  const { user } = useAuth();
 
   const { pathname } = useLocation();
 
@@ -49,6 +71,77 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
   const { isCollapse, collapseClick, collapseHover, onToggleCollapse, onHoverEnter, onHoverLeave } =
     useCollapseDrawer();
 
+  const navConfig = [
+    // GENERAL
+    // ----------------------------------------------------------------------
+    {
+      subheader: 'general',
+      items: [
+        { title: 'app', path: PATH_DASHBOARD.general.app, icon: ICONS.dashboard },
+      ],
+    },
+
+    // MANAGEMENT
+    // ----------------------------------------------------------------------
+    {
+      subheader: 'management',
+      items: [
+        // MANAGEMENT : USER
+        ...(user?.role === 1 ? [{
+          title: 'user',
+          path: PATH_DASHBOARD.user.root,
+          icon: ICONS.user,
+          children: [
+            { title: 'list', path: PATH_DASHBOARD.user.list },
+            { title: 'create', path: PATH_DASHBOARD.user.newUser },
+          ],
+        }] : []),
+
+        // MANAGEMENT : student
+        {
+          title: 'student',
+          path: PATH_DASHBOARD.student.root,
+          icon: ICONS.cart,
+          children: [
+            { title: 'list', path: PATH_DASHBOARD.student.list },
+            ...((user?.role === 1) ? [{ title: 'create', path: PATH_DASHBOARD.student.create }] : []),
+            ...((user?.role === 2) ? [{ title: 'me', path: PATH_DASHBOARD.student.me }] : []),
+          ],
+        },
+
+        // MANAGEMENT : class
+        {
+          title: 'class',
+          path: PATH_DASHBOARD.class.root,
+          icon: ICONS.cart,
+          children: [
+            { title: 'list', path: PATH_DASHBOARD.class.list },
+            ...((user?.role === 1) ? [{ title: 'create', path: PATH_DASHBOARD.class.create }] : []),
+          ],
+        },
+
+        ...((user?.role === 1 || user?.role === 4) ? [{
+          title: 'statistic',
+          path: PATH_DASHBOARD.statistic.root,
+          icon: ICONS.cart,
+          children: [
+            { title: 'student', path: PATH_DASHBOARD.statistic.student },
+            { title: 'teacher', path: PATH_DASHBOARD.statistic.teacher },
+
+          ],
+        }]: []),
+        {
+          title: 'club',
+          path: PATH_DASHBOARD.club.root,
+          icon: ICONS.cart,
+          children: [
+            { title: 'list', path: PATH_DASHBOARD.club.list },
+            ...((user?.role === 1) ? [{ title: 'create', path: PATH_DASHBOARD.club.create }] : []),
+          ],
+        },
+      ],
+    },
+  ];
   useEffect(() => {
     if (isOpenSidebar) {
       onCloseSidebar();

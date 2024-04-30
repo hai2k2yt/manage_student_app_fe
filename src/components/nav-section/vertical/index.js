@@ -17,7 +17,7 @@ export const ListSubheaderStyle = styled((props) => <ListSubheader disableSticky
     transition: theme.transitions.create('opacity', {
       duration: theme.transitions.duration.shorter,
     }),
-  })
+  }),
 );
 
 // ----------------------------------------------------------------------
@@ -30,7 +30,7 @@ NavSectionVertical.propTypes = {
 export default function NavSectionVertical({ navConfig, isCollapse = false, ...other }) {
   return (
     <Box {...other}>
-      {navConfig.map((group) => (
+      {navConfig?.map((group) => (
         <List key={group.subheader} disablePadding sx={{ px: 2 }}>
           <ListSubheaderStyle
             sx={{
@@ -42,8 +42,8 @@ export default function NavSectionVertical({ navConfig, isCollapse = false, ...o
             {group.subheader}
           </ListSubheaderStyle>
 
-          {group.items.map((list) => (
-            <NavListRoot key={list.title} list={list} isCollapse={isCollapse} />
+          {group?.items?.map((list) => (
+            list ? <NavListRoot key={list.title} list={list} isCollapse={isCollapse} /> : <></>
           ))}
         </List>
       ))}

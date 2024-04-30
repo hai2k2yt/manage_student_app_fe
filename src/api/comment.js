@@ -10,6 +10,12 @@ export async function getComments(params) {
   });
 }
 
+export async function getClubStudentComments(params) {
+  return axios.get('/comment/club-student', {
+    params
+  });
+}
+
 export async function storeComment(params) {
   return axios.post('/comment', params);
 }
