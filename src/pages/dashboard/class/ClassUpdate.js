@@ -15,17 +15,17 @@ export default function ClassUpdate() {
   const { themeStretch } = useSettings();
 
   return (
-    <Page title="Ecommerce: Edit class">
+    <Page title="Class: Edit">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading='Edit class'
+          heading='Cập nhật lớp học'
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
+            { name: 'Trang chủ', href: PATH_DASHBOARD.root },
             {
-              name: 'Class',
+              name: 'Lớp học',
               href: PATH_DASHBOARD.class.root,
             },
-            { name: 'Edit class' },
+            { name: 'Chỉnh sửa' },
           ]}
         />
 

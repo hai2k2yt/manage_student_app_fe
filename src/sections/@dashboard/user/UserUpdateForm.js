@@ -11,9 +11,7 @@ import { Button, Card, Grid, Stack, Typography } from '@mui/material';
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // components
 import { FormProvider, RHFSelect, RHFTextField } from '../../../components/hook-form';
-import { registerUser } from '../../../api/auth';
-import { getUser, showUser, updateUser } from '../../../api/user';
-import { showClub } from '../../../api/club';
+import { showUser, updateUser } from '../../../api/user';
 
 // ----------------------------------------------------------------------
 
@@ -23,9 +21,9 @@ export default function UserUpdateForm() {
   const {id} = useParams();
 
   const UpdateUserSchema = Yup.object().shape({
-    username: Yup.string().required('Username is required'),
-    name: Yup.string().required('Display name is required'),
-    role: Yup.string().required('Role is required'),
+    username: Yup.string().required('Tên đăng nhập không được để trống'),
+    name: Yup.string().required('Tên người dùng không được để trống'),
+    role: Yup.string().required('Quyền không được để trống'),
   });
 
   const defaultValues = {
@@ -58,7 +56,7 @@ export default function UserUpdateForm() {
         const { username, name, role } = userDetail.data;
         reset({ username, name, role });
       } catch (e) {
-        enqueueSnackbar('Get user failed', {variant: 'error'});
+        enqueueSnackbar('Lấy thông tin người dùng that bại', {variant: 'error'});
         console.error(e)
       }
     }
@@ -69,10 +67,10 @@ export default function UserUpdateForm() {
     try {
       const res = await updateUser(id, formData);
       reset();
-      enqueueSnackbar(res.message || 'Update user success!');
+      enqueueSnackbar('Cập nhật người dùng thành công!');
       navigate(PATH_DASHBOARD.user.list);
     } catch (error) {
-      enqueueSnackbar('Update user failed', {variant: 'error'});
+      enqueueSnackbar('Cập nhật người dùng thất bại', {variant: 'error'});
       console.error(error);
     }
   };
@@ -84,15 +82,15 @@ export default function UserUpdateForm() {
           <Card sx={{ p: 3 }}>
             <Stack spacing={3}>
               <Stack direction='column' spacing={1}>
-                <Typography>Username</Typography>
+                <Typography>Tên đăng nhập</Typography>
                 <RHFTextField name="username"/>
               </Stack>
               <Stack direction='column' spacing={1}>
-                <Typography>Display name</Typography>
+                <Typography>Tên người dùng</Typography>
                 <RHFTextField name="name"/>
               </Stack>
               <Stack direction='column' spacing={1}>
-                <Typography>Role</Typography>
+                <Typography>Quyền</Typography>
                 <RHFSelect name="role">
                   <option key="1" value="1">
                     Admin
@@ -109,8 +107,8 @@ export default function UserUpdateForm() {
                 </RHFSelect>
               </Stack>
               <Stack direction="row" justifyContent="flex-end" spacing={3}>
-                <Button variant="outlined" type="submit">Submit</Button>
-                <Button variant="outlined" onClick={() => navigate(PATH_DASHBOARD.user.list)}>Cancel</Button>
+                <Button variant="outlined" type="submit">Cập nhật</Button>
+                <Button variant="outlined" onClick={() => navigate(PATH_DASHBOARD.user.list)}>Hủy</Button>
               </Stack>
             </Stack>
           </Card>

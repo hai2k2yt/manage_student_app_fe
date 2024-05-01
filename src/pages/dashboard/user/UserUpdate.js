@@ -20,11 +20,11 @@ export default function UserUpdate() {
     <Page title="User: Edit">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading='Edit user'
+          heading='Cập nhật người dùng'
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'User', href: PATH_DASHBOARD.user.list },
-            { name: 'Edit user' },
+            { name: 'Trang chủ', href: PATH_DASHBOARD.root },
+            { name: 'Người dùng', href: PATH_DASHBOARD.user.list },
+            { name: 'Cập nhật' },
           ]}
         />
 

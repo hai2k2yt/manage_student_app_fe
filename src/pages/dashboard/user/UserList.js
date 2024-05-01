@@ -33,15 +33,26 @@ import { useSnackbar } from 'notistack';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'username', label: 'Username', alignRight: false },
-  { id: 'role', label: 'Role', alignRight: false },
-  { id: 'created_at', label: 'Create at', alignRight: false },
-  { id: 'updated_at', label: 'Updated at', alignRight: false },
+  { id: 'name', label: 'Tên người dùng', alignRight: false },
+  { id: 'username', label: 'Tên đăng nhập', alignRight: false },
+  { id: 'role', label: 'Quyền', alignRight: false },
   { id: '' },
 ];
 
 // ----------------------------------------------------------------------
+const renderRole = (role) => {
+  switch (role) {
+    case 1:
+      return 'Quản trị viên';
+    case 2:
+      return 'Phụ huynh';
+    case 3:
+      return 'Giáo viên';
+    case 4:
+      return 'Hành chính kế toán';
+  }
+  return '';
+};
 
 export default function UserList() {
   const { themeStretch } = useSettings();
@@ -105,22 +116,12 @@ export default function UserList() {
     <Page title="User: List">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="User List"
+          heading="Danh sách người dùng"
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'User', href: PATH_DASHBOARD.user.root },
-            { name: 'List' },
+            { name: 'Trang chủ', href: PATH_DASHBOARD.root },
+            { name: 'Người dùng', href: PATH_DASHBOARD.user.root },
+            { name: 'Danh sách' },
           ]}
-          action={
-            <Button
-              variant="contained"
-              component={RouterLink}
-              to={PATH_DASHBOARD.user.newUser}
-              startIcon={<Iconify icon={'eva:plus-fill'} />}
-            >
-              New User
-            </Button>
-          }
         />
 
         <Card>
@@ -141,7 +142,7 @@ export default function UserList() {
                 />
                 <TableBody>
                   {userList.map((row) => {
-                    const { id, username, name, role, created_at, updated_at } = row;
+                    const { id, username, name, role } = row;
 
                     return (
                       <TableRow
@@ -154,13 +155,7 @@ export default function UserList() {
                             {name}
                         </TableCell>
                         <TableCell align="left">{username}</TableCell>
-                        <TableCell align="left">{role}</TableCell>
-                        <TableCell align="left">
-                          {created_at}
-                        </TableCell>
-                        <TableCell align="left">
-                          {updated_at}
-                        </TableCell>
+                        <TableCell align="left">{renderRole(role)}</TableCell>
                         <TableCell align="right">
                           <UserMoreMenu onDelete={() => handleDeleteUser(id)} userId={id} />
                         </TableCell>

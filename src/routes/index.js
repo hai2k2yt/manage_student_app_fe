@@ -67,10 +67,6 @@ export default function Router() {
       children: [
         { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
         { path: 'app', element: <GeneralApp /> },
-        { path: 'ecommerce', element: <GeneralEcommerce /> },
-        { path: 'analytics', element: <GeneralAnalytics /> },
-        { path: 'banking', element: <GeneralBanking /> },
-        { path: 'booking', element: <GeneralBooking /> },
         (user?.role === 1) && {
           path: 'user',
           children: [
@@ -130,22 +126,7 @@ export default function Router() {
                 { path: 'notification/create', element: <ClubNotificationCreate /> },
                 { path: 'notification/:noti_id/edit', element: <ClubNotificationList />}
               ]
-
             },
-
-
-            // { path: ':club_code/session/:session_code/detail', element: <ClubSessionDetail /> },
-            // { path: ':club_code/session/:session_code/edit', element: <ClubSessionUpdate /> },
-            // { path: ':club_code/session/:session_code/absence-report', element: <AbsenceReportList /> },
-            // { path: ':club_code/session/:session_code/absence-report/create', element: <AbsenceReportCreate /> },
-            // { path: ':club_code/session/:session_code/attendance', element: <AttendanceList /> },
-            // { path: ':club_code/session/:session_code/attendance/create', element: <AttendanceCreate /> },
-            // { path: ':club_code/session/:session_code/comment/create', element: <CommentCreate /> },
-            // { path: ':club_code/session/:session_code/comment/:comment_id/edit', element: <CommentUpdate /> },
-            // { path: ':club_code/session/:session_code/photo/create', element: <ClubSessionPhotoCreate /> },
-            // { path: ':club_code/session/:session_code/notification', element: <ClubNotificationList /> },
-            // { path: ':club_code/session/:session_code/notification/create', element: <ClubNotificationCreate /> },
-            // { path: ':club_code/session/:session_code/notification/:noti_id/edit', element: <ClubNotificationList /> },
           ],
         },
         (user?.role === 1 || user?.role === 4) && {
@@ -189,10 +170,6 @@ const ResetPassword = Loadable(lazy(() => import('../pages/auth/ResetPassword'))
 const VerifyCode = Loadable(lazy(() => import('../pages/auth/VerifyCode')));
 // Dashboard
 const GeneralApp = Loadable(lazy(() => import('../pages/dashboard/GeneralApp')));
-const GeneralEcommerce = Loadable(lazy(() => import('../pages/dashboard/GeneralEcommerce')));
-const GeneralAnalytics = Loadable(lazy(() => import('../pages/dashboard/GeneralAnalytics')));
-const GeneralBanking = Loadable(lazy(() => import('../pages/dashboard/GeneralBanking')));
-const GeneralBooking = Loadable(lazy(() => import('../pages/dashboard/GeneralBooking')));
 
 const StudentList = Loadable(lazy(() => import('../pages/dashboard/student/StudentList')));
 const StudentDetail = Loadable(lazy(() => import('../pages/dashboard/student/StudentDetail')));

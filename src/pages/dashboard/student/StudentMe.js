@@ -52,10 +52,10 @@ export default function StudentMe() {
           ]}
         />
 
-        <Card>
+
           {studentList?.map(student => (
-            <>
-              <Stack direction='row'>
+            <Card sx={{padding: 2, marginBottom: 3}}>
+              <Stack direction='row' spacing={2}>
                 <div>
                   <Typography>Student code</Typography>
                   <Typography>Student name</Typography>
@@ -67,13 +67,9 @@ export default function StudentMe() {
                   <Typography>{student?.class?.class_name}</Typography>
                 </div>
               </Stack>
-              <Stack direction='row'>
-                <Typography>Detail</Typography>
-                <Link href={`${PATH_DASHBOARD.student.root}/${student?.student_code}/detail`}>Detail</Link>
-              </Stack>
-            </>
+              <Link href={`${PATH_DASHBOARD.student.root}/${student?.student_code}/detail`}>View Detail</Link>
+            </Card>
           ))}
-        </Card>
       </Container>
     </Page>
   );

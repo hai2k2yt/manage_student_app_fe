@@ -24,9 +24,9 @@ export default function StudentAbsenceCreateForm() {
   const {student_code, club_code} = useParams();
 
   const StudentCreateAbsenceSchema = Yup.object().shape({
-    session_code: Yup.string().required('Session is required'),
-    student_code: Yup.string().required('Student is required'),
-    reason: Yup.string().required('Reason is required'),
+    session_code: Yup.string().required('Buổi học không được để trống'),
+    student_code: Yup.string().required('Học sinh không được để trống'),
+    reason: Yup.string().required('Lý do không được để trống'),
   });
 
   const defaultValues = {
@@ -60,7 +60,7 @@ export default function StudentAbsenceCreateForm() {
         const sessions = await getSessionByClub(club_code);
         setSessionList(sessions?.data?.records)
       } catch (e) {
-        enqueueSnackbar('Get sessions by club failed!', {variant: 'error'});
+        enqueueSnackbar('Lấy buổi học thất bại!', {variant: 'error'});
         console.error(e)
       }
     }
@@ -71,10 +71,10 @@ export default function StudentAbsenceCreateForm() {
     try {
       const res = await storeAbsenceReport(formData);
       reset();
-      enqueueSnackbar(res.message || 'Create absence report success!');
+      enqueueSnackbar('Tạo báo cáo nghỉ thành công!');
       navigate(`${PATH_DASHBOARD.student.root}/${student_code}/detail`);
     } catch (e) {
-      enqueueSnackbar('Create absence report failed!', {variant: 'error'});
+      enqueueSnackbar('Tạo báo cáo nghỉ thất bại!', {variant: 'error'});
       console.error(e)
     }
   };
@@ -87,10 +87,10 @@ export default function StudentAbsenceCreateForm() {
             <Stack spacing={3}>
 
               <Stack direction='column' spacing={1}>
-                <Typography>Student</Typography>
+                <Typography>Buổi học</Typography>
                 <RHFSelect name="session_code">
                   <option key='' value=''>
-                    -- Choose session --
+                    -- Chọn buổi học --
                   </option>
                   {sessionList?.map((session) => (
                     <option key={session.session_code} value={session.session_code}>
@@ -100,16 +100,16 @@ export default function StudentAbsenceCreateForm() {
                 </RHFSelect>
               </Stack>
               <Stack direction='column' spacing={1}>
-                <Typography>Student code</Typography>
+                <Typography>Mã học sinh</Typography>
                 <RHFTextField name="student_code" disabled />
               </Stack>
               <Stack direction='column' spacing={1}>
-                <Typography>Reason</Typography>
+                <Typography>Lý do</Typography>
                 <RHFTextField name="reason" />
               </Stack>
               <Stack direction='row' justifyContent='flex-end' spacing={3}>
-                <Button variant="outlined" type="submit">Submit</Button>
-                <Button variant="outlined" onClick={() => navigate(`${PATH_DASHBOARD.student.root}/${student_code}/detail`)}>Cancel</Button>
+                <Button variant="outlined" type="submit">Tạo</Button>
+                <Button variant="outlined" onClick={() => navigate(`${PATH_DASHBOARD.student.root}/${student_code}/detail`)}>Hủy</Button>
               </Stack>
             </Stack>
           </Card>

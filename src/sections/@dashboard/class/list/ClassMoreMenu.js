@@ -54,12 +54,12 @@ export default function ClassMoreMenu({ onDelete, classCode }) {
       >
         <MenuItem onClick={onDelete} sx={{ color: 'error.main' }}>
           <Iconify icon={'eva:trash-2-outline'} sx={{ ...ICON }} />
-          Delete
+          Xóa
         </MenuItem>
 
         <MenuItem component={RouterLink} to={`${PATH_DASHBOARD.class.root}/${classCode}/edit`}>
           <Iconify icon={'eva:edit-fill'} sx={{ ...ICON }} />
-          Edit
+          Cập nhật
         </MenuItem>
       </MenuPopover>
     </>

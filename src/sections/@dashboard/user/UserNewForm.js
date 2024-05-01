@@ -20,11 +20,11 @@ export default function UserNewForm() {
   const { enqueueSnackbar } = useSnackbar();
 
   const NewUserSchema = Yup.object().shape({
-    username: Yup.string().required('Username is required'),
-    password: Yup.string().required('Password is required'),
-    name: Yup.string().required('Display name is required'),
-    password_confirmation: Yup.string().required('Password confirm is required'),
-    role: Yup.string().required('Role is required'),
+    username: Yup.string().required('Tên đăng nhập không được để trống'),
+    password: Yup.string().required('Mật khẩu không được để trống'),
+    name: Yup.string().required('Tên người dùng không được để trống'),
+    password_confirmation: Yup.string().required('Mật khẩu xác nhận không được để trống'),
+    role: Yup.string().required('Quyền không được để trống'),
   });
 
   const defaultValues = {
@@ -59,10 +59,10 @@ export default function UserNewForm() {
     try {
       const res = await registerUser(formData);
       reset();
-      enqueueSnackbar(res.message || 'Create success!');
+      enqueueSnackbar('Tạo người dùng thành công!');
       navigate(PATH_DASHBOARD.user.list);
     } catch (error) {
-      enqueueSnackbar('Create user failed!', {variant: 'error'});
+      enqueueSnackbar('Tạo người dùng that bại!', {variant: 'error'});
       console.error(error);
     }
   };
@@ -74,41 +74,41 @@ export default function UserNewForm() {
           <Card sx={{ p: 3 }}>
             <Stack spacing={3}>
               <Stack direction='column' spacing={1}>
-                <Typography>Username</Typography>
+                <Typography>Tên đăng nhập</Typography>
                 <RHFTextField name="username"/>
               </Stack>
               <Stack direction='column' spacing={1}>
-                <Typography>Password</Typography>
+                <Typography>Mật khẩu</Typography>
                 <RHFTextField type='password' name="password"/>
               </Stack>
               <Stack direction='column' spacing={1}>
-                <Typography>Password confirmation</Typography>
+                <Typography>Mật khẩu xác nhận</Typography>
                 <RHFTextField type='password' name="password_confirmation"/>
               </Stack>
               <Stack direction='column' spacing={1}>
-                <Typography>Display name</Typography>
+                <Typography>Tên người dùng</Typography>
                 <RHFTextField name="name"/>
               </Stack>
               <Stack direction='column' spacing={1}>
-                <Typography>Role</Typography>
+                <Typography>Quyền</Typography>
                 <RHFSelect name="role">
                   <option key="1" value="1">
-                    Admin
+                    Quản trị hệ thống
                   </option>
                   <option key="2" value="2">
-                    Parent
+                    Phụ huynh
                   </option>
                   <option key="3" value="3">
-                    Teacher
+                    Giáo viên
                   </option>
                   <option key="4" value="4">
-                    Accounting
+                    Hành chính kế toán
                   </option>
                 </RHFSelect>
               </Stack>
               <Stack direction="row" justifyContent="flex-end" spacing={3}>
-                <Button variant="outlined" type="submit">Submit</Button>
-                <Button variant="outlined" onClick={() => navigate(PATH_DASHBOARD.user.list)}>Cancel</Button>
+                <Button variant="outlined" type="submit">Tạo</Button>
+                <Button variant="outlined" onClick={() => navigate(PATH_DASHBOARD.user.list)}>Hủy</Button>
               </Stack>
             </Stack>
           </Card>

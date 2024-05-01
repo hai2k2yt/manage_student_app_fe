@@ -20,14 +20,14 @@ export default function ClassCreate() {
     <Page title="Class: Create">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading='Create a new class'
+          heading='Tạo lớp học'
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
+            { name: 'Trang chủ', href: PATH_DASHBOARD.root },
             {
-              name: 'Class',
+              name: 'Lớp học',
               href: PATH_DASHBOARD.class.root,
             },
-            { name: 'New class'},
+            { name: 'Tạo mới'},
           ]}
         />
 

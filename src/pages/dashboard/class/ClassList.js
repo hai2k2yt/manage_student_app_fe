@@ -29,11 +29,9 @@ import { useSnackbar } from 'notistack';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'class_code', label: 'Class code', alignRight: false, sortable: true },
-  { id: 'class_name', label: 'Class name', alignRight: false, sortable: true },
-  { id: 'teacher.name', label: 'Teacher name', alignRight: false, sortable: false },
-  { id: 'created_at', label: 'Create at', alignRight: false, sortable: true },
-  { id: 'updated_at', label: 'Updated at', alignRight: false, sortable: true },
+  { id: 'class_code', label: 'Mã lớp học', alignRight: false, sortable: true },
+  { id: 'class_name', label: 'Tên lớp học', alignRight: false, sortable: true },
+  { id: 'teacher.name', label: 'Giáo viên', alignRight: false, sortable: false },
   { id: '' },
 ];
 
@@ -90,9 +88,9 @@ export default function ClassList() {
     try {
       await destroyClass(class_code);
       navigate(0);
-      enqueueSnackbar('Delete class successfully')
+      enqueueSnackbar('Xóa lớp học thành công')
     } catch (e) {
-      enqueueSnackbar('Delete class failed', {variant: 'error'})
+      enqueueSnackbar('Xóa lớp học thất bại', {variant: 'error'})
       console.error(e)
     }
   };
@@ -105,11 +103,11 @@ export default function ClassList() {
     <Page title="Class: List">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Class List"
+          heading="Danh sách lớp học"
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Class', href: PATH_DASHBOARD.class.root },
-            { name: 'List' },
+            { name: 'Trang chủ', href: PATH_DASHBOARD.root },
+            { name: 'Lớp học', href: PATH_DASHBOARD.class.root },
+            { name: 'Danh sách' },
           ]}
         />
 
@@ -131,7 +129,7 @@ export default function ClassList() {
                 />
                 <TableBody>
                   {classList.map((row) => {
-                    const { class_code, class_name, teacher: {teacher_name}, created_at, updated_at } = row;
+                    const { class_code, class_name, teacher: {teacher_name} } = row;
 
                     return (
                       <TableRow
@@ -144,12 +142,6 @@ export default function ClassList() {
                         <TableCell align="left">{class_code}</TableCell>
                         <TableCell align="left">{class_name}</TableCell>
                         <TableCell align="left">{teacher_name}</TableCell>
-                        <TableCell align="left">
-                          {created_at}
-                        </TableCell>
-                        <TableCell align="left">
-                          {updated_at}
-                        </TableCell>
                         <TableCell align="right">
                           <ClassMoreMenu onDelete={() => handleDeleteClass(class_code)} classCode={class_code} />
                         </TableCell>

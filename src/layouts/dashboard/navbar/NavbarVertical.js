@@ -20,7 +20,6 @@ import NavbarDocs from './NavbarDocs';
 import NavbarAccount from './NavbarAccount';
 import CollapseButton from './CollapseButton';
 import { PATH_DASHBOARD } from '../../../routes/paths';
-import Label from '../../../components/Label';
 import SvgIconStyle from '../../../components/SvgIconStyle';
 import useAuth from '../../../hooks/useAuth';
 
@@ -75,68 +74,68 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
     // GENERAL
     // ----------------------------------------------------------------------
     {
-      subheader: 'general',
+      subheader: 'Trang chính',
       items: [
-        { title: 'app', path: PATH_DASHBOARD.general.app, icon: ICONS.dashboard },
+        { title: 'Trang chủ', path: PATH_DASHBOARD.general.app, icon: ICONS.dashboard },
       ],
     },
 
     // MANAGEMENT
     // ----------------------------------------------------------------------
     {
-      subheader: 'management',
+      subheader: 'Quản lý',
       items: [
         // MANAGEMENT : USER
         ...(user?.role === 1 ? [{
-          title: 'user',
+          title: 'Người dùng',
           path: PATH_DASHBOARD.user.root,
           icon: ICONS.user,
           children: [
-            { title: 'list', path: PATH_DASHBOARD.user.list },
-            { title: 'create', path: PATH_DASHBOARD.user.newUser },
+            { title: 'Danh sách', path: PATH_DASHBOARD.user.list },
+            { title: 'Tạo mới', path: PATH_DASHBOARD.user.newUser },
           ],
         }] : []),
 
         // MANAGEMENT : student
         {
-          title: 'student',
+          title: 'Học sinh',
           path: PATH_DASHBOARD.student.root,
           icon: ICONS.cart,
           children: [
-            { title: 'list', path: PATH_DASHBOARD.student.list },
-            ...((user?.role === 1) ? [{ title: 'create', path: PATH_DASHBOARD.student.create }] : []),
-            ...((user?.role === 2) ? [{ title: 'me', path: PATH_DASHBOARD.student.me }] : []),
+            { title: 'Danh sách', path: PATH_DASHBOARD.student.list },
+            ...((user?.role === 1) ? [{ title: 'Tạo mới', path: PATH_DASHBOARD.student.create }] : []),
+            ...((user?.role === 2) ? [{ title: 'Tôi', path: PATH_DASHBOARD.student.me }] : []),
           ],
         },
 
         // MANAGEMENT : class
         {
-          title: 'class',
+          title: 'Lớp học',
           path: PATH_DASHBOARD.class.root,
           icon: ICONS.cart,
           children: [
-            { title: 'list', path: PATH_DASHBOARD.class.list },
-            ...((user?.role === 1) ? [{ title: 'create', path: PATH_DASHBOARD.class.create }] : []),
+            { title: 'Danh sách', path: PATH_DASHBOARD.class.list },
+            ...((user?.role === 1) ? [{ title: 'Tạo mới', path: PATH_DASHBOARD.class.create }] : []),
           ],
         },
 
         ...((user?.role === 1 || user?.role === 4) ? [{
-          title: 'statistic',
+          title: 'Thống kê',
           path: PATH_DASHBOARD.statistic.root,
           icon: ICONS.cart,
           children: [
-            { title: 'student', path: PATH_DASHBOARD.statistic.student },
-            { title: 'teacher', path: PATH_DASHBOARD.statistic.teacher },
+            { title: 'Giáo viên', path: PATH_DASHBOARD.statistic.student },
+            { title: 'Học sinh', path: PATH_DASHBOARD.statistic.teacher },
 
           ],
         }]: []),
         {
-          title: 'club',
+          title: 'CLB',
           path: PATH_DASHBOARD.club.root,
           icon: ICONS.cart,
           children: [
-            { title: 'list', path: PATH_DASHBOARD.club.list },
-            ...((user?.role === 1) ? [{ title: 'create', path: PATH_DASHBOARD.club.create }] : []),
+            { title: 'Danh sách', path: PATH_DASHBOARD.club.list },
+            ...((user?.role === 1) ? [{ title: 'Tạo mới', path: PATH_DASHBOARD.club.create }] : []),
           ],
         },
       ],

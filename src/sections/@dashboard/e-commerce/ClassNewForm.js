@@ -34,9 +34,9 @@ export default function ClassNewForm() {
   const { enqueueSnackbar } = useSnackbar();
 
   const NewProductSchema = Yup.object().shape({
-    class_code: Yup.string().required('Class name is required'),
-    class_name: Yup.string().required('Class name is required'),
-    teacher_code: Yup.string().required('Teacher is required'),
+    class_code: Yup.string().required('Mã lớp học không được để trống'),
+    class_name: Yup.string().required('Tên lớp học không được để trống'),
+    teacher_code: Yup.string().required('Giáo viên không được để trống'),
   });
 
   const defaultValues = {
@@ -69,7 +69,7 @@ export default function ClassNewForm() {
         const teachers = await getAllTeachers();
         setTeacherList(teachers.data)
       } catch (e) {
-        enqueueSnackbar('Get teachers failed', {variant: 'error'});
+        enqueueSnackbar('Lấy danh sách giáo viên thất bại!', {variant: 'error'});
         console.error(e)
       }
     }
@@ -80,10 +80,10 @@ export default function ClassNewForm() {
     try {
       const res = await storeClass(formData);
       reset();
-      enqueueSnackbar(res.message || 'Create class success!');
+      enqueueSnackbar(res.message || 'Tạo lớp học thành công!');
       navigate(PATH_DASHBOARD.class.list);
     } catch (error) {
-      enqueueSnackbar('Create class failed!', {variant: 'error'});
+      enqueueSnackbar('Tạo lớp học thất bại!', {variant: 'error'});
       console.error(error);
     }
   };
@@ -95,18 +95,18 @@ export default function ClassNewForm() {
           <Card sx={{ p: 3 }}>
             <Stack spacing={3}>
               <Stack direction='column' spacing={1}>
-                <Typography>Class code</Typography>
+                <Typography>Mã lớp học</Typography>
                 <RHFTextField name="class_code"/>
               </Stack>
               <Stack direction='column' spacing={1}>
-                <Typography>Class name</Typography>
+                <Typography>Tên lớp học</Typography>
                 <RHFTextField name="class_name"/>
               </Stack>
               <Stack direction='column' spacing={1}>
-                <Typography>Teacher</Typography>
+                <Typography>Giáo viên</Typography>
                 <RHFSelect name="teacher_code">
                   <option key='' value=''>
-                    -- Choose teacher --
+                    -- Chọn giáo viên --
                   </option>
                   {teacherList.map((teacher) => (
                     <option key={teacher.teacher_code} value={teacher.teacher_code}>
@@ -116,8 +116,8 @@ export default function ClassNewForm() {
                 </RHFSelect>
               </Stack>
               <Stack direction='row' justifyContent='flex-end' spacing={3}>
-                <Button variant="outlined" type="submit">Submit</Button>
-                <Button variant="outlined" onClick={() => navigate(PATH_DASHBOARD.class.list)}>Cancel</Button>
+                <Button variant="outlined" type="submit">Tạo</Button>
+                <Button variant="outlined" onClick={() => navigate(PATH_DASHBOARD.class.list)}>Hủy</Button>
               </Stack>
             </Stack>
           </Card>

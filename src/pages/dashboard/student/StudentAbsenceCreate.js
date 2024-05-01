@@ -18,21 +18,21 @@ export default function AbsenceReportCreate() {
   const {club_code, student_code} = useParams();
 
   return (
-    <Page title="Club Session: Create">
+    <Page title="Student absence: Create">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading='Create new absence report'
+          heading='Tạo báo cáo nghỉ'
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
+            { name: 'Trang chủ', href: PATH_DASHBOARD.root },
             {
-              name: 'Student',
+              name: 'Học sinh',
               href: PATH_DASHBOARD.student.root,
             },
             {
-              name: 'Student detail',
+              name: 'Chi tiết học sinh',
               href: `${PATH_DASHBOARD.student.root}/${student_code}/detail`,
             },
-            { name: 'New student absence report'},
+            { name: 'Tạo báo cáo nghỉ'},
           ]}
         />
 

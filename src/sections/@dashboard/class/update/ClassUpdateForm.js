@@ -23,18 +23,20 @@ export default function ClassUpdateForm() {
   const { class_code } = useParams();
 
 
-  const NewProductSchema = Yup.object().shape({
-    class_name: Yup.string().required('Class name is required'),
-    teacher_code: Yup.string().required('Teacher is required'),
+  const UpdateClassSchema = Yup.object().shape({
+    class_code: Yup.string().required('Mã lớp học không được để trống'),
+    class_name: Yup.string().required('Tên lớp học không được để trống'),
+    teacher_code: Yup.string().required('Giáo viên không được để trống'),
   });
 
   const defaultValues = {
+    class_code: '',
     class_name: '',
     teacher_code: '',
   };
 
   const methods = useForm({
-    resolver: yupResolver(NewProductSchema),
+    resolver: yupResolver(UpdateClassSchema),
     defaultValues,
   });
 
@@ -56,23 +58,25 @@ export default function ClassUpdateForm() {
       try {
         const teachers = await getAllTeachers();
         setTeacherList(teachers.data);
-      }catch (e) {
-        enqueueSnackbar('Get teacher list failed', {variant: 'error'});
-        console.error(e)
+      } catch (e) {
+        enqueueSnackbar('Lấy danh sách giáo viên thất bại!', { variant: 'error' });
+        console.error(e);
       }
     }
+
     fetchTeacher();
 
     async function fetchClassInfo() {
       try {
         const classDetail = await showClass(class_code);
         const { class_name, teacher_code } = classDetail.data;
-        reset({ class_name, teacher_code });
+        reset({ class_code, class_name, teacher_code });
       } catch (e) {
-        enqueueSnackbar('Get class info failed', {variant: 'error'});
-        console.error(e)
+        enqueueSnackbar('Lấy thông tin lớp học thất bại!', { variant: 'error' });
+        console.error(e);
       }
     }
+
     fetchClassInfo();
   }, []);
 
@@ -80,10 +84,10 @@ export default function ClassUpdateForm() {
     try {
       const res = await updateClass(class_code, formData);
       reset();
-      enqueueSnackbar(res.message && 'Update class success!');
+      enqueueSnackbar(res.message && 'Cập nhật lớp học thành công!');
       navigate(PATH_DASHBOARD.class.list);
     } catch (error) {
-      enqueueSnackbar('Update class failed!', {variant: 'error'});
+      enqueueSnackbar('Cập nhật lớp học thất bại!', { variant: 'error' });
       console.error(error);
     }
   };
@@ -94,15 +98,19 @@ export default function ClassUpdateForm() {
         <Grid item xs={12} md={8}>
           <Card sx={{ p: 3 }}>
             <Stack spacing={3}>
-              <Stack direction='column' spacing={1}>
-                <Typography>Class name</Typography>
-                <RHFTextField name="class_name"/>
+              <Stack direction="column" spacing={1}>
+                <Typography>Mã lớp học</Typography>
+                <RHFTextField name="class_code" disabled />
               </Stack>
-              <Stack direction='column' spacing={1}>
-                <Typography>Teacher</Typography>
+              <Stack direction="column" spacing={1}>
+                <Typography>Tên lớp học</Typography>
+                <RHFTextField name="class_name" />
+              </Stack>
+              <Stack direction="column" spacing={1}>
+                <Typography>Giáo viên</Typography>
                 <RHFSelect name="teacher_code">
-                  <option key='' value=''>
-                    -- Choose teacher --
+                  <option key="" value="">
+                    -- Chọn giáo viên --
                   </option>
                   {teacherList.map((teacher) => (
                     <option key={teacher.teacher_code} value={teacher.teacher_code}>
@@ -111,9 +119,9 @@ export default function ClassUpdateForm() {
                   ))}
                 </RHFSelect>
               </Stack>
-              <Stack direction='row' justifyContent='flex-end' spacing={3}>
-                <Button variant="outlined" type="submit">Submit</Button>
-                <Button variant="outlined" onClick={() => navigate(PATH_DASHBOARD.class.list)}>Cancel</Button>
+              <Stack direction="row" justifyContent="flex-end" spacing={3}>
+                <Button variant="outlined" type="submit">Cập nhật</Button>
+                <Button variant="outlined" onClick={() => navigate(PATH_DASHBOARD.class.list)}>Hủy</Button>
               </Stack>
             </Stack>
 

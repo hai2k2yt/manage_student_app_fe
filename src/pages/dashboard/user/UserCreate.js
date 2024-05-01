@@ -21,11 +21,11 @@ export default function UserCreate() {
     <Page title="User: Create">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading='Create a new user'
+          heading='Tạo mới người dùng'
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'User', href: PATH_DASHBOARD.user.list },
-            { name: 'New user' },
+            { name: 'Trang chủ', href: PATH_DASHBOARD.root },
+            { name: 'Người dùng', href: PATH_DASHBOARD.user.list },
+            { name: 'Tạo mới' },
           ]}
         />
 
