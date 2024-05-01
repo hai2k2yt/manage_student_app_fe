@@ -47,55 +47,55 @@ export default function ClubSessionDetail() {
     <Page title="Club: Session Detail">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Session Detail"
+          heading="Chi tiết buổi học CLB"
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Club', href: PATH_DASHBOARD.club.root },
+            { name: 'Trang chủ', href: PATH_DASHBOARD.root },
+            { name: 'CLB', href: PATH_DASHBOARD.club.root },
             {
-              name: 'Club detail',
+              name: 'Chi tiết CLB',
               href: `${PATH_DASHBOARD.club.root}/${club_code}/detail`,
             },
-            { name: 'Session detail' },
+            { name: 'Chi tiết buổi học' },
           ]}
         />
 
-        <Typography>Club session detail</Typography>
+        <Typography>Chi tiết buổi học</Typography>
 
         <Stack direction="row" justifyContent="space-between">
-          <Typography>Absence report</Typography>
+          <Typography>Báo cáo nghỉ</Typography>
           <Button
             variant="contained"
             component={RouterLink}
             to={`${PATH_DASHBOARD.club.root}/${club_code}/session/${session_code}/absence-report/create`}
             startIcon={<Iconify icon={'eva:plus-fill'} />}
           >
-            New absence report
+            Tạo mới
           </Button>
         </Stack>
         <AbsenceReportFormList />
 
         <Stack direction="row" justifyContent="space-between">
-          <Typography>Attendance</Typography>
+          <Typography>Điểm danh</Typography>
           <Button
             variant="contained"
             component={RouterLink}
             to={`${PATH_DASHBOARD.club.root}/${club_code}/session/${session_code}/attendance/create`}
             startIcon={<Iconify icon={'eva:plus-fill'} />}
           >
-            New attendance
+            Tạo mới
           </Button>
         </Stack>
         <AttendanceFormList />
 
         <Stack direction="row" justifyContent="space-between">
-          <Typography>Comment</Typography>
+          <Typography>Đánh giá</Typography>
           <Button
             variant="contained"
             component={RouterLink}
             to={`${PATH_DASHBOARD.club.root}/${club_code}/session/${session_code}/comment/create`}
             startIcon={<Iconify icon={'eva:plus-fill'} />}
           >
-            New comment
+            Tạo mới
           </Button>
         </Stack>
         <CommentFormList />
@@ -108,7 +108,7 @@ export default function ClubSessionDetail() {
             to={`${PATH_DASHBOARD.club.root}/${club_code}/session/${session_code}/photo/create`}
             startIcon={<Iconify icon={'eva:plus-fill'} />}
           >
-            New photo
+            Tạo mới
           </Button>
         </Stack>
         <ClubSessionPhotoList />

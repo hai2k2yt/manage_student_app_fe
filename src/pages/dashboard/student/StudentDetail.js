@@ -47,21 +47,21 @@ export default function StudentMe() {
     <Page title="Student: Detail">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Student Detail"
+          heading="Chi tiết học sinh"
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Student', href: PATH_DASHBOARD.student.root },
-            { name: 'Detail' },
+            { name: 'Trang chủ', href: PATH_DASHBOARD.root },
+            { name: 'Học sinh', href: PATH_DASHBOARD.student.root },
+            { name: 'Chi tiết' },
           ]}
         />
 
         <Card sx={{ padding: 2, marginBottom: 3 }}>
-          <Typography variant="h4">Student info</Typography>
+          <Typography variant="h4">Thông tin học sinh</Typography>
           <Stack direction="row" spacing={2}>
             <div>
-              <Typography>Student code</Typography>
-              <Typography>Student name</Typography>
-              <Typography>Class code</Typography>
+              <Typography>Mã học sinh</Typography>
+              <Typography>Tên học sinh</Typography>
+              <Typography>Mã lớp học</Typography>
             </div>
             <div>
               <Typography>{studentDetail?.student_code}</Typography>
@@ -78,8 +78,8 @@ export default function StudentMe() {
           <Card sx={{ padding: 2, marginBottom: 1 }}>
             <Stack direction="row" spacing={5}>
               <div>
-                <Typography>Club code</Typography>
-                <Typography>Club name</Typography>
+                <Typography>Mã CLB</Typography>
+                <Typography>Tên CLB</Typography>
               </div>
               <div>
                 <Typography>{club?.club_code}</Typography>
@@ -88,15 +88,15 @@ export default function StudentMe() {
             </Stack>
 
             <Stack  sx={{ marginY: 1 }} direction='row' justifyContent='space-between'>
-              <Typography variant="h6">Absence report</Typography>
-              <Button variant='outlined' onClick={() => navigate(`${PATH_DASHBOARD.student.root}/${student_code}/club/${club?.club_code}/absence-report/create`)}>Create absence</Button>
+              <Typography variant="h6">Báo cáo nghỉ</Typography>
+              <Button variant='outlined' onClick={() => navigate(`${PATH_DASHBOARD.student.root}/${student_code}/club/${club?.club_code}/absence-report/create`)}>Tạo mới</Button>
             </Stack>
             <StudentClubAbsenceReport clubCode={club?.club_code} studentCode={student_code} />
 
-            <Typography variant="h6" sx={{ marginY: 1 }}>Attendance</Typography>
+            <Typography variant="h6" sx={{ marginY: 1 }}>Điểm danh</Typography>
             <StudentClubAttendance clubCode={club?.club_code} studentCode={student_code} />
 
-            <Typography variant="h6" sx={{ marginY: 1 }}>Comment</Typography>
+            <Typography variant="h6" sx={{ marginY: 1 }}>Đánh giá</Typography>
             <StudentClubComment clubCode={club?.club_code} studentCode={student_code} />
           </Card>
         ))}

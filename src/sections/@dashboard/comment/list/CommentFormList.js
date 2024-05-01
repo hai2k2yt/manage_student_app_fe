@@ -5,18 +5,18 @@ import { useEffect, useState } from 'react';
 // routes
 // components
 import Scrollbar from '../../../../components/Scrollbar';
-import { Card, Chip, Table, TableBody, TableCell, TableContainer, TablePagination, TableRow } from '@mui/material';
+import { Card, Table, TableBody, TableCell, TableContainer, TablePagination, TableRow } from '@mui/material';
 import CommentListHead from './CommentListHead';
-import { getAbsenceReports, updateAbsenceReport } from '../../../../api/absence_report';
 import CommentMoreMenu from './CommentMoreMenu';
 import { useSnackbar } from 'notistack';
-import { getCommentBySession, updateComment } from '../../../../api/comment';
+import { destroyComment, getCommentBySession } from '../../../../api/comment';
+import { destroyAttendance } from '../../../../api/attendance';
 
 // ----------------------------------------------------------------------
 const TABLE_HEAD = [
-  { id: 'student_code', label: 'Student code', alignRight: false, sortable: true },
-  { id: 'student.name', label: 'Student name', alignRight: false, sortable: false },
-  { id: 'content', label: 'Content', alignRight: false, sortable: false },
+  { id: 'student_code', label: 'Mã học sinh', alignRight: false, sortable: true },
+  { id: 'student.name', label: 'Tên học sinh', alignRight: false, sortable: false },
+  { id: 'content', label: 'Nội dung', alignRight: false, sortable: false },
   { id: '', label: '', alignRight: false, sortable: false },
 ];
 export default function CommentFormList() {
@@ -46,7 +46,7 @@ export default function CommentFormList() {
         setTotal(absenceReports?.data?.total || 0);
         setCommentList(records);
       } catch (e) {
-        enqueueSnackbar('Get comment list failed', {variant: 'error'});
+        enqueueSnackbar('Lấy danh sách đánh giá thất bại!', {variant: 'error'});
         console.error(e)
       }
     }
@@ -66,7 +66,14 @@ export default function CommentFormList() {
   };
 
   const handleDeleteComment = async (id) => {
-    console.log(id)
+    try {
+      await destroyComment(id);
+      navigate(0);
+      enqueueSnackbar('Xóa đánh giá thành công!')
+    } catch (e) {
+      enqueueSnackbar('Xóa đánh giá thất bại!', {variant: 'error'})
+      console.error(e)
+    }
   };
 
   const emptyRows = _page > 0 ? Math.max(0, _limit - commentList.length) : 0;

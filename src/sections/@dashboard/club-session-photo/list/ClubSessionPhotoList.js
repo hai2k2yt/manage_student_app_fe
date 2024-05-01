@@ -1,22 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 // @mui
-import {
-  Card,
-  ImageList,
-  ImageListItem,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TablePagination,
-  TableRow,
-} from '@mui/material';
+import { Card, ImageList, ImageListItem } from '@mui/material';
 
 import Scrollbar from '../../../../components/Scrollbar';
 // sections
-import PropTypes from 'prop-types';
 import { getClubSessionPhotoBySession } from '../../../../api/club_session_photo';
+import { useSnackbar } from 'notistack';
 
 // ----------------------------------------------------------------------
 
@@ -24,27 +14,23 @@ import { getClubSessionPhotoBySession } from '../../../../api/club_session_photo
 ClubSessionPhotoList.propTypes = {};
 export default function ClubSessionPhotoList() {
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
 
   const [clubSessionPhotoList, setClubSessionPhotoList] = useState([]);
   const { session_code } = useParams();
   useEffect(() => {
     async function fetchData() {
-
-
-      const clubSessionPhotos = await getClubSessionPhotoBySession(session_code);
-      const records = clubSessionPhotos?.data?.data || [];
-      setClubSessionPhotoList(records);
-
+      try {
+        const clubSessionPhotos = await getClubSessionPhotoBySession(session_code);
+        const records = clubSessionPhotos?.data?.data || [];
+        setClubSessionPhotoList(records);
+      } catch (e) {
+        enqueueSnackbar('Lấy danh sách ảnh buổi học thất bại', {variant: 'error'});
+        console.error(e)
+      }
     }
-
     fetchData();
   }, []);
-
-
-  const handleDeleteSession = (clubId) => {
-    navigate(0);
-  };
-
 
   return (
     <Card>

@@ -18,14 +18,14 @@ export default function ClubUpdate() {
     <Page title="Edit club">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading='Edit club'
+          heading='Cập nhật CLB'
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
+            { name: 'Trang chủ', href: PATH_DASHBOARD.root },
             {
-              name: 'Club',
+              name: 'CLB',
               href: PATH_DASHBOARD.club.list,
             },
-            { name: 'Edit club' },
+            { name: 'Cập nhật' },
           ]}
         />
 

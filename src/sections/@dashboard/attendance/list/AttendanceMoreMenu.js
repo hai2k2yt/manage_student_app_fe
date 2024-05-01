@@ -63,7 +63,7 @@ export default function AttendanceMoreMenu({ id, onUpdate, onDelete }) {
       >
         <MenuItem onClick={() => onDelete(id)} sx={{ color: 'error.main' }}>
           <Iconify icon={'eva:trash-2-outline'} sx={{ ...ICON }} />
-          Delete
+          Xóa
         </MenuItem>
 
         <MenuItem onClick={() => onUpdate(1, id)} sx={{ color: 'error.main' }}>

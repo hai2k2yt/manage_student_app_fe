@@ -56,12 +56,12 @@ export default function CommentMoreMenu({ id, onDelete }) {
       >
         <MenuItem onClick={() => onDelete(id)} sx={{ color: 'error.main' }}>
           <Iconify icon={'eva:trash-2-outline'} sx={{ ...ICON }} />
-          Delete
+          Xóa
         </MenuItem>
 
         <MenuItem component={RouterLink} to={`${PATH_DASHBOARD.club.root}/${club_code}/session/${session_code}/comment/${id}/edit`}>
           <Iconify icon={'eva:edit-fill'} sx={{ ...ICON }} />
-          Edit
+          Cập nhật
         </MenuItem>
 
       </MenuPopover>

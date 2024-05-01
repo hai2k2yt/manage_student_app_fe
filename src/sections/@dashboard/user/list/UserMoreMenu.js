@@ -13,11 +13,10 @@ import MenuPopover from '../../../../components/MenuPopover';
 // ----------------------------------------------------------------------
 
 UserMoreMenu.propTypes = {
-  onDelete: PropTypes.func,
   userId: PropTypes.number,
 };
 
-export default function UserMoreMenu({ onDelete, userId }) {
+export default function UserMoreMenu({ userId }) {
   const [open, setOpen] = useState(null);
 
   const handleOpen = (event) => {
@@ -53,10 +52,6 @@ export default function UserMoreMenu({ onDelete, userId }) {
           '& .MuiMenuItem-root': { px: 1, typography: 'body2', borderRadius: 0.75 },
         }}
       >
-        <MenuItem onClick={onDelete} sx={{ color: 'error.main' }}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ ...ICON }} />
-          Xóa
-        </MenuItem>
 
         <MenuItem component={RouterLink} to={`${PATH_DASHBOARD.user.root}/${userId}/edit`}>
           <Iconify icon={'eva:edit-fill'} sx={{ ...ICON }} />

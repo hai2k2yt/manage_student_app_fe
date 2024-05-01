@@ -31,8 +31,8 @@ export default function ClubSessionPhotoCreateForm() {
   const {session_code, club_code} = useParams();
 
   const CreateAbsenceReportSchema = Yup.object().shape({
-    session_code: Yup.string().required('Session is required'),
-    photo_url: Yup.mixed().required('Photo is required'),
+    session_code: Yup.string().required('Buổi học không được để trống'),
+    photo_url: Yup.mixed().required('Ảnh không được để trống'),
   });
 
   const defaultValues = {
@@ -87,10 +87,10 @@ export default function ClubSessionPhotoCreateForm() {
       data.append('photo_url', formData.photo_url);
       const res = await storeClubSessionPhoto(data);
       reset();
-      enqueueSnackbar(res.message || 'Create photo success!');
+      enqueueSnackbar(res.message || 'Thêm ảnh thành công!');
       navigate(`${PATH_DASHBOARD.club.root}/${club_code}/session/${session_code}/detail`);
     } catch (e) {
-      enqueueSnackbar('Create photo failed!', {variant: 'error'});
+      enqueueSnackbar('Thêm ảnh thất bại!', {variant: 'error'});
       console.error(e)
     }
   };
@@ -102,11 +102,11 @@ export default function ClubSessionPhotoCreateForm() {
           <Card sx={{ p: 3 }}>
             <Stack spacing={3}>
               <Stack direction='column' spacing={1}>
-                <Typography>Session code</Typography>
+                <Typography>Mã buổi học</Typography>
                 <RHFTextField name="session_code" disabled />
               </Stack>
               <Stack direction='column' spacing={1}>
-                <Typography>Photo</Typography>
+                <Typography>Ảnh</Typography>
                 <RHFUploadSingleFile
                   name='photo_url'
                   accept="image/*"
@@ -115,8 +115,8 @@ export default function ClubSessionPhotoCreateForm() {
                 />
               </Stack>
               <Stack direction='row' justifyContent='flex-end' spacing={3}>
-                <Button variant="outlined" type="submit">Submit</Button>
-                <Button variant="outlined" onClick={() => navigate(`${PATH_DASHBOARD.club.root}/${club_code}/session/${session_code}/detail`)}>Cancel</Button>
+                <Button variant="outlined" type="submit">Thêm</Button>
+                <Button variant="outlined" onClick={() => navigate(`${PATH_DASHBOARD.club.root}/${club_code}/session/${session_code}/detail`)}>Hủy</Button>
               </Stack>
             </Stack>
           </Card>

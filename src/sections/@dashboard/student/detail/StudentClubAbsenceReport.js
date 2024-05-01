@@ -30,9 +30,9 @@ export default function StudentClubAbsenceReport({studentCode, clubCode}) {
     <Table>
       <TableHead>
         <TableRow>
-          <TableCell>Session code</TableCell>
-          <TableCell>Reason</TableCell>
-          <TableCell align="right">Status</TableCell>
+          <TableCell>Mã buổi học</TableCell>
+          <TableCell>Lý do</TableCell>
+          <TableCell align="right">Trạng thái</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>

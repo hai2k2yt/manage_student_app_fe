@@ -11,7 +11,7 @@ import { Button, Card, Grid, Stack, Typography } from '@mui/material';
 import { PATH_DASHBOARD } from '../../../../routes/paths';
 // components
 import { FormProvider, RHFDate, RHFSelect, RHFTextField } from '../../../../components/hook-form';
-import { showClubSession, storeClubSession, updateClubSession } from '../../../../api/club_session';
+import { showClubSession, updateClubSession } from '../../../../api/club_session';
 import { getScheduleByClub } from '../../../../api/club_schedule';
 
 // ----------------------------------------------------------------------
@@ -23,10 +23,10 @@ export default function ClubSessionUpdateForm({ currentProduct }) {
   const { club_code, session_code } = useParams();
 
   const UpdateSessionSchema = Yup.object().shape({
-    session_code: Yup.string().required('Session name is required'),
-    session_name: Yup.string().required('Session name is required'),
-    schedule_code: Yup.string().required('Schedule is required'),
-    date: Yup.string().required('Date is required'),
+    session_code: Yup.string().required('Mã buổi học không được để trống'),
+    session_name: Yup.string().required('Tên buổi học không được để trống'),
+    schedule_code: Yup.string().required('Thời khóa biểu không được để trống'),
+    date: Yup.string().required('Ngày không được để trống'),
   });
 
   const defaultValues = {
@@ -55,21 +55,28 @@ export default function ClubSessionUpdateForm({ currentProduct }) {
   useEffect(() => {
     reset(defaultValues);
     async function fetchSchedule() {
-      const schedules = await getScheduleByClub(club_code);
-      setScheduleList(schedules.data.data)
+      try {
+        const schedules = await getScheduleByClub(club_code);
+        setScheduleList(schedules.data.data)
+      } catch (e) {
+        enqueueSnackbar('Lấy danh sách thời khóa biểu thất bại!', {variant: 'error'});
+      }
     }
     fetchSchedule();
 
     async function fetchSession() {
-      const session = await showClubSession(session_code);
-      console.log(session.data)
-      const data = session.data;
-      reset({
-        session_code: data.session_code,
-        session_name: data.session_name,
-        schedule_code: data.schedule_code,
-        date: data.date,
-      });
+      try {
+        const session = await showClubSession(session_code);
+        const data = session.data;
+        reset({
+          session_code: data.session_code,
+          session_name: data.session_name,
+          schedule_code: data.schedule_code,
+          date: data.date,
+        });
+      } catch (e) {
+        enqueueSnackbar('Lấy thông tin buổi học CLB thất bại!', {variant: 'error'});
+      }
     }
     fetchSession();
   }, []);
@@ -88,9 +95,10 @@ export default function ClubSessionUpdateForm({ currentProduct }) {
           date: `${year}-${month}-${day}`,
         });
       reset();
-      enqueueSnackbar(res.message || 'Update session success!');
+      enqueueSnackbar(res.message || 'Cập nhật thông tin buổi học CLB thành công!');
       navigate(`${PATH_DASHBOARD.club.root}/${club_code}/detail`);
     } catch (error) {
+      enqueueSnackbar('Cập nhật thông tin buổi học CLB thất bại!', {variant: 'error'});
       console.error(error);
     }
   };
@@ -102,18 +110,18 @@ export default function ClubSessionUpdateForm({ currentProduct }) {
           <Card sx={{ p: 3 }}>
             <Stack spacing={3}>
               <Stack direction="column" spacing={1}>
-                <Typography>Session code</Typography>
+                <Typography>Mã buổi học</Typography>
                 <RHFTextField name="session_code" disabled/>
               </Stack>
               <Stack direction="column" spacing={1}>
-                <Typography>Session name</Typography>
+                <Typography>Tên buổi học</Typography>
                 <RHFTextField name="session_name" />
               </Stack>
               <Stack direction="column" spacing={1}>
-                <Typography>Schedule</Typography>
+                <Typography>Thời khóa biểu</Typography>
                 <RHFSelect name="schedule_code">
                   <option key="" value="">
-                    -- Choose schedule --
+                    -- Chọn thời khóa biểu --
                   </option>
                   {scheduleList.map((schedule) => (
                     <option key={schedule.schedule_code} value={schedule.schedule_code}>
@@ -123,7 +131,7 @@ export default function ClubSessionUpdateForm({ currentProduct }) {
                 </RHFSelect>
               </Stack>
               <Stack direction="column" spacing={1}>
-                <Typography>Date</Typography>
+                <Typography>Ngày</Typography>
                 <RHFDate
                   inputFormat="yyyy-MM-dd"
                   format="yyyy-MM-dd"
@@ -131,8 +139,8 @@ export default function ClubSessionUpdateForm({ currentProduct }) {
                 />
               </Stack>
               <Stack direction="row" justifyContent="flex-end" spacing={3}>
-                <Button variant="outlined" type="submit">Submit</Button>
-                <Button variant="outlined" onClick={() => navigate(PATH_DASHBOARD.club.list)}>Cancel</Button>
+                <Button variant="outlined" type="submit">Cập nhật</Button>
+                <Button variant="outlined" onClick={() => navigate(PATH_DASHBOARD.club.list)}>Hủy</Button>
               </Stack>
             </Stack>
           </Card>

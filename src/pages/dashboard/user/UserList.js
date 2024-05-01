@@ -29,6 +29,7 @@ import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
 import { UserListHead, UserListToolbar, UserMoreMenu } from '../../../sections/@dashboard/user/list';
 import { getUser } from '../../../api/user';
 import { useSnackbar } from 'notistack';
+import { destroyStudent } from '../../../api/student';
 
 // ----------------------------------------------------------------------
 
@@ -104,10 +105,6 @@ export default function UserList() {
     setPage(0);
   };
 
-  const handleDeleteUser = (userId) => {
-
-  };
-
   const emptyRows = _page > 0 ? Math.max(0, _limit - userList.length) : 0;
 
   const isNotFound = !userList.length && Boolean(filterName);
@@ -157,7 +154,7 @@ export default function UserList() {
                         <TableCell align="left">{username}</TableCell>
                         <TableCell align="left">{renderRole(role)}</TableCell>
                         <TableCell align="right">
-                          <UserMoreMenu onDelete={() => handleDeleteUser(id)} userId={id} />
+                          <UserMoreMenu userId={id} />
                         </TableCell>
                       </TableRow>
                     );

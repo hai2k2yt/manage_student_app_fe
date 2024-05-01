@@ -15,11 +15,11 @@ import PropTypes from 'prop-types';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'session_code', label: 'Session code', alignRight: false, sortable: false },
-  { id: 'session_name', label: 'Session name', alignRight: false, sortable: false },
-  { id: 'schedule.teacher.name', label: 'Teacher name', alignRight: false, sortable: false },
-  { id: 'schedule.day_of_week', label: 'Day of week', alignRight: false, sortable: false },
-  { id: 'date', label: 'Date', alignRight: false, sortable: false },
+  { id: 'session_code', label: 'Mã buổi học', alignRight: false, sortable: false },
+  { id: 'session_name', label: 'Tên buổi học', alignRight: false, sortable: false },
+  { id: 'schedule.teacher.name', label: 'Giáo viên', alignRight: false, sortable: false },
+  { id: 'schedule.day_of_week', label: 'Thứ trong tuần', alignRight: false, sortable: false },
+  { id: 'date', label: 'Ngày', alignRight: false, sortable: false },
   { id: '' },
 ];
 

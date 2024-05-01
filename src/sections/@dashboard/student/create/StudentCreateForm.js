@@ -36,8 +36,8 @@ export default function StudentCreateForm() {
   const { enqueueSnackbar } = useSnackbar();
 
   const CreateStudentSchema = Yup.object().shape({
-    student_code: Yup.string().required('Student code is required'),
-    name: Yup.string().required('Name is required'),
+    student_code: Yup.string().required('Mã học sinh không được để trống'),
+    name: Yup.string().required('Tên không được để trống'),
     user_id: Yup.string().nullable(),
     class_code: Yup.string().nullable()
   });
@@ -72,7 +72,7 @@ export default function StudentCreateForm() {
         const classes = await getAllClasses();
         setClassList(classes?.data)
       } catch (e) {
-        enqueueSnackbar('Get classes failed!', {variant: 'error'});
+        enqueueSnackbar('Lấy danh sách lớp học thất bại!', {variant: 'error'});
       }
     }
     fetchClasses();
@@ -81,7 +81,7 @@ export default function StudentCreateForm() {
         const parents = await getUser({role: 2});
         setParentList(parents?.data?.records)
       } catch (e) {
-        enqueueSnackbar('Get parents failed!', {variant: 'error'});
+        enqueueSnackbar('Lấy danh sách phụ huynh thất bại!', {variant: 'error'});
       }
     }
     fetchParents();
@@ -91,10 +91,10 @@ export default function StudentCreateForm() {
     try {
       const res = await storeStudent(formData);
       reset();
-      enqueueSnackbar(res?.message || 'Create student success!');
+      enqueueSnackbar(res?.message || 'Tạo học sinh thành công!');
       navigate(PATH_DASHBOARD.student.list);
     } catch (error) {
-      enqueueSnackbar('Create student failed!', {variant: 'error'});
+      enqueueSnackbar('Tạo học sinh thất bại!', {variant: 'error'});
       console.error(error);
     }
   };
@@ -106,18 +106,18 @@ export default function StudentCreateForm() {
           <Card sx={{ p: 3 }}>
             <Stack spacing={3}>
               <Stack direction='column' spacing={1}>
-                <Typography>Student code</Typography>
+                <Typography>Mã học sinh</Typography>
                 <RHFTextField name="student_code"/>
               </Stack>
               <Stack direction='column' spacing={1}>
-                <Typography>Name</Typography>
+                <Typography>Tên</Typography>
                 <RHFTextField name="name"/>
               </Stack>
               <Stack direction='column' spacing={1}>
-                <Typography>Parent</Typography>
+                <Typography>Phụ huynh</Typography>
                 <RHFSelect name="user_id">
                   <option key='' value=''>
-                    -- Choose parent --
+                    -- Chọn phụ huynh --
                   </option>
                   {parentList.map((parent) => (
                     <option key={parent.id} value={parent.id}>
@@ -127,10 +127,10 @@ export default function StudentCreateForm() {
                 </RHFSelect>
               </Stack>
               <Stack direction='column' spacing={1}>
-                <Typography>Class</Typography>
+                <Typography>Lớp học</Typography>
                 <RHFSelect name="class_code">
                   <option key='' value=''>
-                    -- Choose class --
+                    -- Chọn lớp học --
                   </option>
                   {classList.map((studentClass) => (
                     <option key={studentClass.class_code} value={studentClass.class_code}>
@@ -140,8 +140,8 @@ export default function StudentCreateForm() {
                 </RHFSelect>
               </Stack>
               <Stack direction='row' justifyContent='flex-end' spacing={3}>
-                <Button variant="outlined" type="submit">Submit</Button>
-                <Button variant="outlined" onClick={() => navigate(PATH_DASHBOARD.student.list)}>Cancel</Button>
+                <Button variant="outlined" type="submit">Tạo</Button>
+                <Button variant="outlined" onClick={() => navigate(PATH_DASHBOARD.student.list)}>Hủy</Button>
               </Stack>
             </Stack>
           </Card>

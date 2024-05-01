@@ -72,36 +72,16 @@ export default function Login() {
       <RootStyle>
         <HeaderStyle>
           <Logo />
-          {smUp && (
-            <Typography variant="body2" sx={{ mt: { md: -2 } }}>
-              Don’t have an account? {''}
-              <Link variant="subtitle2" component={RouterLink} to={PATH_AUTH.register}>
-                Get started
-              </Link>
-            </Typography>
-          )}
         </HeaderStyle>
-
-        {mdUp && (
-          <SectionStyle>
-            <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-              Hi, Welcome Back
-            </Typography>
-            <Image
-              alt="login"
-              src="https://minimal-assets-api.vercel.app/assets/illustrations/illustration_login.png"
-            />
-          </SectionStyle>
-        )}
 
         <Container maxWidth="sm">
           <ContentStyle>
             <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
               <Box sx={{ flexGrow: 1 }}>
                 <Typography variant="h4" gutterBottom>
-                  Sign in to Manage student app
+                  Đăng nhập
                 </Typography>
-                <Typography sx={{ color: 'text.secondary' }}>Enter your details below.</Typography>
+                <Typography sx={{ color: 'text.secondary' }}>Điền vào thông tin dưới đây.</Typography>
               </Box>
 
               <Tooltip title={capitalCase(method)} placement="right">
@@ -117,14 +97,6 @@ export default function Login() {
 
             <LoginForm />
 
-            {!smUp && (
-              <Typography variant="body2" align="center" sx={{ mt: 3 }}>
-                Don’t have an account?{' '}
-                <Link variant="subtitle2" component={RouterLink} to={PATH_AUTH.register}>
-                  Get started
-                </Link>
-              </Typography>
-            )}
           </ContentStyle>
         </Container>
       </RootStyle>

@@ -51,7 +51,7 @@ export default function StatisticStudent() {
         setClubList(clubCodes);
         setStudentFeeList(studentFeeMap);
       } catch (e) {
-        enqueueSnackbar('Fetch statistic student failed', {variant: 'error'})
+        enqueueSnackbar('Lấy thống kê học phí học sinh thất bại!', {variant: 'error'})
       }
     }
     fetchStudentFeeList();
@@ -61,11 +61,11 @@ export default function StatisticStudent() {
     <Page title="Statistic: Student">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Statistic student"
+          heading="Thống kê học phí của học sinh"
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Statistic', href: PATH_DASHBOARD.statistic.root },
-            { name: 'Student' },
+            { name: 'Trang chủ', href: PATH_DASHBOARD.root },
+            { name: 'Thống kê', href: PATH_DASHBOARD.statistic.root },
+            { name: 'Học sinh' },
           ]}
         />
 
@@ -77,7 +77,7 @@ export default function StatisticStudent() {
                   <TableRow>
                     <TableCell></TableCell>
                     {clubList?.map((club) => <TableCell align="left">{club}</TableCell>)}
-                    <TableCell>Total</TableCell>
+                    <TableCell>Tổng</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>

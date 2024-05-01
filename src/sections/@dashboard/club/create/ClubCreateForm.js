@@ -23,9 +23,9 @@ export default function ClubCreateForm() {
   const { enqueueSnackbar } = useSnackbar();
 
   const NewClubSchema = Yup.object().shape({
-    club_code: Yup.string().required('Club code is required'),
-    name: Yup.string().required('Club name is required'),
-    teacher_code: Yup.string().required('Teacher is required'),
+    club_code: Yup.string().required('Mã CLB không được để trống'),
+    name: Yup.string().required('Tên CLB không được để trống'),
+    teacher_code: Yup.string().required('Giáo viên không được để trống'),
   });
 
   const defaultValues = {
@@ -58,7 +58,7 @@ export default function ClubCreateForm() {
         const teachers = await getAllTeachers();
         setTeacherList(teachers.data)
       } catch (e) {
-        enqueueSnackbar('Get teacher list failed', {variant: 'error'});
+        enqueueSnackbar('Lấy danh sách giáo viên thất bại!', {variant: 'error'});
         console.error(e)
       }
     }
@@ -69,10 +69,10 @@ export default function ClubCreateForm() {
     try {
       const res = await storeClub(formData);
       reset();
-      enqueueSnackbar(res.message || 'Create club success!');
+      enqueueSnackbar('Tạo CLB thành công!');
       navigate(PATH_DASHBOARD.club.list);
     } catch (error) {
-      enqueueSnackbar('Create club failed!', {variant: 'error'});
+      enqueueSnackbar('Tạo CLB thất bại!', {variant: 'error'});
       console.error(error);
     }
   };
@@ -84,18 +84,18 @@ export default function ClubCreateForm() {
           <Card sx={{ p: 3 }}>
             <Stack spacing={3}>
               <Stack direction='column' spacing={1}>
-                <Typography>Club code</Typography>
+                <Typography>Mã CLB</Typography>
                 <RHFTextField name="club_code"/>
               </Stack>
               <Stack direction='column' spacing={1}>
-                <Typography>Club name</Typography>
+                <Typography>Tên CLB</Typography>
                 <RHFTextField name="name"/>
               </Stack>
               <Stack direction='column' spacing={1}>
-                <Typography>Teacher</Typography>
+                <Typography>Giáo viên</Typography>
                 <RHFSelect name="teacher_code">
                   <option key='' value=''>
-                    -- Choose teacher --
+                    -- Chọn giáo viên --
                   </option>
                   {teacherList.map((teacher) => (
                     <option key={teacher.teacher_code} value={teacher.teacher_code}>
@@ -105,8 +105,8 @@ export default function ClubCreateForm() {
                 </RHFSelect>
               </Stack>
               <Stack direction='row' justifyContent='flex-end' spacing={3}>
-                <Button variant="outlined" type="submit">Submit</Button>
-                <Button variant="outlined" onClick={() => navigate(PATH_DASHBOARD.club.list)}>Cancel</Button>
+                <Button variant="outlined" type="submit">Tạo</Button>
+                <Button variant="outlined" onClick={() => navigate(PATH_DASHBOARD.club.list)}>Hủy</Button>
               </Stack>
             </Stack>
           </Card>

@@ -44,11 +44,11 @@ export default function StudentMe() {
     <Page title="Student: Me">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Student me"
+          heading="Học sinh của tôi"
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Student', href: PATH_DASHBOARD.student.root },
-            { name: 'Me' },
+            { name: 'Trang chủ', href: PATH_DASHBOARD.root },
+            { name: 'Học sinh', href: PATH_DASHBOARD.student.root },
+            { name: 'Học sinh của tôi' },
           ]}
         />
 
@@ -57,9 +57,9 @@ export default function StudentMe() {
             <Card sx={{padding: 2, marginBottom: 3}}>
               <Stack direction='row' spacing={2}>
                 <div>
-                  <Typography>Student code</Typography>
-                  <Typography>Student name</Typography>
-                  <Typography>Student class</Typography>
+                  <Typography>Mã học sinh</Typography>
+                  <Typography>Tên học sinh</Typography>
+                  <Typography>Lớp học sinh</Typography>
                 </div>
                 <div>
                   <Typography>{student?.student_code}</Typography>
@@ -67,7 +67,7 @@ export default function StudentMe() {
                   <Typography>{student?.class?.class_name}</Typography>
                 </div>
               </Stack>
-              <Link href={`${PATH_DASHBOARD.student.root}/${student?.student_code}/detail`}>View Detail</Link>
+              <Link href={`${PATH_DASHBOARD.student.root}/${student?.student_code}/detail`}>Xem chi tiết</Link>
             </Card>
           ))}
       </Container>

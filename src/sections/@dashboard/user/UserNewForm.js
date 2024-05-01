@@ -92,6 +92,9 @@ export default function UserNewForm() {
               <Stack direction='column' spacing={1}>
                 <Typography>Quyền</Typography>
                 <RHFSelect name="role">
+                  <option key="5" value="">
+                    -- Chọn quyền --
+                  </option>
                   <option key="1" value="1">
                     Quản trị hệ thống
                   </option>

@@ -25,16 +25,13 @@ import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
 import { destroyClub, getClubs } from '../../../api/club';
 import { ClubListHead, ClubListToolbar, ClubMoreMenu } from '../../../sections/@dashboard/club/list';
 import { useSnackbar } from 'notistack';
-import { destroyClass } from '../../../api/class';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'club_code', label: 'Club code', alignRight: false, sortable: true },
-  { id: 'name', label: 'Club name', alignRight: false, sortable: true },
-  { id: 'teacher.teacher_name', label: 'Teacher name', alignRight: false, sortable: false },
-  { id: 'created_at', label: 'Create at', alignRight: false, sortable: true },
-  { id: 'updated_at', label: 'Updated at', alignRight: false, sortable: true },
+  { id: 'club_code', label: 'Mã CLB', alignRight: false, sortable: true },
+  { id: 'name', label: 'Tên CLB', alignRight: false, sortable: true },
+  { id: 'teacher.teacher_name', label: 'Tên giáo viên', alignRight: false, sortable: false },
   { id: '' },
 ];
 
@@ -68,7 +65,7 @@ export default function ClubList() {
         setTotal(clubs?.data?.total || 0);
         setClubList(records);
       } catch (e) {
-        enqueueSnackbar('Get club list failed', { variant: 'error' });
+        enqueueSnackbar('Lấy danh sách CLB thất bại!', { variant: 'error' });
         console.error(e);
       }
     }
@@ -97,9 +94,9 @@ export default function ClubList() {
     try {
       await destroyClub(club_code);
       navigate(0);
-      enqueueSnackbar('Delete club successfully')
+      enqueueSnackbar('Xóa CLB thành công!')
     } catch (e) {
-      enqueueSnackbar('Delete club failed', {variant: 'error'})
+      enqueueSnackbar('Xóa CLB thất bại!', {variant: 'error'})
       console.error(e)
     }
   };
@@ -112,11 +109,11 @@ export default function ClubList() {
     <Page title="Club: List">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Club List"
+          heading="Danh sách CLB"
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Club', href: PATH_DASHBOARD.club.root },
-            { name: 'List' },
+            { name: 'Trang chủ', href: PATH_DASHBOARD.root },
+            { name: 'CLB', href: PATH_DASHBOARD.club.root },
+            { name: 'Danh sách' },
           ]}
         />
 

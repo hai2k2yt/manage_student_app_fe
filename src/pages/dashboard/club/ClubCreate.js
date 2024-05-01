@@ -19,14 +19,14 @@ export default function ClubCreate() {
     <Page title="CLub: Create">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading='Create a new club'
+          heading='Tạo CLB'
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
+            { name: 'Trang chủ', href: PATH_DASHBOARD.root },
             {
-              name: 'Club',
+              name: 'CLB',
               href: PATH_DASHBOARD.club.root,
             },
-            { name: 'New club'},
+            { name: 'Tạo mới'},
           ]}
         />
 

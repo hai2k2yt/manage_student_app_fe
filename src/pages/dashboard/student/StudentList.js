@@ -31,10 +31,10 @@ import StudentListHead from '../../../sections/@dashboard/student/list/StudentLi
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'student_code', label: 'Student code', alignRight: false, sortable: true },
-  { id: 'name', label: 'Student name', alignRight: false, sortable: true },
-  { id: 'class.class_name', label: 'Class name', alignRight: false, sortable: false },
-  { id: 'parent.name', label: 'Parent name', alignRight: false, sortable: false },
+  { id: 'student_code', label: 'Mã học sinh', alignRight: false, sortable: true },
+  { id: 'name', label: 'Tên học sinh', alignRight: false, sortable: true },
+  { id: 'class.class_name', label: 'Tên lớp học', alignRight: false, sortable: false },
+  { id: 'parent.name', label: 'Tên phụ huynh', alignRight: false, sortable: false },
   { id: '', label: '', alignRight: false, sortable: false },
 ];
 
@@ -91,9 +91,9 @@ export default function StudentList() {
     try {
       await destroyStudent(student_code);
       navigate(0);
-      enqueueSnackbar('Delete student successfully')
+      enqueueSnackbar('Xóa học sinh thành công!')
     } catch (e) {
-      enqueueSnackbar('Delete student failed', {variant: 'error'})
+      enqueueSnackbar('Xóa học sinh thất bại!', {variant: 'error'})
       console.error(e)
     }
   };
@@ -106,11 +106,11 @@ export default function StudentList() {
     <Page title="Student: List">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Student List"
+          heading="Danh sách học sinh"
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Student', href: PATH_DASHBOARD.student.root },
-            { name: 'List' },
+            { name: 'Trang chủ', href: PATH_DASHBOARD.root },
+            { name: 'Học sinh', href: PATH_DASHBOARD.student.root },
+            { name: 'Danh sách' },
           ]}
         />
 

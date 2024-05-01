@@ -5,28 +5,18 @@ import { useEffect, useState } from 'react';
 // routes
 // components
 import Scrollbar from '../../../../components/Scrollbar';
-import {
-  Button,
-  Card,
-  Chip,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TablePagination,
-  TableRow,
-} from '@mui/material';
+import { Card, Chip, Table, TableBody, TableCell, TableContainer, TablePagination, TableRow } from '@mui/material';
 import AttendanceListHead from './AttendanceListHead';
-import { getAttendances, updateAttendance } from '../../../../api/attendance';
+import { destroyAttendance, getAttendances, updateAttendance } from '../../../../api/attendance';
 import AttendanceMoreMenu from './AttendanceMoreMenu';
-import { destroyClass } from '../../../../api/class';
 import { useSnackbar } from 'notistack';
+import { destroyAbsenceReport } from '../../../../api/absence_report';
 
 // ----------------------------------------------------------------------
 const TABLE_HEAD = [
-  { id: 'student_code', label: 'Student code', alignRight: false, sortable: true },
-  { id: 'student.name', label: 'Student name', alignRight: false, sortable: false },
-  { id: 'present', label: 'Present', alignRight: false, sortable: false },
+  { id: 'student_code', label: 'Mã học sinh', alignRight: false, sortable: true },
+  { id: 'student.name', label: 'Tên học sinh', alignRight: false, sortable: false },
+  { id: 'present', label: 'Trạng thái', alignRight: false, sortable: false },
   { id: '', label: '', alignRight: false, sortable: false },
 ];
 
@@ -57,7 +47,7 @@ export default function AttendanceFormList() {
         setTotal(attendances?.data?.total || 0);
         setAttendanceList(records);
       } catch (e) {
-        enqueueSnackbar('Get attendance list failed', {variant: 'error'});
+        enqueueSnackbar('Lấy danh sách điểm danh thất bại!', {variant: 'error'});
         console.error(e)
       }
     }
@@ -79,6 +69,14 @@ export default function AttendanceFormList() {
 
 
   const handleDeleteAttendance = async (attendanceId) => {
+    try {
+      await destroyAttendance(attendanceId);
+      navigate(0);
+      enqueueSnackbar('Xóa điểm danh thành công!')
+    } catch (e) {
+      enqueueSnackbar('Xóa điểm danh thất bại!', {variant: 'error'})
+      console.error(e)
+    }
   };
 
   const handleUpdate = async (status, id) => {
@@ -95,9 +93,9 @@ export default function AttendanceFormList() {
       const records = attendances?.data?.records || [];
       setTotal(attendances?.data?.total || 0);
       setAttendanceList(records);
-      enqueueSnackbar('Update attendance successfully')
+      enqueueSnackbar('Cập nhật điểm danh thành công!')
     } catch (e) {
-      enqueueSnackbar(e?.message || 'Update attendance failed', {variant: 'error'})
+      enqueueSnackbar('Cập nhật điểm danh thất bại!', {variant: 'error'})
     }
   }
 

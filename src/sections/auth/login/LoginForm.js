@@ -15,19 +15,20 @@ import useIsMountedRef from '../../../hooks/useIsMountedRef';
 // components
 import Iconify from '../../../components/Iconify';
 import { FormProvider, RHFTextField, RHFCheckbox } from '../../../components/hook-form';
+import { useSnackbar } from 'notistack';
 
 // ----------------------------------------------------------------------
 
 export default function LoginForm() {
   const { login } = useAuth();
-
+  const {enqueueSnackBar} = useSnackbar();
   const isMountedRef = useIsMountedRef();
 
   const [showPassword, setShowPassword] = useState(false);
 
   const LoginSchema = Yup.object().shape({
-    email: Yup.string().email('Email must be a valid email address').required('Email is required'),
-    password: Yup.string().required('Password is required'),
+    email: Yup.string().email('Tên đăng nhập không hợp lệ').required('Tên đăng nhập không được để trống'),
+    password: Yup.string().required('Mật khẩu không được để trống'),
   });
 
   const defaultValues = {
@@ -53,6 +54,7 @@ export default function LoginForm() {
       await login(data.email, data.password);
     } catch (error) {
       console.error(error);
+      enqueueSnackBar('Có lỗi xảy ra trong quá trình đăng nhập', {variant:  'error'})
       reset();
       if (isMountedRef.current) {
         setError('afterSubmit', error);
@@ -62,14 +64,14 @@ export default function LoginForm() {
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-      <Stack spacing={3}>
+      <Stack spacing={3} sx={{ marginBottom: 2 }}>
         {!!errors.afterSubmit && <Alert severity="error">{errors.afterSubmit.message}</Alert>}
 
-        <RHFTextField name="email" label="Email address" />
+        <RHFTextField name="email" label="Tên đăng nhập" />
 
         <RHFTextField
           name="password"
-          label="Password"
+          label="Mật khẩu"
           type={showPassword ? 'text' : 'password'}
           InputProps={{
             endAdornment: (
@@ -83,15 +85,8 @@ export default function LoginForm() {
         />
       </Stack>
 
-      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
-        <RHFCheckbox name="remember" label="Remember me" />
-        <Link component={RouterLink} variant="subtitle2" to={PATH_AUTH.resetPassword}>
-          Forgot password?
-        </Link>
-      </Stack>
-
       <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
-        Login
+        Đăng nhập
       </LoadingButton>
     </FormProvider>
   );

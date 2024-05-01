@@ -19,14 +19,14 @@ export default function StudentUpdate() {
     <Page title="Student: Edit">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading='Edit student'
+          heading='Cập nhât học sinh'
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
+            { name: 'Trang chủ', href: PATH_DASHBOARD.root },
             {
-              name: 'Student',
+              name: 'Học sinh',
               href: PATH_DASHBOARD.student.root,
             },
-            { name: 'Edit student' },
+            { name: 'Cập nhật' },
           ]}
         />
 

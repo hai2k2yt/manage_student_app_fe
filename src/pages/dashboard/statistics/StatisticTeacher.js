@@ -13,7 +13,7 @@ import Scrollbar from '../../../components/Scrollbar';
 import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
 // sections
 import { useSnackbar } from 'notistack';
-import { statisticStudentFee, statisticTeacherFee } from '../../../api/statistics';
+import { statisticTeacherFee } from '../../../api/statistics';
 
 
 // ----------------------------------------------------------------------
@@ -49,21 +49,21 @@ export default function StatisticStudent() {
         setClubList(clubCodes);
         setTeacherFeeList(teacherFeeMap);
       } catch (e) {
-        enqueueSnackbar('Fetch statistic teacher failed', {variant: 'error'})
+        enqueueSnackbar('Thống kê lương giáo viên thất bại!', {variant: 'error'})
       }
     }
     fetchStudentFeeList();
   }, [from, to]);
 
   return (
-    <Page title="Statistic: Student">
+    <Page title="Statistic: Teacher">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Statistic teacher"
+          heading="Thống kê lương cho giáo viên"
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Statistic', href: PATH_DASHBOARD.statistic.root },
-            { name: 'Teacher' },
+            { name: 'Trang chủ', href: PATH_DASHBOARD.root },
+            { name: 'Thống kê', href: PATH_DASHBOARD.statistic.root },
+            { name: 'Giáo viên' },
           ]}
         />
 
@@ -75,7 +75,7 @@ export default function StatisticStudent() {
                   <TableRow>
                     <TableCell></TableCell>
                     {clubList?.map((club) => <TableCell align="left">{club}</TableCell>)}
-                    <TableCell>Total</TableCell>
+                    <TableCell>Tổng</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>

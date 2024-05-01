@@ -33,7 +33,7 @@ export default function ClubDetail() {
         const schedules = res?.data?.data;
         setClubScheduleList(schedules);
       } catch (e) {
-        enqueueSnackbar('Get club schedule failed', { variant: 'error' });
+        enqueueSnackbar('Lấy danh sách thời khóa biểu thất bại!', { variant: 'error' });
         console.error(e);
       }
     }
@@ -45,25 +45,25 @@ export default function ClubDetail() {
     let text = '';
     switch (day) {
       case '1':
-        text = 'Sunday';
+        text = 'Chủ nhật';
         break;
       case '2':
-        text = 'Monday';
+        text = 'Thứ hai';
         break;
       case '3':
-        text = 'Tuesday';
+        text = 'Thứ ba';
         break;
       case '4':
-        text = 'Wednesday';
+        text = 'Thứ tư';
         break;
       case '5':
-        text = 'Thursday';
+        text = 'Thứ năm';
         break;
       case '6':
-        text = 'Friday';
+        text = 'Thứ sáu';
         break;
       case '7':
-        text = 'Saturday';
+        text = 'Thứ bảy';
         break;
       default:
         break;
@@ -75,11 +75,11 @@ export default function ClubDetail() {
     <Page title="Club: Detail">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading="Club Detail"
+          heading="Chi tiết CLB"
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
-            { name: 'Club', href: PATH_DASHBOARD.club.root },
-            { name: 'Detail' },
+            { name: 'Trang chủ', href: PATH_DASHBOARD.root },
+            { name: 'CLB', href: PATH_DASHBOARD.club.root },
+            { name: 'Chi tiết' },
           ]}
         />
 
@@ -104,14 +104,14 @@ export default function ClubDetail() {
         </List>
 
         <Stack direction="row" justifyContent="space-between">
-          <Typography>Club session</Typography>
+          <Typography>Buổi học CLB</Typography>
           <Button
             variant="contained"
             component={RouterLink}
             to={`${PATH_DASHBOARD.club.root}/${club_code}/session/create`}
             startIcon={<Iconify icon={'eva:plus-fill'} />}
           >
-            New Session
+            Tạo mới
           </Button>
         </Stack>
 

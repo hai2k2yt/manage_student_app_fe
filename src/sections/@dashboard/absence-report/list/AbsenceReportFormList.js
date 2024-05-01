@@ -7,18 +7,17 @@ import { useEffect, useState } from 'react';
 import Scrollbar from '../../../../components/Scrollbar';
 import { Card, Chip, Table, TableBody, TableCell, TableContainer, TablePagination, TableRow } from '@mui/material';
 import AbsenceReportListHead from './AbsenceReportListHead';
-import { getAbsenceReports, updateAbsenceReport } from '../../../../api/absence_report';
-import ClubSessionMoreMenu from '../../club-session/list/ClubSessionMoreMenu';
+import { destroyAbsenceReport, getAbsenceReports, updateAbsenceReport } from '../../../../api/absence_report';
 import AbsenceReportMoreMenu from './AbsenceReportMoreMenu';
-import { getAttendances, updateAttendance } from '../../../../api/attendance';
 import { useSnackbar } from 'notistack';
+import { destroyClub } from '../../../../api/club';
 
 // ----------------------------------------------------------------------
 const TABLE_HEAD = [
-  { id: 'student_code', label: 'Student code', alignRight: false, sortable: true },
-  { id: 'student.name', label: 'Student name', alignRight: false, sortable: false },
-  { id: 'reason', label: 'Reason', alignRight: false, sortable: false },
-  { id: 'status', label: 'Status', alignRight: false, sortable: true },
+  { id: 'student_code', label: 'Mã học sinh', alignRight: false, sortable: true },
+  { id: 'student.name', label: 'Tên học sinh', alignRight: false, sortable: false },
+  { id: 'reason', label: 'Lý do', alignRight: false, sortable: false },
+  { id: 'status', label: 'Trạng thái', alignRight: false, sortable: true },
   { id: '', label: '', alignRight: false, sortable: false },
 ];
 export default function AbsenceReportFormList() {
@@ -49,7 +48,7 @@ export default function AbsenceReportFormList() {
         setTotal(absenceReports?.data?.total || 0);
         setAbsenceReportList(records);
       } catch (e) {
-        enqueueSnackbar('Get absence report list failed', { variant: 'error' });
+        enqueueSnackbar('Lấy danh sách báo cáo nghỉ thất bại!', { variant: 'error' });
         console.error(e);
       }
     }
@@ -80,7 +79,14 @@ export default function AbsenceReportFormList() {
   };
 
   const handleDeleteAbsenceReport = async (reportId) => {
-    console.log(reportId);
+    try {
+      await destroyAbsenceReport(reportId);
+      navigate(0);
+      enqueueSnackbar('Xóa báo cáo nghỉ thành công!')
+    } catch (e) {
+      enqueueSnackbar('Xóa báo cáo nghỉ thất bại!', {variant: 'error'})
+      console.error(e)
+    }
   };
 
   const handleUpdateAbsenceReport = async (status, reportId) => {
@@ -97,9 +103,9 @@ export default function AbsenceReportFormList() {
       const records = absenceReports?.data?.records || [];
       setTotal(absenceReports?.data?.total || 0);
       setAbsenceReportList(records);
-      enqueueSnackbar('Update absence report successfully');
+      enqueueSnackbar('Cập nhật báo cáo nghỉ thành công!');
     } catch (e) {
-      enqueueSnackbar('Update absence report failed', { variant: 'error' });
+      enqueueSnackbar('Cập nhật báo cáo nghỉ thất bại!', { variant: 'error' });
     }
   };
 

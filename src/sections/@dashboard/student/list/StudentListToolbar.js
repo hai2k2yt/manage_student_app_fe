@@ -30,7 +30,7 @@ export default function StudentListToolbar({filterName, onFilterName}) {
         stretchStart={240}
         value={filterName}
         onChange={(event) => onFilterName(event.target.value)}
-        placeholder="Search student name..."
+        placeholder="Tìm học sinh..."
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">

@@ -24,9 +24,9 @@ export default function ClubUpdateForm() {
   const { club_code } = useParams();
 
   const UpdateClubSchema = Yup.object().shape({
-    club_code: Yup.string().required('Club name is required'),
-    name: Yup.string().required('Club name is required'),
-    teacher_code: Yup.string().required('Teacher is required'),
+    club_code: Yup.string().required('Mã CLB không được để trống'),
+    name: Yup.string().required('Tên CLB không được để trống'),
+    teacher_code: Yup.string().required('Giáo viên không được để trống'),
   });
 
   const defaultValues = {
@@ -58,7 +58,7 @@ export default function ClubUpdateForm() {
         const teachers = await getAllTeachers();
         setTeacherList(teachers.data);
       } catch (e) {
-        enqueueSnackbar('Get teacher list failed', {variant: 'error'});
+        enqueueSnackbar('Lấy danh sách giáo viên thất bại!', {variant: 'error'});
         console.error(e)
       }
     }
@@ -71,7 +71,7 @@ export default function ClubUpdateForm() {
         const { club_code: clubcode, name, teacher_code } = classDetail.data;
         reset({ club_code: clubcode, name, teacher_code });
       } catch (e) {
-        enqueueSnackbar('Get club info failed', {variant: 'error'});
+        enqueueSnackbar('Lấy thông tin CLB thất bại!', {variant: 'error'});
         console.error(e)
       }
     }
@@ -82,10 +82,10 @@ export default function ClubUpdateForm() {
     try {
       const res = await updateClub(club_code, formData);
       reset();
-      enqueueSnackbar(res.message || 'Update club success!');
+      enqueueSnackbar('Cập nhật CLB thành công!');
       navigate(PATH_DASHBOARD.club.list);
     } catch (error) {
-      enqueueSnackbar('Update club failed', {variant: 'error'});
+      enqueueSnackbar('Cập nhật CLB thất bại', {variant: 'error'});
       console.error(error);
     }
   };
@@ -97,15 +97,15 @@ export default function ClubUpdateForm() {
           <Card sx={{ p: 3 }}>
             <Stack spacing={3}>
               <Stack direction="column" spacing={1}>
-                <Typography>Club code</Typography>
+                <Typography>Mã CLB</Typography>
                 <RHFTextField name="club_code" />
               </Stack>
               <Stack direction="column" spacing={1}>
-                <Typography>Club name</Typography>
+                <Typography>Tên CLB</Typography>
                 <RHFTextField name="name" />
               </Stack>
               <Stack direction="column" spacing={1}>
-                <Typography>Teacher</Typography>
+                <Typography>Giáo viên</Typography>
                 <RHFSelect name="teacher_code">
                   {teacherList.map((teacher) => (
                     <option key={teacher.teacher_code} value={teacher.teacher_code}>
@@ -115,8 +115,8 @@ export default function ClubUpdateForm() {
                 </RHFSelect>
               </Stack>
               <Stack direction='row' justifyContent='flex-end' spacing={3}>
-                <Button variant="outlined" type="submit">Submit</Button>
-                <Button variant="outlined" onClick={() => navigate(PATH_DASHBOARD.club.list)}>Cancel</Button>
+                <Button variant="outlined" type="submit">Sửa</Button>
+                <Button variant="outlined" onClick={() => navigate(PATH_DASHBOARD.club.list)}>Hủy</Button>
               </Stack>
             </Stack>
           </Card>

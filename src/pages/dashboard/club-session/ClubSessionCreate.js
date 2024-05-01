@@ -21,18 +21,18 @@ export default function ClubSessionCreate() {
     <Page title="Club Session: Create">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading='Create new session'
+          heading='Tạo buổi học CLB'
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
+            { name: 'Trang chủ', href: PATH_DASHBOARD.root },
             {
-              name: 'Club',
+              name: 'CLB',
               href: PATH_DASHBOARD.club.root,
             },
             {
-              name: 'Club detail',
+              name: 'Chi tiết CLB',
               href: `${PATH_DASHBOARD.club.root}/${club_code}/detail`,
             },
-            { name: 'New session'},
+            { name: 'Tạo buổi học'},
           ]}
         />
 

@@ -19,14 +19,14 @@ export default function StudentCreate() {
     <Page title="Student: Create">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading='Create student'
+          heading='Tạo học sinh'
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
+            { name: 'Trang chủ', href: PATH_DASHBOARD.root },
             {
-              name: 'Student',
+              name: 'Học sinh',
               href: PATH_DASHBOARD.student.root,
             },
-            { name: 'Create student'},
+            { name: 'Tạo mới'},
           ]}
         />
 

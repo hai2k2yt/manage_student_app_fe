@@ -19,8 +19,8 @@ export default function StudentClubComment({studentCode, clubCode}) {
     <Table>
       <TableHead>
         <TableRow>
-          <TableCell>Session code</TableCell>
-          <TableCell>Content</TableCell>
+          <TableCell>Mã buổi học</TableCell>
+          <TableCell>Nội dung</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>

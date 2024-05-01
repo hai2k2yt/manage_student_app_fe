@@ -19,18 +19,18 @@ export default function ClubSessionUpdate() {
     <Page title="Club Session: Edit">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading='Edit club session'
+          heading='Cập nhật buổi học CLB'
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
+            { name: 'Trang chủ', href: PATH_DASHBOARD.root },
             {
-              name: 'Club',
+              name: 'CLB',
               href: PATH_DASHBOARD.club.root,
             },
             {
-              name: 'Club detail',
+              name: 'Chi tiết CLB',
               href: `${PATH_DASHBOARD.club.root}/${club_code}/detail`,
             },
-            { name: 'Update session' },
+            { name: 'Cập nhật buổi học' },
           ]}
         />
 

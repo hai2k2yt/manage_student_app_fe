@@ -31,8 +31,8 @@ export default function StudentClubAttendance({ studentCode, clubCode }) {
     <Table>
       <TableHead>
         <TableRow>
-          <TableCell>Session code</TableCell>
-          <TableCell align="right">Present</TableCell>
+          <TableCell>Mã buổi học</TableCell>
+          <TableCell align="right">Trạng thái</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>

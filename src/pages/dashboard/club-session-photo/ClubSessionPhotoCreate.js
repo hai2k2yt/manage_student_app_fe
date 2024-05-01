@@ -22,22 +22,22 @@ export default function ClubSessionPhotoCreate() {
     <Page title="Photo: Create">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading='Create new absence report'
+          heading='Thêm ảnh buổi học CLB'
           links={[
             { name: 'Dashboard', href: PATH_DASHBOARD.root },
             {
-              name: 'Club',
+              name: 'CLB',
               href: PATH_DASHBOARD.club.root,
             },
             {
-              name: 'Club detail',
+              name: 'Chi tiết CLB',
               href: `${PATH_DASHBOARD.club.root}/${club_code}/detail`,
             },
             {
-              name: 'Session detail',
+              name: 'Chi tiết buổi học',
               href: `${PATH_DASHBOARD.club.root}/${club_code}/session/${session_code}`,
             },
-            { name: 'New photo'},
+            { name: 'Thêm ảnh'},
           ]}
         />
 
