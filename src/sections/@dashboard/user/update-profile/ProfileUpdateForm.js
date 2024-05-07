@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 import { useSnackbar } from 'notistack';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 // form
 import { useForm } from 'react-hook-form';
@@ -8,19 +8,20 @@ import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
 import { Button, Card, Grid, Stack, Typography } from '@mui/material';
 // routes
-import { PATH_DASHBOARD } from '../../../routes/paths';
+import { PATH_DASHBOARD } from '../../../../routes/paths';
 // components
-import { FormProvider, RHFSelect, RHFTextField } from '../../../components/hook-form';
-import { showUser, updateUser } from '../../../api/user';
+import { FormProvider, RHFSelect, RHFTextField } from '../../../../components/hook-form';
+import { updateProfile, updateUser } from '../../../../api/user';
+import useAuth from '../../../../hooks/useAuth';
 
 // ----------------------------------------------------------------------
 
-export default function UserUpdateForm() {
+export default function ProfileUpdateForm() {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
-  const {id} = useParams();
+  const {user } = useAuth();
 
-  const UpdateUserSchema = Yup.object().shape({
+  const UpdateProfileSchema = Yup.object().shape({
     username: Yup.string().required('Tên đăng nhập không được để trống'),
     name: Yup.string().required('Tên người dùng không được để trống'),
     role: Yup.string().required('Quyền không được để trống'),
@@ -33,7 +34,7 @@ export default function UserUpdateForm() {
   };
 
   const methods = useForm({
-    resolver: yupResolver(UpdateUserSchema),
+    resolver: yupResolver(UpdateProfileSchema),
     defaultValues,
   });
 
@@ -50,27 +51,18 @@ export default function UserUpdateForm() {
 
   useEffect(() => {
     reset(defaultValues);
-    async function fetchUserInfo() {
-      try {
-        const userDetail = await showUser(id);
-        const { username, name, role } = userDetail.data;
-        reset({ username, name, role });
-      } catch (e) {
-        enqueueSnackbar('Lấy thông tin người dùng that bại', {variant: 'error'});
-        console.error(e)
-      }
-    }
-    fetchUserInfo();
+    const { username, name, role } = user.data;
+    reset({ username, name, role });
   }, []);
 
   const onSubmit = async (formData) => {
     try {
-      const res = await updateUser(id, formData);
+      const res = await updateProfile(formData);
       reset();
-      enqueueSnackbar('Cập nhật người dùng thành công!');
+      enqueueSnackbar('Cập nhật thông tin cá nhân thành công!');
       navigate(PATH_DASHBOARD.user.list);
     } catch (error) {
-      enqueueSnackbar('Cập nhật người dùng thất bại', {variant: 'error'});
+      enqueueSnackbar('Cập nhật thông tin cá nhân thất bại', {variant: 'error'});
       console.error(error);
     }
   };
@@ -83,7 +75,7 @@ export default function UserUpdateForm() {
             <Stack spacing={3}>
               <Stack direction='column' spacing={1}>
                 <Typography>Tên đăng nhập</Typography>
-                <RHFTextField name="username"/>
+                <RHFTextField name="username" disabled/>
               </Stack>
               <Stack direction='column' spacing={1}>
                 <Typography>Tên người dùng</Typography>
@@ -91,7 +83,7 @@ export default function UserUpdateForm() {
               </Stack>
               <Stack direction='column' spacing={1}>
                 <Typography>Quyền</Typography>
-                <RHFSelect name="role">
+                <RHFSelect name="role" disabled>
                   <option key="1" value="1">
                     Quản trị viên
                   </option>
@@ -108,7 +100,7 @@ export default function UserUpdateForm() {
               </Stack>
               <Stack direction="row" justifyContent="flex-end" spacing={3}>
                 <Button variant="outlined" type="submit">Cập nhật</Button>
-                <Button variant="outlined" onClick={() => navigate(PATH_DASHBOARD.user.list)}>Hủy</Button>
+                <Button variant="outlined" onClick={() => navigate(PATH_DASHBOARD.general.app)}>Hủy</Button>
               </Stack>
             </Stack>
           </Card>

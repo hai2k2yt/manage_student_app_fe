@@ -15,6 +15,10 @@ export async function showUser(id) {
 }
 
 export async function updateUser(id, params) {
-  return axios.get(`/user/${id}`, params);
+  return axios.post(`/user/${id}`, params);
+}
+
+export async function updateProfile(params) {
+  return axios.post(`/profile`, params);
 }
 
