@@ -30,7 +30,7 @@ export default function ClubListToolbar({filterName, onFilterName}) {
         stretchStart={240}
         value={filterName}
         onChange={(event) => onFilterName(event.target.value)}
-        placeholder="Search club name..."
+        placeholder="Tìm CLB..."
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">

@@ -21,3 +21,20 @@ export function fShortenNumber(number) {
 export function fData(number) {
   return numeral(number).format('0.0 b');
 }
+
+export function formatNumber(number) {
+  if(!number) return 0;
+  let numStr = number.toString();
+
+  let decimalIndex = numStr.indexOf('.');
+
+  if (decimalIndex === -1) {
+    decimalIndex = numStr.length;
+  }
+
+  for (let i = decimalIndex - 3; i > 0; i -= 3) {
+    numStr = numStr.slice(0, i) + ',' + numStr.slice(i);
+  }
+
+  return numStr;
+}

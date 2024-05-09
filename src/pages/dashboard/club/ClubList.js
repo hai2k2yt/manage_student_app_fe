@@ -15,7 +15,6 @@ import {
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // hooks
 import useSettings from '../../../hooks/useSettings';
-// _mock_
 // components
 import Page from '../../../components/Page';
 import Scrollbar from '../../../components/Scrollbar';
@@ -147,12 +146,6 @@ export default function ClubList() {
                         <TableCell align="left">{club_code}</TableCell>
                         <TableCell align="left">{name}</TableCell>
                         <TableCell align="left">{teacher_name}</TableCell>
-                        <TableCell align="left">
-                          {created_at}
-                        </TableCell>
-                        <TableCell align="left">
-                          {updated_at}
-                        </TableCell>
                         <TableCell align="right">
                           <ClubMoreMenu onDelete={() => handleDeleteClub(club_code)} clubCode={club_code} />
                         </TableCell>

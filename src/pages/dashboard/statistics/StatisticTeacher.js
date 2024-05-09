@@ -1,12 +1,21 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // @mui
-import { Card, Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import {
+  Card,
+  Container,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from '@mui/material';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // hooks
 import useSettings from '../../../hooks/useSettings';
-// _mock_
 // components
 import Page from '../../../components/Page';
 import Scrollbar from '../../../components/Scrollbar';
@@ -14,6 +23,7 @@ import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
 // sections
 import { useSnackbar } from 'notistack';
 import { statisticTeacherFee } from '../../../api/statistics';
+import { formatNumber } from '../../../utils/formatNumber';
 
 
 // ----------------------------------------------------------------------
@@ -66,7 +76,7 @@ export default function StatisticStudent() {
             { name: 'Giáo viên' },
           ]}
         />
-
+        <Typography align='right'>Đơn vị: VND</Typography>
         <Card>
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
@@ -89,8 +99,8 @@ export default function StatisticStudent() {
                         role="checkbox"
                       >
                         <TableCell align="left">{row}</TableCell>
-                        {teacherClubs?.map(item => <TableCell align="left">{item}</TableCell>)}
-                        <TableCell align="left">{teacherClubs?.reduce((arr, a) => arr + a, 0)}</TableCell>
+                        {teacherClubs?.map(item => <TableCell align="left">{formatNumber(item)}</TableCell>)}
+                        <TableCell align="left">{formatNumber(teacherClubs?.reduce((arr, a) => arr + a, 0))}</TableCell>
                       </TableRow>
                     );
                   })}

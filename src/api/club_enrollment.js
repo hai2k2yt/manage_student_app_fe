@@ -14,6 +14,10 @@ export async function storeClubEnrollment(params) {
   return axios.post('/club-enrollment', params);
 }
 
+export async function cancelClubEnrollment(id, params) {
+  return axios.post(`/club-enrollment/${id}/cancel`, params)
+}
+
 export async function destroyClubEnrollment(id) {
   return axios.delete(`/club-enrollment/${id}`)
 }

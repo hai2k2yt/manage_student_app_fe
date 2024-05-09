@@ -16,7 +16,6 @@ import Logo from '../../../components/Logo';
 import Scrollbar from '../../../components/Scrollbar';
 import { NavSectionVertical } from '../../../components/nav-section';
 //
-import NavbarDocs from './NavbarDocs';
 import NavbarAccount from './NavbarAccount';
 import CollapseButton from './CollapseButton';
 import { PATH_DASHBOARD } from '../../../routes/paths';
@@ -124,8 +123,8 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
           path: PATH_DASHBOARD.statistic.root,
           icon: ICONS.cart,
           children: [
-            { title: 'Giáo viên', path: PATH_DASHBOARD.statistic.student },
-            { title: 'Học sinh', path: PATH_DASHBOARD.statistic.teacher },
+            { title: 'Học sinh', path: PATH_DASHBOARD.statistic.student },
+            { title: 'Giáo viên', path: PATH_DASHBOARD.statistic.teacher },
 
           ],
         }]: []),
@@ -180,7 +179,6 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
 
       <Box sx={{ flexGrow: 1 }} />
 
-      {!isCollapse && <NavbarDocs />}
     </Scrollbar>
   );
 

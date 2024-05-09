@@ -7,18 +7,7 @@ import useSettings from '../../hooks/useSettings';
 // components
 import Page from '../../components/Page';
 // sections
-import {
-  AppWidget,
-  AppWelcome,
-  AppFeatured,
-  AppNewInvoice,
-  AppTopAuthors,
-  AppTopRelated,
-  AppAreaInstalled,
-  AppWidgetSummary,
-  AppCurrentDownload,
-  AppTopInstalledCountries,
-} from '../../sections/@dashboard/general/app';
+import { AppWidgetSummary } from '../../sections/@dashboard/general/app';
 import { useEffect, useState } from 'react';
 import { statisticOverall } from '../../api/statistics';
 import { useSnackbar } from 'notistack';

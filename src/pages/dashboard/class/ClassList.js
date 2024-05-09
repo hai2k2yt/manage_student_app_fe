@@ -15,7 +15,6 @@ import {
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // hooks
 import useSettings from '../../../hooks/useSettings';
-// _mock_
 // components
 import Page from '../../../components/Page';
 import Scrollbar from '../../../components/Scrollbar';

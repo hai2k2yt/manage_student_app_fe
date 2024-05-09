@@ -1,39 +1,40 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
-import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 // @mui
 import {
-  MenuItem,
-  IconButton,
+  Button,
   Dialog,
-  DialogTitle,
+  DialogActions,
   DialogContent,
   DialogContentText,
+  DialogTitle,
+  IconButton,
+  MenuItem,
   TextField,
-  DialogActions, Button,
 } from '@mui/material';
 // routes
-import { PATH_DASHBOARD } from '../../../../routes/paths';
 // components
 import Iconify from '../../../../components/Iconify';
 import MenuPopover from '../../../../components/MenuPopover';
-import { destroyClubEnrollment } from '../../../../api/club_enrollment';
+import { cancelClubEnrollment, destroyClubEnrollment } from '../../../../api/club_enrollment';
 import { useSnackbar } from 'notistack';
 import { DatePicker } from '@mui/lab';
+import moment from 'moment';
 
 // ----------------------------------------------------------------------
 
 ClubEnrollmentMoreMenu.propTypes = {
-  enrollmentId: PropTypes.string,
+  enrollmentId: PropTypes.number,
 };
 
-export default function ClubEnrollmentMoreMenu({ onDelete, enrollmentId }) {
+export default function ClubEnrollmentMoreMenu({ enrollmentId }) {
   const [open, setOpen] = useState(null);
   const [deleteDate, setDeleteDate] = useState(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const {club_code} = useParams();
   const {enqueueSnackbar} = useSnackbar();
-  const {navigate } = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const date = new Date().toDateString();
@@ -56,9 +57,20 @@ export default function ClubEnrollmentMoreMenu({ onDelete, enrollmentId }) {
     setOpen(null);
   };
 
-  const handleDeleteClubEnrollment = async (id, params) => {
+  const handleDeleteClubEnrollment = async () => {
     try {
-      await destroyClubEnrollment(id, params);
+      await destroyClubEnrollment(enrollmentId);
+      navigate(0);
+      enqueueSnackbar('Xóa đăng ký CLB thành công!')
+    } catch (e) {
+      enqueueSnackbar('Xóa đăng ký CLB thất bại!', {variant: 'error'})
+      console.error(e)
+    }
+  };
+
+  const handleCancelClubEnrollment = async (id, params) => {
+    try {
+      await cancelClubEnrollment(id, params);
       navigate(0);
       enqueueSnackbar('Hủy đăng ký CLB thành công!')
     } catch (e) {
@@ -87,9 +99,9 @@ export default function ClubEnrollmentMoreMenu({ onDelete, enrollmentId }) {
           onSubmit: async (event) => {
             event.preventDefault();
             const params = {
-              date: deleteDate
+              to: moment(deleteDate).format('YYYY-DD-MM')
             };
-            await handleDeleteClubEnrollment(enrollmentId, params);
+            await handleCancelClubEnrollment(enrollmentId, params);
             handleClose();
           },
         }}
@@ -100,16 +112,17 @@ export default function ClubEnrollmentMoreMenu({ onDelete, enrollmentId }) {
             Chọn ngày hủy đăng ký câu lạc bộ
           </DialogContentText>
           <DatePicker
-            id="name"
-            name="email"
-            label="Delete date"
+            id="to"
+            name="to"
+            format='yyyy-MM-dd'
             value={deleteDate}
+            renderInput={(params) => <TextField {...params} fullWidth />}
             onChange={(newValue) => setDeleteDate(newValue)}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDeleteDialog}>Hủy</Button>
-          <Button type="submit">Xóa</Button>
+          <Button onClick={handleCloseDeleteDialog}>Quay lại</Button>
+          <Button type="submit">Hủy đăng ký</Button>
         </DialogActions>
       </Dialog>
 
@@ -127,9 +140,13 @@ export default function ClubEnrollmentMoreMenu({ onDelete, enrollmentId }) {
           '& .MuiMenuItem-root': { px: 1, typography: 'body2', borderRadius: 0.75 },
         }}
       >
-        <MenuItem onClick={() => handleDeleteClubEnrollment(enrollmentId)} sx={{ color: 'error.main' }}>
+        <MenuItem onClick={() => handleDeleteClubEnrollment()} sx={{ color: 'error.main' }}>
           <Iconify icon={'eva:trash-2-outline'} sx={{ ...ICON }} />
           Xóa
+        </MenuItem>
+        <MenuItem onClick={() => handleOpenDeleteDialog()} sx={{ color: 'warning.main' }}>
+          <Iconify icon={'eva:trash-2-outline'} sx={{ ...ICON }} />
+          Hủy đăng ký
         </MenuItem>
       </MenuPopover>
     </>

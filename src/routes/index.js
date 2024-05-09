@@ -1,7 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { Navigate, useLocation, useRoutes } from 'react-router-dom';
 // layouts
-import MainLayout from '../layouts/main';
 import DashboardLayout from '../layouts/dashboard';
 import LogoOnlyLayout from '../layouts/LogoOnlyLayout';
 // guards
@@ -148,13 +147,6 @@ export default function Router() {
         { path: '500', element: <Page500 /> },
         { path: '404', element: <NotFound /> },
         { path: '*', element: <Navigate to="/404" replace /> },
-      ],
-    },
-    {
-      path: '/',
-      element: <MainLayout />,
-      children: [
-        { element: <Navigate to="/auth/login" replace />, index: true },
       ],
     },
     { path: '*', element: <Navigate to="/404" replace /> },

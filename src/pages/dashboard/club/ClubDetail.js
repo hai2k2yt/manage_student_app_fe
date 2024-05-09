@@ -6,7 +6,6 @@ import { Button, Container, Divider, List, ListItem, ListItemText, Stack, Typogr
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // hooks
 import useSettings from '../../../hooks/useSettings';
-// _mock_
 // components
 import Page from '../../../components/Page';
 import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
@@ -15,6 +14,7 @@ import { getScheduleByClub } from '../../../api/club_schedule';
 import { ClubSessionList } from '../../../sections/@dashboard/club-session/list';
 import Iconify from '../../../components/Iconify';
 import { useSnackbar } from 'notistack';
+import ClubEnrollmentList from '../../../sections/@dashboard/club/club-enrollment/ClubEnrollmentList';
 
 // ----------------------------------------------------------------------
 
@@ -83,18 +83,14 @@ export default function ClubDetail() {
           ]}
         />
 
-        <Typography>Club schedule</Typography>
+        <Typography>Thời khóa biểu</Typography>
         <List sx={{ width: '100%', maxWidth: 500, bgcolor: 'background.paper' }}>
           {clubScheduleList?.map(item => (
             <>
               <ListItem alignItems="flex-start">
                 <ListItemText
-                  primary={renderDay(item.day_of_week)}
-                  secondary={
-                    <div>
-                      {item.teacher.teacher_name}
-                    </div>
-                  }
+                  primary={renderDay(item?.day_of_week)}
+                  secondary={item?.teacher?.teacher_name}
                 />
               </ListItem>
               <Divider variant="inset" component="li" />
@@ -116,6 +112,20 @@ export default function ClubDetail() {
         </Stack>
 
         <ClubSessionList clubCode={club_code} />
+
+        <Stack direction="row" justifyContent="space-between">
+          <Typography>Danh sách đăng ký CLB</Typography>
+          <Button
+            variant="contained"
+            component={RouterLink}
+            to={`${PATH_DASHBOARD.club.root}/${club_code}/enrollment/create`}
+            startIcon={<Iconify icon={'eva:plus-fill'} />}
+          >
+            Tạo mới
+          </Button>
+        </Stack>
+
+        <ClubEnrollmentList />
       </Container>
     </Page>
   );

@@ -18,7 +18,7 @@ import { showUser, updateUser } from '../../../api/user';
 export default function UserUpdateForm() {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
-  const {id} = useParams();
+  const { id } = useParams();
 
   const UpdateUserSchema = Yup.object().shape({
     username: Yup.string().required('Tên đăng nhập không được để trống'),
@@ -56,10 +56,11 @@ export default function UserUpdateForm() {
         const { username, name, role } = userDetail.data;
         reset({ username, name, role });
       } catch (e) {
-        enqueueSnackbar('Lấy thông tin người dùng that bại', {variant: 'error'});
-        console.error(e)
+        enqueueSnackbar('Lấy thông tin người dùng that bại', { variant: 'error' });
+        console.error(e);
       }
     }
+
     fetchUserInfo();
   }, []);
 
@@ -70,7 +71,7 @@ export default function UserUpdateForm() {
       enqueueSnackbar('Cập nhật người dùng thành công!');
       navigate(PATH_DASHBOARD.user.list);
     } catch (error) {
-      enqueueSnackbar('Cập nhật người dùng thất bại', {variant: 'error'});
+      enqueueSnackbar('Cập nhật người dùng thất bại', { variant: 'error' });
       console.error(error);
     }
   };
@@ -81,17 +82,20 @@ export default function UserUpdateForm() {
         <Grid item xs={12} md={8}>
           <Card sx={{ p: 3 }}>
             <Stack spacing={3}>
-              <Stack direction='column' spacing={1}>
+              <Stack direction="column" spacing={1}>
                 <Typography>Tên đăng nhập</Typography>
-                <RHFTextField name="username"/>
+                <RHFTextField name="username" />
               </Stack>
-              <Stack direction='column' spacing={1}>
+              <Stack direction="column" spacing={1}>
                 <Typography>Tên người dùng</Typography>
-                <RHFTextField name="name"/>
+                <RHFTextField name="name" />
               </Stack>
-              <Stack direction='column' spacing={1}>
+              <Stack direction="column" spacing={1}>
                 <Typography>Quyền</Typography>
                 <RHFSelect name="role">
+                  <option key="5" value="">
+                    -- Chọn quyền --
+                  </option>
                   <option key="1" value="1">
                     Quản trị viên
                   </option>
