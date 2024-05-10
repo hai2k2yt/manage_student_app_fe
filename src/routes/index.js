@@ -104,6 +104,7 @@ export default function Router() {
             (user?.role === 1) && { path: 'create', element: <ClubCreate /> },
             (user?.role === 1 || user?.role === 3) && { path: ':club_code/edit', element: <ClubUpdate /> },
             { path: ':club_code/detail', element: <ClubDetail /> },
+            { path: ':club_code/enrollment/create', element: <ClubEnrollmentCreate /> },
             { path: ':club_code/session/create', element: <ClubSessionCreate /> },
             {
               path: ':club_code/session/:session_code',
@@ -149,6 +150,12 @@ export default function Router() {
         { path: '*', element: <Navigate to="/404" replace /> },
       ],
     },
+    {
+      path: '/',
+      children: [
+        { element: <Navigate to="/auth/login" replace />, index: true },
+      ],
+    },
     { path: '*', element: <Navigate to="/404" replace /> },
   ]);
 }
@@ -179,6 +186,8 @@ const ClubList = Loadable(lazy(() => import('../pages/dashboard/club/ClubList'))
 const ClubCreate = Loadable(lazy(() => import('../pages/dashboard/club/ClubCreate')));
 const ClubUpdate = Loadable(lazy(() => import('../pages/dashboard/club/ClubUpdate')));
 const ClubDetail = Loadable(lazy(() => import('../pages/dashboard/club/ClubDetail')));
+
+const ClubEnrollmentCreate = Loadable(lazy(() => import('../pages/dashboard/club-enrollment/ClubEnrollmentCreate')));
 
 const ClubSessionCreate = Loadable(lazy(() => import('../pages/dashboard/club-session/ClubSessionCreate')));
 const ClubSessionUpdate = Loadable(lazy(() => import('../pages/dashboard/club-session/ClubSessionUpdate')));
