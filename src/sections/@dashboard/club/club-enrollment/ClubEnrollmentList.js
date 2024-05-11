@@ -84,7 +84,7 @@ function Row({ data }) {
               <Typography variant="h6" gutterBottom component="div">
                 Lịch sử đăng ký
               </Typography>
-              <Table size="small" aria-label="purchases">
+              <Table size="small" aria-label="enrollment_histories">
                 <TableHead>
                   <TableRow>
                     {TABLE_ENROLLMENT_HEAD.map(item =>

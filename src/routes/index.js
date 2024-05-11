@@ -105,6 +105,8 @@ export default function Router() {
             (user?.role === 1 || user?.role === 3) && { path: ':club_code/edit', element: <ClubUpdate /> },
             { path: ':club_code/detail', element: <ClubDetail /> },
             { path: ':club_code/enrollment/create', element: <ClubEnrollmentCreate /> },
+            { path: ':club_code/schedule/create', element: <ClubScheduleCreate /> },
+            { path: ':club_code/schedule/:schedule_code/edit', element: <ClubScheduleUpdate /> },
             { path: ':club_code/session/create', element: <ClubSessionCreate /> },
             {
               path: ':club_code/session/:session_code',
@@ -188,6 +190,9 @@ const ClubUpdate = Loadable(lazy(() => import('../pages/dashboard/club/ClubUpdat
 const ClubDetail = Loadable(lazy(() => import('../pages/dashboard/club/ClubDetail')));
 
 const ClubEnrollmentCreate = Loadable(lazy(() => import('../pages/dashboard/club-enrollment/ClubEnrollmentCreate')));
+
+const ClubScheduleCreate = Loadable(lazy(() => import('../pages/dashboard/club-schedule/ClubScheduleCreate')));
+const ClubScheduleUpdate = Loadable(lazy(() => import('../pages/dashboard/club-schedule/ClubScheduleUpdate')));
 
 const ClubSessionCreate = Loadable(lazy(() => import('../pages/dashboard/club-session/ClubSessionCreate')));
 const ClubSessionUpdate = Loadable(lazy(() => import('../pages/dashboard/club-session/ClubSessionUpdate')));
