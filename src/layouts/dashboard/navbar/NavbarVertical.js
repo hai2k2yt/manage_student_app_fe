@@ -135,6 +135,7 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
           children: [
             { title: 'Danh sách', path: PATH_DASHBOARD.club.list },
             ...((user?.role === 1) ? [{ title: 'Tạo mới', path: PATH_DASHBOARD.club.create }] : []),
+            ...((user?.role === 3) ? [{ title: 'CLB của tôi', path: PATH_DASHBOARD.club.me }] : []),
           ],
         },
       ],

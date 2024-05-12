@@ -19,6 +19,6 @@ export async function updateUser(id, params) {
 }
 
 export async function updateProfile(params) {
-  return axios.post(`/profile`, params);
+  return axios.post(`/auth/profile`, params);
 }
 

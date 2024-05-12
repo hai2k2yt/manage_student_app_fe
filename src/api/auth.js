@@ -8,15 +8,11 @@ export async function loginUser(username, password) {
 }
 
 export async function registerUser(params) {
-  return axios.post('/auth/register',
-    params,
-  );
+  return axios.post('/auth/register', params);
 }
 
-export async function forgotPasswordUser(username) {
-  return axios.post('/auth/forgot-password', {
-    username,
-  });
+export async function changePassword(params) {
+  return axios.post('/auth/change-password', params);
 }
 
 export async function getAuthUser() {

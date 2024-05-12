@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 // form
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -19,12 +19,15 @@ export default function UserNewForm() {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
+  const [currentRole, setCurrentRole] = useState('');
+
   const NewUserSchema = Yup.object().shape({
-    username: Yup.string().required('Tên đăng nhập không được để trống'),
+    username: Yup.string().email('Tên đăng nhập phải là email').required('Tên đăng nhập không được để trống'),
     password: Yup.string().required('Mật khẩu không được để trống'),
     name: Yup.string().required('Tên người dùng không được để trống'),
     password_confirmation: Yup.string().required('Mật khẩu xác nhận không được để trống'),
     role: Yup.string().required('Quyền không được để trống'),
+    code: Yup.string().nullable(),
   });
 
   const defaultValues = {
@@ -33,6 +36,7 @@ export default function UserNewForm() {
     name: '',
     password_confirmation: '',
     role: '',
+    code: ''
   };
 
   const methods = useForm({
@@ -55,14 +59,24 @@ export default function UserNewForm() {
     reset(defaultValues);
   }, []);
 
+  useEffect(() => {
+    setCurrentRole(watch('role'));
+  }, [watch('role')]);
+
   const onSubmit = async (formData) => {
     try {
-      const res = await registerUser(formData);
+      const res = await registerUser({
+        username: formData.username,
+        password: formData.password,
+        name: formData.name,
+        role: formData.role,
+        ...formData.role == 3 ? { code: formData.code } : []
+      });
       reset();
       enqueueSnackbar('Tạo người dùng thành công!');
       navigate(PATH_DASHBOARD.user.list);
     } catch (error) {
-      enqueueSnackbar('Tạo người dùng that bại!', {variant: 'error'});
+      enqueueSnackbar('Tạo người dùng thất bại!', {variant: 'error'});
       console.error(error);
     }
   };
@@ -109,6 +123,12 @@ export default function UserNewForm() {
                   </option>
                 </RHFSelect>
               </Stack>
+              {currentRole == 3 && (
+                <Stack direction='column' spacing={1}>
+                  <Typography>Mã giáo viên</Typography>
+                  <RHFTextField name="code" />
+                </Stack>
+              )}
               <Stack direction="row" justifyContent="flex-end" spacing={3}>
                 <Button variant="outlined" type="submit">Tạo</Button>
                 <Button variant="outlined" onClick={() => navigate(PATH_DASHBOARD.user.list)}>Hủy</Button>

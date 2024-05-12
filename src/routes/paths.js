@@ -34,6 +34,8 @@ export const PATH_PAGE = {
 
 export const PATH_DASHBOARD = {
   root: ROOTS_DASHBOARD,
+  profile: path(ROOTS_DASHBOARD, '/profile'),
+  change_password: path(ROOTS_DASHBOARD, '/change-password'),
   general: {
     app: path(ROOTS_DASHBOARD, '/app'),
     ecommerce: path(ROOTS_DASHBOARD, '/ecommerce'),
@@ -58,7 +60,6 @@ export const PATH_DASHBOARD = {
     cards: path(ROOTS_DASHBOARD, '/user/cards'),
     list: path(ROOTS_DASHBOARD, '/user/list'),
     newUser: path(ROOTS_DASHBOARD, '/user/new'),
-    editById: path(ROOTS_DASHBOARD, `/user/reece-chung/edit`),
     account: path(ROOTS_DASHBOARD, '/user/account')
   },
   student: {
@@ -78,7 +79,8 @@ export const PATH_DASHBOARD = {
   club: {
     root: path(ROOTS_DASHBOARD, '/club'),
     list: path(ROOTS_DASHBOARD, '/club/list'),
-    create: path(ROOTS_DASHBOARD, '/club/create')
+    create: path(ROOTS_DASHBOARD, '/club/create'),
+    me: path(ROOTS_DASHBOARD, '/club/me'),
   },
   statistic: {
     root: path(ROOTS_DASHBOARD, '/statistic'),

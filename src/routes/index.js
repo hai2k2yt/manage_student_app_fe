@@ -66,6 +66,8 @@ export default function Router() {
       children: [
         { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
         { path: 'app', element: <GeneralApp /> },
+        { path: 'profile', element: <ProfileUpdate /> },
+        { path: 'change-password', element: <ProfileChangePassword /> },
         (user?.role === 1) && {
           path: 'user',
           children: [
@@ -101,6 +103,7 @@ export default function Router() {
           children: [
             { element: <Navigate to="/dashboard/club/list" replace />, index: true },
             { path: 'list', element: <ClubList /> },
+            (user?.role === 3) && { path: 'me', element: <ClubMe /> },
             (user?.role === 1) && { path: 'create', element: <ClubCreate /> },
             (user?.role === 1 || user?.role === 3) && { path: ':club_code/edit', element: <ClubUpdate /> },
             { path: ':club_code/detail', element: <ClubDetail /> },
@@ -171,6 +174,8 @@ const ResetPassword = Loadable(lazy(() => import('../pages/auth/ResetPassword'))
 const VerifyCode = Loadable(lazy(() => import('../pages/auth/VerifyCode')));
 // Dashboard
 const GeneralApp = Loadable(lazy(() => import('../pages/dashboard/GeneralApp')));
+const ProfileUpdate = Loadable(lazy(() => import('../pages/dashboard/profile/ProfileUpdate')));
+const ProfileChangePassword = Loadable(lazy(() => import('../pages/dashboard/profile/ProfileChangePassword')));
 
 const StudentList = Loadable(lazy(() => import('../pages/dashboard/student/StudentList')));
 const StudentDetail = Loadable(lazy(() => import('../pages/dashboard/student/StudentDetail')));
@@ -188,6 +193,7 @@ const ClubList = Loadable(lazy(() => import('../pages/dashboard/club/ClubList'))
 const ClubCreate = Loadable(lazy(() => import('../pages/dashboard/club/ClubCreate')));
 const ClubUpdate = Loadable(lazy(() => import('../pages/dashboard/club/ClubUpdate')));
 const ClubDetail = Loadable(lazy(() => import('../pages/dashboard/club/ClubDetail')));
+const ClubMe = Loadable(lazy(() => import('../pages/dashboard/club/ClubMe')));
 
 const ClubEnrollmentCreate = Loadable(lazy(() => import('../pages/dashboard/club-enrollment/ClubEnrollmentCreate')));
 

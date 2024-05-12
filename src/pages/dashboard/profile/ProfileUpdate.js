@@ -8,21 +8,20 @@ import useSettings from '../../../hooks/useSettings';
 import Page from '../../../components/Page';
 import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
 // sections
-import UserUpdateForm from '../../../sections/@dashboard/user/UserUpdateForm';
-import ProfileUpdateForm from '../../../sections/@dashboard/user/update-profile/ProfileUpdateForm';
+import ProfileUpdateForm from '../../../sections/@dashboard/profile/ProfileUpdateForm';
 
 // ----------------------------------------------------------------------
 
-export default function UserUpdate() {
+export default function ProfileUpdate() {
   const { themeStretch } = useSettings();
 
   return (
-    <Page title="User: Edit">
+    <Page title="Profile: Edit">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
           heading='Cập nhật thông tin cá nhân'
           links={[
-            { name: 'Trang chủ', href: PATH_DASHBOARD.root },
+            { name: 'Trang chủ', href: PATH_DASHBOARD.general.app },
             { name: 'Cập nhật thông tin cá nhân' },
           ]}
         />

@@ -18,17 +18,13 @@ import { IconButtonAnimate } from '../../../components/animate';
 
 const MENU_OPTIONS = [
   {
-    label: 'Home',
-    linkTo: '/',
+    label: 'Cá nhân',
+    linkTo: PATH_DASHBOARD.profile,
   },
   {
-    label: 'Profile',
-    linkTo: PATH_DASHBOARD.user.profile,
-  },
-  {
-    label: 'Settings',
-    linkTo: PATH_DASHBOARD.user.account,
-  },
+    label: 'Đổi mật khẩu',
+    linkTo: PATH_DASHBOARD.change_password,
+  }
 ];
 
 // ----------------------------------------------------------------------

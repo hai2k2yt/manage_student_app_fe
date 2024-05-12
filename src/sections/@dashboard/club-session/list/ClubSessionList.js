@@ -7,10 +7,12 @@ import { Card, Table, TableBody, TableCell, TableContainer, TablePagination, Tab
 // components
 import Scrollbar from '../../../../components/Scrollbar';
 // sections
-import { getSessionByClub } from '../../../../api/club_session';
+import { destroyClubSession, getSessionByClub } from '../../../../api/club_session';
 import ClubSessionListHead from './ClubSessionListHead';
 import ClubSessionMoreMenu from './ClubSessionMoreMenu';
 import PropTypes from 'prop-types';
+import { destroyComment } from '../../../../api/comment';
+import { useSnackbar } from 'notistack';
 
 // ----------------------------------------------------------------------
 
@@ -29,7 +31,7 @@ ClubSessionList.propTypes = {
 };
 export default function ClubSessionList({ clubCode }) {
   const navigate = useNavigate();
-
+  const { enqueueSnackbar } = useSnackbar();
   const [clubSessionList, setClubSessionList] = useState([]);
   const [_page, setPage] = useState(0);
   const [_order, setOrder] = useState('asc');
@@ -68,8 +70,15 @@ export default function ClubSessionList({ clubCode }) {
     setPage(0);
   };
 
-  const handleDeleteSession = (clubId) => {
-    navigate(0);
+  const handleDeleteSession = async (session_code) => {
+    try {
+      await destroyClubSession(session_code);
+      navigate(0);
+      enqueueSnackbar('Xóa buổi học thành công!')
+    } catch (e) {
+      enqueueSnackbar('Xóa buổi học thất bại!', {variant: 'error'})
+      console.error(e)
+    }
   };
 
   const emptyRows = _page > 0 ? Math.max(0, _limit - clubSessionList.length) : 0;

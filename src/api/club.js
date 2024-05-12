@@ -10,6 +10,12 @@ export async function getClubs(params) {
   });
 }
 
+export async function getMyClubs(params) {
+  return axios.get('/club/profile/me', {
+    params
+  });
+}
+
 export async function storeClub(params) {
   return axios.post('/club', params);
 }

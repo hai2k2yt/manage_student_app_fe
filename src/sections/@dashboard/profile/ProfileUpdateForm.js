@@ -8,11 +8,11 @@ import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
 import { Button, Card, Grid, Stack, Typography } from '@mui/material';
 // routes
-import { PATH_DASHBOARD } from '../../../../routes/paths';
+import { PATH_DASHBOARD } from '../../../routes/paths';
 // components
-import { FormProvider, RHFSelect, RHFTextField } from '../../../../components/hook-form';
-import { updateProfile, updateUser } from '../../../../api/user';
-import useAuth from '../../../../hooks/useAuth';
+import { FormProvider, RHFSelect, RHFTextField } from '../../../components/hook-form';
+import { updateProfile } from '../../../api/user';
+import useAuth from '../../../hooks/useAuth';
 
 // ----------------------------------------------------------------------
 
@@ -51,16 +51,16 @@ export default function ProfileUpdateForm() {
 
   useEffect(() => {
     reset(defaultValues);
-    const { username, name, role } = user.data;
+    const { username, name, role } = user;
     reset({ username, name, role });
   }, []);
 
   const onSubmit = async (formData) => {
     try {
-      const res = await updateProfile(formData);
+      const res = await updateProfile({ name: formData.name });
       reset();
       enqueueSnackbar('Cập nhật thông tin cá nhân thành công!');
-      navigate(PATH_DASHBOARD.user.list);
+      navigate(PATH_DASHBOARD.general.app);
     } catch (error) {
       enqueueSnackbar('Cập nhật thông tin cá nhân thất bại', {variant: 'error'});
       console.error(error);
