@@ -49,7 +49,7 @@ const renderRole = (role) => {
     case 3:
       return 'Giáo viên';
     case 4:
-      return 'Hành chính kế toán';
+      return 'Kế toán';
   }
   return '';
 };

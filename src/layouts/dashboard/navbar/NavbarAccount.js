@@ -25,6 +25,20 @@ const RootStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
+const renderRole = (role) => {
+  switch (role) {
+    case 1:
+      return 'Quản trị viên';
+    case 2:
+      return 'Phụ huynh';
+    case 3:
+      return 'Giáo viên';
+    case 4:
+      return 'Kế toán';
+  }
+  return '';
+};
+
 NavbarAccount.propTypes = {
   isCollapse: PropTypes.bool,
 };
@@ -33,7 +47,7 @@ export default function NavbarAccount({ isCollapse }) {
   const { user } = useAuth();
 
   return (
-    <Link underline="none" color="inherit" component={RouterLink} to={PATH_DASHBOARD.user.account}>
+    <Link underline="none" color="inherit" component={RouterLink} to={PATH_DASHBOARD.profile}>
       <RootStyle
         sx={{
           ...(isCollapse && {
@@ -57,10 +71,10 @@ export default function NavbarAccount({ isCollapse }) {
           }}
         >
           <Typography variant="subtitle2" noWrap>
-            {user?.displayName}
+            {user?.name}
           </Typography>
           <Typography variant="body2" noWrap sx={{ color: 'text.secondary' }}>
-            {user?.role}
+            {renderRole(user?.role)}
           </Typography>
         </Box>
       </RootStyle>

@@ -13,12 +13,36 @@ import { ClubSessionList } from '../../../sections/@dashboard/club-session/list'
 import Iconify from '../../../components/Iconify';
 import ClubEnrollmentList from '../../../sections/@dashboard/club/club-enrollment/ClubEnrollmentList';
 import ClubScheduleList from '../../../sections/@dashboard/club-schedule/list/ClubScheduleList';
+import useAuth from '../../../hooks/useAuth';
+import { useEffect, useState } from 'react';
+import { showClub } from '../../../api/club';
+import { useSnackbar } from 'notistack';
 
 // ----------------------------------------------------------------------
 
 export default function ClubDetail() {
   const { themeStretch } = useSettings();
   const { club_code } = useParams();
+  const { enqueueSnackbar } = useSnackbar();
+  const user = JSON.parse(localStorage.getItem('user'));
+  const [clubDetail, setClubDetail] = useState({});
+
+  useEffect(() => {
+    fetchClubDetail();
+  }, []);
+
+  const fetchClubDetail = async () => {
+    try {
+      const res = await showClub(club_code);
+      setClubDetail(res?.data);
+    } catch (e) {
+      enqueueSnackbar('Lấy thông tin chi tiết CLB thất bại!', { variant: 'error' });
+    }
+  };
+  const canEditSchedule = (user.role == 1 || (user.role == 3 && user?.code == clubDetail?.teacher_code));
+
+  const canEditEnrollment = (user.role == 1 || (user.role == 3 && user?.code == clubDetail?.teacher_code));
+
 
   return (
     <Page title="Club: Detail">
@@ -34,17 +58,20 @@ export default function ClubDetail() {
 
         <Stack direction="row" justifyContent="space-between">
           <Typography>Thời khóa biểu</Typography>
-          <Button
-            variant="contained"
-            component={RouterLink}
-            to={`${PATH_DASHBOARD.club.root}/${club_code}/schedule/create`}
-            startIcon={<Iconify icon={'eva:plus-fill'} />}
-          >
-            Tạo mới
-          </Button>
+          {
+            canEditSchedule &&
+            <Button
+              variant="contained"
+              component={RouterLink}
+              to={`${PATH_DASHBOARD.club.root}/${club_code}/schedule/create`}
+              startIcon={<Iconify icon={'eva:plus-fill'} />}
+            >
+              Tạo mới
+            </Button>
+          }
         </Stack>
 
-        <ClubScheduleList />
+        <ClubScheduleList editable={canEditSchedule}/>
 
         <Stack direction="row" justifyContent="space-between">
           <Typography>Buổi học CLB</Typography>
@@ -62,17 +89,20 @@ export default function ClubDetail() {
 
         <Stack direction="row" justifyContent="space-between">
           <Typography>Danh sách đăng ký CLB</Typography>
-          <Button
-            variant="contained"
-            component={RouterLink}
-            to={`${PATH_DASHBOARD.club.root}/${club_code}/enrollment/create`}
-            startIcon={<Iconify icon={'eva:plus-fill'} />}
-          >
-            Tạo mới
-          </Button>
+          {
+            canEditEnrollment &&
+            <Button
+              variant="contained"
+              component={RouterLink}
+              to={`${PATH_DASHBOARD.club.root}/${club_code}/enrollment/create`}
+              startIcon={<Iconify icon={'eva:plus-fill'} />}
+            >
+              Tạo mới
+            </Button>
+          }
         </Stack>
 
-        <ClubEnrollmentList />
+        <ClubEnrollmentList editable={canEditEnrollment} />
       </Container>
     </Page>
   );

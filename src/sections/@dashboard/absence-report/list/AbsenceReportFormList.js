@@ -20,7 +20,7 @@ const TABLE_HEAD = [
   { id: 'status', label: 'Trạng thái', alignRight: false, sortable: true },
   { id: '', label: '', alignRight: false, sortable: false },
 ];
-export default function AbsenceReportFormList() {
+export default function AbsenceReportFormList({editable}) {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -143,8 +143,11 @@ export default function AbsenceReportFormList() {
                       {renderStatus(status)}
                     </TableCell>
                     <TableCell align="right">
-                      <AbsenceReportMoreMenu id={id} onDelete={handleDeleteAbsenceReport}
-                                             onUpdate={handleUpdateAbsenceReport} />
+                      {editable &&
+                        <AbsenceReportMoreMenu id={id}
+                                               onDelete={handleDeleteAbsenceReport}
+                                               onUpdate={handleUpdateAbsenceReport} />
+                      }
                     </TableCell>
                   </TableRow>
                 );

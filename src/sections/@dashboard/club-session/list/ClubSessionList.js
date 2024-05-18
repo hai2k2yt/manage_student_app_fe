@@ -38,6 +38,7 @@ export default function ClubSessionList({ clubCode }) {
   const [_sort, setSort] = useState('name');
   const [_limit, setLimit] = useState(5);
   const [total, setTotal] = useState(0);
+  const user = JSON.parse(localStorage.getItem('user'));
 
   useEffect(() => {
     async function fetchData() {
@@ -101,10 +102,10 @@ export default function ClubSessionList({ clubCode }) {
                 const {
                   session_code,
                   session_name,
-                  schedule: { teacher: { teacher_name }, day_of_week },
+                  schedule: { teacher: { teacher_name, teacher_code }, day_of_week },
                   date,
                 } = row;
-
+                const canEditSession = (user.role == 1 || (user.role == 3 && user?.code == teacher_code));
                 return (
                   <TableRow
                     hover
@@ -123,7 +124,7 @@ export default function ClubSessionList({ clubCode }) {
                       {date}
                     </TableCell>
                     <TableCell align="right">
-                      <ClubSessionMoreMenu onDelete={() => handleDeleteSession(session_code)} sessionCode={session_code} />
+                      <ClubSessionMoreMenu editable={canEditSession} onDelete={() => handleDeleteSession(session_code)} sessionCode={session_code} />
                     </TableCell>
                   </TableRow>
                 );

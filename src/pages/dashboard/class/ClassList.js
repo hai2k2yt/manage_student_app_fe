@@ -24,6 +24,7 @@ import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
 import { ClassListHead, ClassListToolbar, ClassMoreMenu } from '../../../sections/@dashboard/class/list';
 import { destroyClass, getClasses } from '../../../api/class';
 import { useSnackbar } from 'notistack';
+import useAuth from '../../../hooks/useAuth';
 
 // ----------------------------------------------------------------------
 
@@ -47,21 +48,23 @@ export default function ClassList() {
   const [filterName, setFilterName] = useState('');
   const [_limit, setLimit] = useState(5);
   const [total, setTotal] = useState(0);
+  const { user } = useAuth();
 
-  useEffect( () => {
+  useEffect(() => {
     async function fetchData() {
       const params = {
         _page: _page + 1,
         _limit,
         _order,
         _sort,
-        name_like: filterName
-      }
+        name_like: filterName,
+      };
       const users = await getClasses(params);
       const records = users?.data?.records || [];
-      setTotal(users?.data?.total || 0)
+      setTotal(users?.data?.total || 0);
       setClassList(records);
     }
+
     fetchData();
   }, [_page, _limit, _order, _sort, filterName]);
 
@@ -70,7 +73,6 @@ export default function ClassList() {
     setOrder(isAsc ? 'desc' : 'asc');
     setSort(property);
   };
-
 
 
   const handleChangeRowsPerPage = (event) => {
@@ -87,10 +89,10 @@ export default function ClassList() {
     try {
       await destroyClass(class_code);
       navigate(0);
-      enqueueSnackbar('Xóa lớp học thành công')
+      enqueueSnackbar('Xóa lớp học thành công');
     } catch (e) {
-      enqueueSnackbar('Xóa lớp học thất bại', {variant: 'error'})
-      console.error(e)
+      enqueueSnackbar('Xóa lớp học thất bại', { variant: 'error' });
+      console.error(e);
     }
   };
 
@@ -128,7 +130,7 @@ export default function ClassList() {
                 />
                 <TableBody>
                   {classList.map((row) => {
-                    const { class_code, class_name, teacher: {teacher_name} } = row;
+                    const { class_code, class_name, teacher: { teacher_name } } = row;
 
                     return (
                       <TableRow
@@ -142,7 +144,10 @@ export default function ClassList() {
                         <TableCell align="left">{class_name}</TableCell>
                         <TableCell align="left">{teacher_name}</TableCell>
                         <TableCell align="right">
-                          <ClassMoreMenu onDelete={() => handleDeleteClass(class_code)} classCode={class_code} />
+                          {
+                            user?.role === 1 &&
+                            <ClassMoreMenu onDelete={() => handleDeleteClass(class_code)} classCode={class_code} />
+                          }
                         </TableCell>
                       </TableRow>
                     );

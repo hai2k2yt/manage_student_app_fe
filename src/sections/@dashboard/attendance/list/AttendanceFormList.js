@@ -20,7 +20,7 @@ const TABLE_HEAD = [
   { id: '', label: '', alignRight: false, sortable: false },
 ];
 
-export default function AttendanceFormList() {
+export default function AttendanceFormList({ editable }) {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -39,7 +39,7 @@ export default function AttendanceFormList() {
         _limit,
         _order,
         _sort,
-        session_code
+        session_code,
       };
       try {
         const attendances = await getAttendances(params);
@@ -47,8 +47,8 @@ export default function AttendanceFormList() {
         setTotal(attendances?.data?.total || 0);
         setAttendanceList(records);
       } catch (e) {
-        enqueueSnackbar('Lấy danh sách điểm danh thất bại!', {variant: 'error'});
-        console.error(e)
+        enqueueSnackbar('Lấy danh sách điểm danh thất bại!', { variant: 'error' });
+        console.error(e);
       }
     }
 
@@ -72,10 +72,10 @@ export default function AttendanceFormList() {
     try {
       await destroyAttendance(attendanceId);
       navigate(0);
-      enqueueSnackbar('Xóa điểm danh thành công!')
+      enqueueSnackbar('Xóa điểm danh thành công!');
     } catch (e) {
-      enqueueSnackbar('Xóa điểm danh thất bại!', {variant: 'error'})
-      console.error(e)
+      enqueueSnackbar('Xóa điểm danh thất bại!', { variant: 'error' });
+      console.error(e);
     }
   };
 
@@ -87,30 +87,31 @@ export default function AttendanceFormList() {
         _limit,
         _order,
         _sort,
-        session_code
+        session_code,
       };
       const attendances = await getAttendances(params);
       const records = attendances?.data?.records || [];
       setTotal(attendances?.data?.total || 0);
       setAttendanceList(records);
-      enqueueSnackbar('Cập nhật điểm danh thành công!')
+      enqueueSnackbar('Cập nhật điểm danh thành công!');
     } catch (e) {
-      enqueueSnackbar('Cập nhật điểm danh thất bại!', {variant: 'error'})
+      enqueueSnackbar('Cập nhật điểm danh thất bại!', { variant: 'error' });
     }
-  }
+  };
 
   const emptyRows = _page > 0 ? Math.max(0, _limit - attendanceList.length) : 0;
 
   const renderPresent = (absence) => {
-    if(absence == 1) {
-      return <Chip label="Có mặt" color="primary" />
+    if (absence == 1) {
+      return <Chip label="Có mặt" color="primary" />;
     }
-    if(absence == 2) {
-      return <Chip label="Nghỉ phép" color="warning" />
-    }if(absence == 3) {
-      return <Chip label="Vắng mặt" color="error" />
+    if (absence == 2) {
+      return <Chip label="Nghỉ phép" color="warning" />;
     }
-  }
+    if (absence == 3) {
+      return <Chip label="Vắng mặt" color="error" />;
+    }
+  };
 
   return (
     <Card>
@@ -127,7 +128,7 @@ export default function AttendanceFormList() {
             />
             <TableBody>
               {attendanceList.map((row) => {
-                const {id, student_code, student: { name }, present } = row;
+                const { id, student_code, student: { name }, present } = row;
 
                 return (
                   <TableRow
@@ -142,7 +143,10 @@ export default function AttendanceFormList() {
                       {renderPresent(present)}
                     </TableCell>
                     <TableCell align="right">
-                      <AttendanceMoreMenu id={id} onUpdate={handleUpdate} onDelete={handleDeleteAttendance}/>
+                      {
+                        editable &&
+                        <AttendanceMoreMenu id={id} onUpdate={handleUpdate} onDelete={handleDeleteAttendance} />
+                      }
                     </TableCell>
                   </TableRow>
                 );

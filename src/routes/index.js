@@ -89,7 +89,7 @@ export default function Router() {
             (user?.role === 2) && { path: ':student_code/club/:club_code/absence-report/create', element: <StudentAbsenceCreate /> },
           ],
         },
-        (user?.role !== 4) && {
+        {
           path: 'class',
           children: [
             { element: <Navigate to="/dashboard/class/list" replace />, index: true },

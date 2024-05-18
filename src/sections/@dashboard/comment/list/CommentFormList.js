@@ -19,7 +19,7 @@ const TABLE_HEAD = [
   { id: 'content', label: 'Nội dung', alignRight: false, sortable: false },
   { id: '', label: '', alignRight: false, sortable: false },
 ];
-export default function CommentFormList() {
+export default function CommentFormList({editable}) {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -106,7 +106,10 @@ export default function CommentFormList() {
                     <TableCell align="left">{name}</TableCell>
                     <TableCell align="left">{content}</TableCell>
                     <TableCell align="right">
-                      <CommentMoreMenu id={id} onDelete={handleDeleteComment} />
+                      {
+                        editable &&
+                        <CommentMoreMenu id={id} onDelete={handleDeleteComment} />
+                      }
                     </TableCell>
                   </TableRow>
                 );

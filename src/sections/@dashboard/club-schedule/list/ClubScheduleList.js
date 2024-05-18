@@ -52,8 +52,8 @@ function renderDay(day) {
 }
 
 // ----------------------------------------------------------------------
-export default function ClubScheduleList() {
-  const {enqueueSnackbar} = useSnackbar();
+export default function ClubScheduleList({ editable }) {
+  const { enqueueSnackbar } = useSnackbar();
   const [clubScheduleList, setClubScheduleList] = useState([]);
   const [_page, setPage] = useState(0);
   const [_order, setOrder] = useState('asc');
@@ -137,7 +137,7 @@ export default function ClubScheduleList() {
                       {renderDay(day_of_week)}
                     </TableCell>
                     <TableCell align="right">
-                      <ClubScheduleMoreMenu scheduleCode={schedule_code} />
+                      {editable && <ClubScheduleMoreMenu scheduleCode={schedule_code} />}
                     </TableCell>
                   </TableRow>
                 );

@@ -17,6 +17,7 @@ import AttendanceFormList from '../../../sections/@dashboard/attendance/list/Att
 import CommentFormList from '../../../sections/@dashboard/comment/list/CommentFormList';
 import { useSnackbar } from 'notistack';
 import ClubSessionPhotoList from '../../../sections/@dashboard/club-session-photo/list/ClubSessionPhotoList';
+import useAuth from '../../../hooks/useAuth';
 
 // ----------------------------------------------------------------------
 
@@ -24,7 +25,8 @@ export default function ClubSessionDetail() {
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
-  const { club_code,session_code } = useParams();
+  const { user } = useAuth();
+  const { club_code, session_code } = useParams();
 
   const [sessionDetail, setSessionDetail] = useState({});
 
@@ -34,13 +36,14 @@ export default function ClubSessionDetail() {
         const session = await showClubSession(session_code);
         setSessionDetail(session);
       } catch (e) {
-        enqueueSnackbar('Get session detail failed', {variant: 'error'});
-        console.error(e)
+        enqueueSnackbar('Get session detail failed', { variant: 'error' });
+        console.error(e);
       }
     }
-
     fetchClubSessionDetail();
   }, []);
+
+  const editable = (user?.role == 1 || (user?.role == 3 && user?.code == sessionDetail?.schedule?.teacher_code));
 
   return (
     <Page title="Club: Session Detail">
@@ -62,53 +65,63 @@ export default function ClubSessionDetail() {
 
         <Stack direction="row" justifyContent="space-between">
           <Typography>Báo cáo nghỉ</Typography>
-          <Button
-            variant="contained"
-            component={RouterLink}
-            to={`${PATH_DASHBOARD.club.root}/${club_code}/session/${session_code}/absence-report/create`}
-            startIcon={<Iconify icon={'eva:plus-fill'} />}
-          >
-            Tạo mới
-          </Button>
+          {editable &&
+            <Button
+              variant="contained"
+              component={RouterLink}
+              to={`${PATH_DASHBOARD.club.root}/${club_code}/session/${session_code}/absence-report/create`}
+              startIcon={<Iconify icon={'eva:plus-fill'} />}
+            >
+              Tạo mới
+            </Button>}
         </Stack>
-        <AbsenceReportFormList />
+        <AbsenceReportFormList editable={editable} />
 
         <Stack direction="row" justifyContent="space-between">
           <Typography>Điểm danh</Typography>
-          <Button
-            variant="contained"
-            component={RouterLink}
-            to={`${PATH_DASHBOARD.club.root}/${club_code}/session/${session_code}/attendance/create`}
-            startIcon={<Iconify icon={'eva:plus-fill'} />}
-          >
-            Tạo mới
-          </Button>
+          {
+            editable &&
+            <Button
+              variant="contained"
+              component={RouterLink}
+              to={`${PATH_DASHBOARD.club.root}/${club_code}/session/${session_code}/attendance/create`}
+              startIcon={<Iconify icon={'eva:plus-fill'} />}
+            >
+              Tạo mới
+            </Button>
+          }
         </Stack>
-        <AttendanceFormList />
+        <AttendanceFormList editable={editable} />
 
         <Stack direction="row" justifyContent="space-between">
           <Typography>Đánh giá</Typography>
-          <Button
-            variant="contained"
-            component={RouterLink}
-            to={`${PATH_DASHBOARD.club.root}/${club_code}/session/${session_code}/comment/create`}
-            startIcon={<Iconify icon={'eva:plus-fill'} />}
-          >
-            Tạo mới
-          </Button>
+          {
+            editable &&
+            <Button
+              variant="contained"
+              component={RouterLink}
+              to={`${PATH_DASHBOARD.club.root}/${club_code}/session/${session_code}/comment/create`}
+              startIcon={<Iconify icon={'eva:plus-fill'} />}
+            >
+              Tạo mới
+            </Button>
+          }
         </Stack>
-        <CommentFormList />
+        <CommentFormList editable={editable} />
 
         <Stack direction="row" justifyContent="space-between">
           <Typography>Photo</Typography>
-          <Button
-            variant="contained"
-            component={RouterLink}
-            to={`${PATH_DASHBOARD.club.root}/${club_code}/session/${session_code}/photo/create`}
-            startIcon={<Iconify icon={'eva:plus-fill'} />}
-          >
-            Tạo mới
-          </Button>
+          {
+            editable &&
+            <Button
+              variant="contained"
+              component={RouterLink}
+              to={`${PATH_DASHBOARD.club.root}/${club_code}/session/${session_code}/photo/create`}
+              startIcon={<Iconify icon={'eva:plus-fill'} />}
+            >
+              Tạo mới
+            </Button>
+          }
         </Stack>
         <ClubSessionPhotoList />
       </Container>

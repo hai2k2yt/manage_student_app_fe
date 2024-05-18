@@ -24,6 +24,7 @@ import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
 import { destroyClub, getClubs } from '../../../api/club';
 import { ClubListHead, ClubListToolbar, ClubMoreMenu } from '../../../sections/@dashboard/club/list';
 import { useSnackbar } from 'notistack';
+import useAuth from '../../../hooks/useAuth';
 
 // ----------------------------------------------------------------------
 

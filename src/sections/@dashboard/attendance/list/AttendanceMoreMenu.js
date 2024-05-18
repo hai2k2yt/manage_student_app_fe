@@ -66,17 +66,17 @@ export default function AttendanceMoreMenu({ id, onUpdate, onDelete }) {
           Xóa
         </MenuItem>
 
-        <MenuItem onClick={() => onUpdate(1, id)} sx={{ color: 'error.main' }}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ ...ICON }} />
+        <MenuItem onClick={() => onUpdate(1, id)}>
+          <Iconify icon={'eva:edit-fill'} sx={{ ...ICON }} />
           Có mặt
         </MenuItem>
 
-        <MenuItem onClick={() => onUpdate(2, id)} sx={{ color: 'error.main' }}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ ...ICON }} />
+        <MenuItem onClick={() => onUpdate(2, id)}>
+          <Iconify icon={'eva:edit-fill'} sx={{ ...ICON }} />
           Nghỉ phép
         </MenuItem>
-        <MenuItem onClick={() => onUpdate(3, id)} sx={{ color: 'error.main' }}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ ...ICON }} />
+        <MenuItem onClick={() => onUpdate(3, id)}>
+          <Iconify icon={'eva:edit-fill'} sx={{ ...ICON }} />
           Vắng mặt
         </MenuItem>
       </MenuPopover>

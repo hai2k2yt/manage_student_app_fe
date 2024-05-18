@@ -48,7 +48,7 @@ const TABLE_ENROLLMENT_HEAD = [
 
 // ----------------------------------------------------------------------
 
-function Row({ data }) {
+function Row({ data, editable }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -74,7 +74,7 @@ function Row({ data }) {
           {data?.status == 1 ? 'Đang học' : 'Đã hủy'}
         </TableCell>
         <TableCell align="right">
-          <ClubEnrollmentMoreMenu enrollmentId={data?.id} />
+          {editable && <ClubEnrollmentMoreMenu enrollmentId={data?.id} />}
         </TableCell>
       </TableRow>
       <TableRow>
@@ -115,7 +115,7 @@ function Row({ data }) {
   );
 }
 
-export default function ClubEnrollmentList() {
+export default function ClubEnrollmentList({ editable }) {
   const { enqueueSnackbar } = useSnackbar();
   const { club_code } = useParams();
 
@@ -190,6 +190,7 @@ export default function ClubEnrollmentList() {
               {clubEnrollmentList.map((row) => {
                 return (
                   <Row
+                    editable={editable}
                     key={row?.id}
                     data={row}
                   />

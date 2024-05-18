@@ -119,7 +119,7 @@ export default function UserNewForm() {
                     Giáo viên
                   </option>
                   <option key="4" value="4">
-                    Hành chính kế toán
+                    Kế toán
                   </option>
                 </RHFSelect>
               </Stack>

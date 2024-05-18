@@ -26,6 +26,7 @@ import { destroyStudent, getStudents } from '../../../api/student';
 import StudentListToolbar from '../../../sections/@dashboard/student/list/StudentListToolbar';
 import StudentMoreMenu from '../../../sections/@dashboard/student/list/StudentMoreMenu';
 import StudentListHead from '../../../sections/@dashboard/student/list/StudentListHead';
+import useAuth from '../../../hooks/useAuth';
 
 // ----------------------------------------------------------------------
 
@@ -50,21 +51,23 @@ export default function StudentList() {
   const [filterName, setFilterName] = useState('');
   const [_limit, setLimit] = useState(5);
   const [total, setTotal] = useState(0);
+  const { user } = useAuth();
 
-  useEffect( () => {
+  useEffect(() => {
     async function fetchData() {
       const params = {
         _page: _page + 1,
         _limit,
         _order,
         _sort,
-        name_like: filterName
-      }
+        name_like: filterName,
+      };
       const students = await getStudents(params);
       const records = students?.data?.records || [];
-      setTotal(students?.data?.total || 0)
+      setTotal(students?.data?.total || 0);
       setStudentList(records);
     }
+
     fetchData();
   }, [_page, _limit, _order, _sort, filterName]);
 
@@ -73,7 +76,6 @@ export default function StudentList() {
     setOrder(isAsc ? 'desc' : 'asc');
     setSort(property);
   };
-
 
 
   const handleChangeRowsPerPage = (event) => {
@@ -90,10 +92,10 @@ export default function StudentList() {
     try {
       await destroyStudent(student_code);
       navigate(0);
-      enqueueSnackbar('Xóa học sinh thành công!')
+      enqueueSnackbar('Xóa học sinh thành công!');
     } catch (e) {
-      enqueueSnackbar('Xóa học sinh thất bại!', {variant: 'error'})
-      console.error(e)
+      enqueueSnackbar('Xóa học sinh thất bại!', { variant: 'error' });
+      console.error(e);
     }
   };
 
@@ -148,7 +150,10 @@ export default function StudentList() {
                           {parent?.name || 'No data'}
                         </TableCell>
                         <TableCell align="right">
-                          <StudentMoreMenu onDelete={() => handleDeleteStudent(student_code)} studentCode={student_code} />
+                          {user?.role === 1 &&
+                            <StudentMoreMenu onDelete={() => handleDeleteStudent(student_code)}
+                                             studentCode={student_code} />
+                          }
                         </TableCell>
                       </TableRow>
                     );
