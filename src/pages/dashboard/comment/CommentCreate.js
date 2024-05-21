@@ -9,7 +9,6 @@ import useSettings from '../../../hooks/useSettings';
 import Page from '../../../components/Page';
 import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
 import { useParams } from 'react-router-dom';
-import AbsenceReportCreateForm from '../../../sections/@dashboard/absence-report/create/AbsenceReportCreateForm';
 import CommentCreateForm from '../../../sections/@dashboard/comment/create/CommentCreateForm';
 
 // ----------------------------------------------------------------------
@@ -22,22 +21,22 @@ export default function CommentCreate() {
     <Page title="Comment: Create">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading='Create new comment'
+          heading='Tạo đánh giá'
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
+            { name: 'Trang chủ', href: PATH_DASHBOARD.root },
             {
-              name: 'Club',
+              name: 'CLB',
               href: PATH_DASHBOARD.club.root,
             },
             {
-              name: 'Club detail',
+              name: 'Chi tiết CLB',
               href: `${PATH_DASHBOARD.club.root}/${club_code}/detail`,
             },
             {
-              name: 'Session detail',
+              name: 'Chi tiết buổi học',
               href: `${PATH_DASHBOARD.club.root}/${club_code}/session/${session_code}`,
             },
-            { name: 'New comment'},
+            { name: 'Tạo đánh giá'},
           ]}
         />
 

@@ -60,7 +60,11 @@ export default function ClassUpdateForm() {
         setTeacherList(teachers.data);
       } catch (e) {
         enqueueSnackbar('Lấy danh sách giáo viên thất bại!', { variant: 'error' });
-        console.error(e);
+        if (typeof e?.errors == 'object') {
+          for (let message of Object.values(e?.errors)) {
+            enqueueSnackbar(message, { variant: 'error' });
+          }
+        }
       }
     }
 
@@ -73,7 +77,11 @@ export default function ClassUpdateForm() {
         reset({ class_code, class_name, teacher_code });
       } catch (e) {
         enqueueSnackbar('Lấy thông tin lớp học thất bại!', { variant: 'error' });
-        console.error(e);
+        if (typeof e?.errors == 'object') {
+          for (let message of Object.values(e?.errors)) {
+            enqueueSnackbar(message, { variant: 'error' });
+          }
+        }
       }
     }
 
@@ -86,9 +94,13 @@ export default function ClassUpdateForm() {
       reset();
       enqueueSnackbar(res.message && 'Cập nhật lớp học thành công!');
       navigate(PATH_DASHBOARD.class.list);
-    } catch (error) {
+    } catch (e) {
       enqueueSnackbar('Cập nhật lớp học thất bại!', { variant: 'error' });
-      console.error(error);
+      if (typeof e?.errors == 'object') {
+        for (let message of Object.values(e?.errors)) {
+          enqueueSnackbar(message, { variant: 'error' });
+        }
+      }
     }
   };
 

@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 import { useSnackbar } from 'notistack';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 // form
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -10,10 +10,7 @@ import { Button, Card, Grid, Stack, Typography } from '@mui/material';
 // routes
 import { PATH_DASHBOARD } from '../../../../routes/paths';
 // components
-import { FormProvider, RHFSelect, RHFTextField } from '../../../../components/hook-form';
-import { getUser } from '../../../../api/user';
-import { showClub, updateClub } from '../../../../api/club';
-import { getAllTeachers } from '../../../../api/teacher';
+import { FormProvider, RHFTextField } from '../../../../components/hook-form';
 import { showComment, updateComment } from '../../../../api/comment';
 
 // ----------------------------------------------------------------------
@@ -24,14 +21,14 @@ export default function CommentUpdateForm() {
   const { club_code, session_code, comment_id } = useParams();
 
   const UpdateCommentSchema = Yup.object().shape({
-    student_code: Yup.string().required('Student code is required'),
-    student_name: Yup.string().required('Club name is required'),
-    content: Yup.string().required('Teacher is required'),
+    session_code: Yup.string().required('Buổi học không được để trống'),
+    student_code: Yup.string().required('Học sinh không được để trống'),
+    content: Yup.string().required('Nội dung không được để trống'),
   });
 
   const defaultValues = {
+    session_code: '',
     student_code: '',
-    student_name: '',
     content: '',
   };
 
@@ -56,8 +53,8 @@ export default function CommentUpdateForm() {
 
     async function fetchCommentInfo() {
       const commentDetail = await showComment(comment_id);
-      const { student_code, student: {name}, content } = commentDetail.data;
-      reset({ student_code, student_name: name, content });
+      const { session_code, student_code, content } = commentDetail.data;
+      reset({ session_code, student_code, content });
     }
 
     fetchCommentInfo();
@@ -67,10 +64,15 @@ export default function CommentUpdateForm() {
     try {
       const res = await updateComment(comment_id, { content: formData.content });
       reset();
-      enqueueSnackbar(res.message || 'Update comment success!');
-      navigate(PATH_DASHBOARD.club.list);
-    } catch (error) {
-      console.error(error);
+      enqueueSnackbar( 'Cập nhật đánh giá thành công!');
+      navigate(`${PATH_DASHBOARD.club.root}/${club_code}/session/${session_code}/detail`);
+    } catch (e) {
+      enqueueSnackbar('Cập nhật đánh giá thất bại!', { variant: 'error' });
+      if (typeof e?.errors == 'object') {
+        for (let message of Object.values(e?.errors)) {
+          enqueueSnackbar(message, { variant: 'error' });
+        }
+      }
     }
   };
 
@@ -81,20 +83,20 @@ export default function CommentUpdateForm() {
           <Card sx={{ p: 3 }}>
             <Stack spacing={3}>
               <Stack direction="column" spacing={1}>
-                <Typography>Student code</Typography>
+                <Typography>Buổi học</Typography>
+                <RHFTextField name="session_code" disabled />
+              </Stack>
+              <Stack direction="column" spacing={1}>
+                <Typography>Học sinh</Typography>
                 <RHFTextField name="student_code" disabled />
               </Stack>
               <Stack direction="column" spacing={1}>
-                <Typography>Student name</Typography>
-                <RHFTextField name="student_name" disabled />
-              </Stack>
-              <Stack direction="column" spacing={1}>
-                <Typography>Content</Typography>
+                <Typography>Nội dung</Typography>
                 <RHFTextField name="content" />
               </Stack>
-              <Stack direction='row' justifyContent='flex-end' spacing={3}>
-                <Button variant="outlined" type="submit">Submit</Button>
-                <Button variant="outlined" onClick={() => navigate(PATH_DASHBOARD.club.list)}>Cancel</Button>
+              <Stack direction="row" justifyContent="flex-end" spacing={3}>
+                <Button variant="outlined" type="submit">Cập nhật</Button>
+                <Button variant="outlined" onClick={() => navigate(PATH_DASHBOARD.club.list)}>Hủy</Button>
               </Stack>
             </Stack>
           </Card>

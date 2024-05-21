@@ -48,7 +48,11 @@ export default function AttendanceFormList({ editable }) {
         setAttendanceList(records);
       } catch (e) {
         enqueueSnackbar('Lấy danh sách điểm danh thất bại!', { variant: 'error' });
-        console.error(e);
+        if (typeof e?.errors == 'object') {
+          for (let message of Object.values(e?.errors)) {
+            enqueueSnackbar(message, { variant: 'error' });
+          }
+        }
       }
     }
 
@@ -75,7 +79,11 @@ export default function AttendanceFormList({ editable }) {
       enqueueSnackbar('Xóa điểm danh thành công!');
     } catch (e) {
       enqueueSnackbar('Xóa điểm danh thất bại!', { variant: 'error' });
-      console.error(e);
+      if (typeof e?.errors == 'object') {
+        for (let message of Object.values(e?.errors)) {
+          enqueueSnackbar(message, { variant: 'error' });
+        }
+      }
     }
   };
 
@@ -96,6 +104,11 @@ export default function AttendanceFormList({ editable }) {
       enqueueSnackbar('Cập nhật điểm danh thành công!');
     } catch (e) {
       enqueueSnackbar('Cập nhật điểm danh thất bại!', { variant: 'error' });
+      if (typeof e?.errors == 'object') {
+        for (let message of Object.values(e?.errors)) {
+          enqueueSnackbar(message, { variant: 'error' });
+        }
+      }
     }
   };
 

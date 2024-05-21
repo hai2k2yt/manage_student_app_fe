@@ -36,8 +36,12 @@ export default function ClubSessionDetail() {
         const session = await showClubSession(session_code);
         setSessionDetail(session);
       } catch (e) {
-        enqueueSnackbar('Get session detail failed', { variant: 'error' });
-        console.error(e);
+        enqueueSnackbar('Lấy thông tin buổi học thất bại', { variant: 'error' });
+        if (typeof e?.errors == 'object') {
+          for (let message of Object.values(e?.errors)) {
+            enqueueSnackbar(message, { variant: 'error' });
+          }
+        }
       }
     }
     fetchClubSessionDetail();

@@ -11,7 +11,6 @@ import { Button, Card, Grid, Stack, Typography } from '@mui/material';
 import { PATH_DASHBOARD } from '../../../../routes/paths';
 // components
 import { FormProvider, RHFSelect, RHFTextField } from '../../../../components/hook-form';
-import { getUser } from '../../../../api/user';
 import { showClub, updateClub } from '../../../../api/club';
 import { getAllTeachers } from '../../../../api/teacher';
 
@@ -53,13 +52,18 @@ export default function ClubUpdateForm() {
 
   useEffect(() => {
     reset(defaultValues);
+
     async function fetchTeacher() {
       try {
         const teachers = await getAllTeachers();
         setTeacherList(teachers.data);
       } catch (e) {
-        enqueueSnackbar('Lấy danh sách giáo viên thất bại!', {variant: 'error'});
-        console.error(e)
+        enqueueSnackbar('Lấy danh sách giáo viên thất bại!', { variant: 'error' });
+        if (typeof e?.errors == 'object') {
+          for (let message of Object.values(e?.errors)) {
+            enqueueSnackbar(message, { variant: 'error' });
+          }
+        }
       }
     }
 
@@ -71,22 +75,34 @@ export default function ClubUpdateForm() {
         const { club_code: clubcode, name, teacher_code } = classDetail.data;
         reset({ club_code: clubcode, name, teacher_code });
       } catch (e) {
-        enqueueSnackbar('Lấy thông tin CLB thất bại!', {variant: 'error'});
-        console.error(e)
+        enqueueSnackbar('Lấy thông tin CLB thất bại!', { variant: 'error' });
+        if (typeof e?.errors == 'object') {
+          for (let message of Object.values(e?.errors)) {
+            enqueueSnackbar(message, { variant: 'error' });
+          }
+        }
       }
     }
+
     fetchClubInfo();
   }, []);
 
   const onSubmit = async (formData) => {
     try {
-      const res = await updateClub(club_code, formData);
+      const res = await updateClub(club_code, {
+        name: formData.name,
+        teacher_code: formData.teacher_code,
+      });
       reset();
       enqueueSnackbar('Cập nhật CLB thành công!');
       navigate(PATH_DASHBOARD.club.list);
-    } catch (error) {
-      enqueueSnackbar('Cập nhật CLB thất bại', {variant: 'error'});
-      console.error(error);
+    } catch (e) {
+      enqueueSnackbar('Cập nhật CLB thất bại', { variant: 'error' });
+      if (typeof e?.errors == 'object') {
+        for (let message of Object.values(e?.errors)) {
+          enqueueSnackbar(message, { variant: 'error' });
+        }
+      }
     }
   };
 
@@ -98,7 +114,7 @@ export default function ClubUpdateForm() {
             <Stack spacing={3}>
               <Stack direction="column" spacing={1}>
                 <Typography>Mã CLB</Typography>
-                <RHFTextField name="club_code" />
+                <RHFTextField disabled name="club_code" />
               </Stack>
               <Stack direction="column" spacing={1}>
                 <Typography>Tên CLB</Typography>
@@ -114,7 +130,7 @@ export default function ClubUpdateForm() {
                   ))}
                 </RHFSelect>
               </Stack>
-              <Stack direction='row' justifyContent='flex-end' spacing={3}>
+              <Stack direction="row" justifyContent="flex-end" spacing={3}>
                 <Button variant="outlined" type="submit">Sửa</Button>
                 <Button variant="outlined" onClick={() => navigate(PATH_DASHBOARD.club.list)}>Hủy</Button>
               </Stack>

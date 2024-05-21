@@ -34,7 +34,12 @@ export default function StudentMe() {
         const records = students?.data;
         setStudentDetail(records);
       } catch (e) {
-        enqueueSnackbar('Get student failed', { variant: 'error' });
+        enqueueSnackbar('Lấy thông tin học sinh thất bại!', { variant: 'error' });
+        if (typeof e?.errors == 'object') {
+          for (let message of Object.values(e?.errors)) {
+            enqueueSnackbar(message, { variant: 'error' });
+          }
+        }
       }
     }
 

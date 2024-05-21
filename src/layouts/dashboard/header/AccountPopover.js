@@ -56,9 +56,13 @@ export default function AccountPopover() {
       if (isMountedRef.current) {
         handleClose();
       }
-    } catch (error) {
-      console.error(error);
-      enqueueSnackbar('Unable to logout!', { variant: 'error' });
+    } catch (e) {
+      enqueueSnackbar('Đăng xuất lỗi!', { variant: 'error' });
+      if (typeof e?.errors == 'object') {
+        for (let message of Object.values(e?.errors)) {
+          enqueueSnackbar(message, { variant: 'error' });
+        }
+      }
     }
   };
 

@@ -1,12 +1,10 @@
 import PropTypes from 'prop-types';
-import ReactApexChart from 'react-apexcharts';
 // @mui
-import { alpha, useTheme, styled } from '@mui/material/styles';
-import { Box, Card, Typography, Stack } from '@mui/material';
+import { alpha, styled } from '@mui/material/styles';
+import { Box, Card, Typography } from '@mui/material';
 // utils
-import { fNumber, fPercent } from '../../../../utils/formatNumber';
+import { fNumber } from '../../../../utils/formatNumber';
 // components
-import Iconify from '../../../../components/Iconify';
 
 // ----------------------------------------------------------------------
 

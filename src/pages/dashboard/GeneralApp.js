@@ -45,15 +45,20 @@ export default function GeneralApp() {
       try {
         const res = await statisticOverall();
         const overall = res?.data;
-        if(overall) {
-          setCountUser(overall?.user)
-          setCountTeacher(overall?.teacher)
-          setCountStudent(overall?.student)
-          setCountClub(overall?.club)
-          setCountSession(overall?.session)
+        if (overall) {
+          setCountUser(overall?.user);
+          setCountTeacher(overall?.teacher);
+          setCountStudent(overall?.student);
+          setCountClub(overall?.club);
+          setCountSession(overall?.session);
         }
       } catch (e) {
-        enqueueSnackbar('Get overall data failed', { variant: 'error' });
+        enqueueSnackbar('Lấy thông tin tổng quát that bại', { variant: 'error' });
+        if (typeof e?.errors == 'object') {
+          for (let message of Object.values(e?.errors)) {
+            enqueueSnackbar(message, { variant: 'error' });
+          }
+        }
       }
     }
 

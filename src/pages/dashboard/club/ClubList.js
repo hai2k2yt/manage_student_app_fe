@@ -66,7 +66,11 @@ export default function ClubList() {
         setClubList(records);
       } catch (e) {
         enqueueSnackbar('Lấy danh sách CLB thất bại!', { variant: 'error' });
-        console.error(e);
+        if (typeof e?.errors == 'object') {
+          for (let message of Object.values(e?.errors)) {
+            enqueueSnackbar(message, { variant: 'error' });
+          }
+        }
       }
     }
 

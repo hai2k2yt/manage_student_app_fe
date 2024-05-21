@@ -18,19 +18,19 @@ export default function BlockContent() {
 
       <Box sx={{ p: 3 }}>
         <Typography gutterBottom variant="h5">
-          Drop or Select file
+          Kéo thả hoặc chọn tệp
         </Typography>
 
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          Drop files here or click&nbsp;
+          Kéo thả tệp hoặc bấm&nbsp;
           <Typography
             variant="body2"
             component="span"
             sx={{ color: 'primary.main', textDecoration: 'underline' }}
           >
-            browse
+            chọn tệp
           </Typography>
-          &nbsp;thorough your machine
+          &nbsp;trong máy bạn
         </Typography>
       </Box>
     </Stack>

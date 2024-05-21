@@ -65,6 +65,11 @@ export default function StudentUpdateForm() {
         setClassList(classes?.data);
       } catch (e) {
         enqueueSnackbar('Lấy danh sách lớp học thất bại!', { variant: 'error' });
+        if (typeof e?.errors == 'object') {
+          for (let message of Object.values(e?.errors)) {
+            enqueueSnackbar(message, { variant: 'error' });
+          }
+        }
       }
     }
 
@@ -76,6 +81,11 @@ export default function StudentUpdateForm() {
         setParentList(parents?.data?.records);
       } catch (e) {
         enqueueSnackbar('Lấy danh sách phụ huynh thất bại!', { variant: 'error' });
+        if (typeof e?.errors == 'object') {
+          for (let message of Object.values(e?.errors)) {
+            enqueueSnackbar(message, { variant: 'error' });
+          }
+        }
       }
     }
 
@@ -88,7 +98,11 @@ export default function StudentUpdateForm() {
         reset({ student_code: code, name, user_id, class_code });
       } catch (e) {
         enqueueSnackbar('Lấy thông tin học sinh thất bại!', { variant: 'error' });
-        console.error(e);
+        if (typeof e?.errors == 'object') {
+          for (let message of Object.values(e?.errors)) {
+            enqueueSnackbar(message, { variant: 'error' });
+          }
+        }
       }
     }
 
@@ -106,9 +120,13 @@ export default function StudentUpdateForm() {
       reset();
       enqueueSnackbar(res.message && 'Cập nhật học sinh thành công!');
       navigate(PATH_DASHBOARD.student.list);
-    } catch (error) {
+    } catch (e) {
       enqueueSnackbar('Cập nhật học sinh thất bại!', { variant: 'error' });
-      console.error(error);
+      if (typeof e?.errors == 'object') {
+        for (let message of Object.values(e?.errors)) {
+          enqueueSnackbar(message, { variant: 'error' });
+        }
+      }
     }
   };
 

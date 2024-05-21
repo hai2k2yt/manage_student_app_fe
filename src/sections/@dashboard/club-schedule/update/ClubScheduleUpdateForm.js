@@ -64,7 +64,11 @@ export default function ClubScheduleUpdateForm() {
         setTeacherList(schedules.data);
       } catch (e) {
         enqueueSnackbar('Lấy danh sách giáo viên thất bại', { variant: 'error' });
-        console.error(e);
+        if (typeof e?.errors == 'object') {
+          for (let message of Object.values(e?.errors)) {
+            enqueueSnackbar(message, { variant: 'error' });
+          }
+        }
       }
     }
 
@@ -98,9 +102,13 @@ export default function ClubScheduleUpdateForm() {
       reset();
       enqueueSnackbar('Cập nhật thời khóa biểu thành công!');
       navigate(`${PATH_DASHBOARD.club.root}/${club_code}/detail`);
-    } catch (error) {
+    } catch (e) {
       enqueueSnackbar('Cập nhật thời khóa biểu thất bại! ', { variant: 'error' });
-      console.error(error);
+      if (typeof e?.errors == 'object') {
+        for (let message of Object.values(e?.errors)) {
+          enqueueSnackbar(message, { variant: 'error' });
+        }
+      }
     }
   };
 

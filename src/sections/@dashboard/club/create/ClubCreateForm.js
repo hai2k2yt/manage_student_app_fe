@@ -59,7 +59,11 @@ export default function ClubCreateForm() {
         setTeacherList(teachers.data)
       } catch (e) {
         enqueueSnackbar('Lấy danh sách giáo viên thất bại!', {variant: 'error'});
-        console.error(e)
+        if (typeof e?.errors == 'object') {
+          for (let message of Object.values(e?.errors)) {
+            enqueueSnackbar(message, { variant: 'error' });
+          }
+        }
       }
     }
     fetchTeacher();
@@ -71,9 +75,13 @@ export default function ClubCreateForm() {
       reset();
       enqueueSnackbar('Tạo CLB thành công!');
       navigate(PATH_DASHBOARD.club.list);
-    } catch (error) {
+    } catch (e) {
       enqueueSnackbar('Tạo CLB thất bại!', {variant: 'error'});
-      console.error(error);
+      if (typeof e?.errors == 'object') {
+        for (let message of Object.values(e?.errors)) {
+          enqueueSnackbar(message, { variant: 'error' });
+        }
+      }
     }
   };
 

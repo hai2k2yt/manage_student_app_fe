@@ -37,6 +37,11 @@ export default function ClubDetail() {
       setClubDetail(res?.data);
     } catch (e) {
       enqueueSnackbar('Lấy thông tin chi tiết CLB thất bại!', { variant: 'error' });
+      if (typeof e?.errors == 'object') {
+        for (let message of Object.values(e?.errors)) {
+          enqueueSnackbar(message, { variant: 'error' });
+        }
+      }
     }
   };
   const canEditSchedule = (user.role == 1 || (user.role == 3 && user?.code == clubDetail?.teacher_code));

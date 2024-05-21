@@ -95,7 +95,11 @@ export default function StudentList() {
       enqueueSnackbar('Xóa học sinh thành công!');
     } catch (e) {
       enqueueSnackbar('Xóa học sinh thất bại!', { variant: 'error' });
-      console.error(e);
+      if (typeof e?.errors == 'object') {
+        for (let message of Object.values(e?.errors)) {
+          enqueueSnackbar(message, { variant: 'error' });
+        }
+      }
     }
   };
 

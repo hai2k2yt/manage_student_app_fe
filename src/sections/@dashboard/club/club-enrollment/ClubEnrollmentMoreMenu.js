@@ -32,8 +32,8 @@ export default function ClubEnrollmentMoreMenu({ enrollmentId }) {
   const [open, setOpen] = useState(null);
   const [deleteDate, setDeleteDate] = useState(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-  const {club_code} = useParams();
-  const {enqueueSnackbar} = useSnackbar();
+  const { club_code } = useParams();
+  const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -43,11 +43,11 @@ export default function ClubEnrollmentMoreMenu({ enrollmentId }) {
 
   const handleOpenDeleteDialog = () => {
     setOpenDeleteDialog(true);
-  }
+  };
 
   const handleCloseDeleteDialog = () => {
     setOpenDeleteDialog(false);
-  }
+  };
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
@@ -61,10 +61,10 @@ export default function ClubEnrollmentMoreMenu({ enrollmentId }) {
     try {
       await destroyClubEnrollment(enrollmentId);
       navigate(0);
-      enqueueSnackbar('Xóa đăng ký CLB thành công!')
+      enqueueSnackbar('Xóa đăng ký CLB thành công!');
     } catch (e) {
-      enqueueSnackbar('Xóa đăng ký CLB thất bại!', {variant: 'error'})
-      console.error(e)
+      enqueueSnackbar('Xóa đăng ký CLB thất bại!', { variant: 'error' });
+      console.error(e);
     }
   };
 
@@ -72,10 +72,14 @@ export default function ClubEnrollmentMoreMenu({ enrollmentId }) {
     try {
       await cancelClubEnrollment(id, params);
       navigate(0);
-      enqueueSnackbar('Hủy đăng ký CLB thành công!')
+      enqueueSnackbar('Hủy đăng ký CLB thành công!');
     } catch (e) {
-      enqueueSnackbar('Hủy đăng ký CLB thất bại!', {variant: 'error'})
-      console.error(e)
+      enqueueSnackbar('Hủy đăng ký CLB thất bại!', { variant: 'error' });
+      if (typeof e?.errors == 'object') {
+        for (let message of Object.values(e?.errors)) {
+          enqueueSnackbar(message, { variant: 'error' });
+        }
+      }
     }
   };
 
@@ -99,7 +103,7 @@ export default function ClubEnrollmentMoreMenu({ enrollmentId }) {
           onSubmit: async (event) => {
             event.preventDefault();
             const params = {
-              to: moment(deleteDate).format('YYYY-DD-MM')
+              to: moment(deleteDate).format('YYYY-MM-DD'),
             };
             await handleCancelClubEnrollment(enrollmentId, params);
             handleClose();
@@ -114,7 +118,7 @@ export default function ClubEnrollmentMoreMenu({ enrollmentId }) {
           <DatePicker
             id="to"
             name="to"
-            format='yyyy-MM-dd'
+            inputFormat="yyyy-MM-dd"
             value={deleteDate}
             renderInput={(params) => <TextField {...params} fullWidth />}
             onChange={(newValue) => setDeleteDate(newValue)}

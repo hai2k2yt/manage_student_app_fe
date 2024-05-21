@@ -21,22 +21,22 @@ export default function AbsenceReportCreate() {
     <Page title="Club Session: Create">
       <Container maxWidth={themeStretch ? false : 'lg'}>
         <HeaderBreadcrumbs
-          heading='Create new absence report'
+          heading='Tạo báo cáo nghỉ'
           links={[
-            { name: 'Dashboard', href: PATH_DASHBOARD.root },
+            { name: 'Trang chủ', href: PATH_DASHBOARD.root },
             {
-              name: 'Club',
+              name: 'CLB',
               href: PATH_DASHBOARD.club.root,
             },
             {
-              name: 'Club detail',
+              name: 'Chi tiết CLB',
               href: `${PATH_DASHBOARD.club.root}/${club_code}/detail`,
             },
             {
-              name: 'Session detail',
+              name: 'Chi tiết buổi học',
               href: `${PATH_DASHBOARD.club.root}/${club_code}/session/${session_code}`,
             },
-            { name: 'New Absence Report'},
+            { name: 'Tạo báo cáo nghỉ'},
           ]}
         />
 

@@ -65,8 +65,12 @@ export default function ClubList() {
         setTotal(clubs?.data?.total || 0);
         setMyClubList(records);
       } catch (e) {
-        enqueueSnackbar('Lấy danh sách của tôi CLB thất bại!', { variant: 'error' });
-        console.error(e);
+        enqueueSnackbar('Lấy danh sách CLB của tôi thất bại!', { variant: 'error' });
+        if (typeof e?.errors == 'object') {
+          for (let message of Object.values(e?.errors)) {
+            enqueueSnackbar(message, { variant: 'error' });
+          }
+        }
       }
     }
 

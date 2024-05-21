@@ -23,9 +23,9 @@ export default function AttendanceCreateForm() {
   const {session_code, club_code} = useParams();
 
   const CreateAbsenceReportSchema = Yup.object().shape({
-    session_code: Yup.string().required('Session is required'),
-    student_code: Yup.string().required('Student is required'),
-    present: Yup.string().required('Present status is required')
+    session_code: Yup.string().required('Buổi học không được để trống'),
+    student_code: Yup.string().required('Học sinh không được để trống'),
+    present: Yup.string().required('Trạng thái điểm danh không được để trống')
   });
 
   const defaultValues = {
@@ -58,8 +58,12 @@ export default function AttendanceCreateForm() {
         const schedules = await getClubStudents(club_code);
         setStudentList(schedules.data)
       } catch (e) {
-        enqueueSnackbar('Get student list failed!', {variant: 'error'});
-        console.error(e)
+        enqueueSnackbar('Lấy danh sách học sinh thất bại!', {variant: 'error'});
+        if (typeof e?.errors == 'object') {
+          for (let message of Object.values(e?.errors)) {
+            enqueueSnackbar(message, { variant: 'error' });
+          }
+        }
       }
     }
     fetchStudent();
@@ -69,11 +73,15 @@ export default function AttendanceCreateForm() {
     try {
       const res = await storeAttendance(formData);
       reset();
-      enqueueSnackbar(res.message || 'Create attendance success!');
+      enqueueSnackbar('Tạo điểm danh thành công!');
       navigate(`${PATH_DASHBOARD.club.root}/${club_code}/session/${session_code}/detail`);
     } catch (e) {
-      enqueueSnackbar('Create attendance failed!', {variant: 'error'});
-      console.error(e)
+      enqueueSnackbar('Tạo điểm danh that bại!', {variant: 'error'});
+      if (typeof e?.errors == 'object') {
+        for (let message of Object.values(e?.errors)) {
+          enqueueSnackbar(message, { variant: 'error' });
+        }
+      }
     }
   };
 
@@ -84,14 +92,14 @@ export default function AttendanceCreateForm() {
           <Card sx={{ p: 3 }}>
             <Stack spacing={3}>
               <Stack direction='column' spacing={1}>
-                <Typography>Session code</Typography>
+                <Typography>Buổi học</Typography>
                 <RHFTextField name="session_code" disabled />
               </Stack>
               <Stack direction='column' spacing={1}>
-                <Typography>Student</Typography>
+                <Typography>Học sinh</Typography>
                 <RHFSelect name="student_code">
                   <option key='' value=''>
-                    -- Choose student --
+                    -- Chọn học sinh --
                   </option>
                   {studentList.map((student) => (
                     <option key={student.student_code} value={student.student_code}>
@@ -101,25 +109,25 @@ export default function AttendanceCreateForm() {
                 </RHFSelect>
               </Stack>
               <Stack direction='column' spacing={1}>
-                <Typography>Status</Typography>
+                <Typography>Trạng thái</Typography>
                 <RHFSelect name="present">
                   <option key="" value="">
-                    -- Choose present status --
+                    -- Chọn trạng thái --
                   </option>
                   <option key="1" value="1">
-                    Present
+                    Có mặt
                   </option>
                   <option key="2" value="2">
-                    Permission absence
+                    Nghỉ phép
                   </option>
                   <option key="3" value="3">
-                    Unexcused absence
+                    Vắng mặt
                   </option>
                 </RHFSelect>
               </Stack>
               <Stack direction='row' justifyContent='flex-end' spacing={3}>
-                <Button variant="outlined" type="submit">Submit</Button>
-                <Button variant="outlined" onClick={() => navigate(`${PATH_DASHBOARD.club.root}/${club_code}/session/${session_code}/detail`)}>Cancel</Button>
+                <Button variant="outlined" type="submit">Tạo mới</Button>
+                <Button variant="outlined" onClick={() => navigate(`${PATH_DASHBOARD.club.root}/${club_code}/session/${session_code}/detail`)}>Hủy</Button>
               </Stack>
             </Stack>
           </Card>

@@ -57,7 +57,11 @@ export default function UserUpdateForm() {
         reset({ username, name, role });
       } catch (e) {
         enqueueSnackbar('Lấy thông tin người dùng that bại', { variant: 'error' });
-        console.error(e);
+        if (typeof e?.errors == 'object') {
+          for (let message of Object.values(e?.errors)) {
+            enqueueSnackbar(message, { variant: 'error' });
+          }
+        }
       }
     }
 
@@ -70,9 +74,13 @@ export default function UserUpdateForm() {
       reset();
       enqueueSnackbar('Cập nhật người dùng thành công!');
       navigate(PATH_DASHBOARD.user.list);
-    } catch (error) {
+    } catch (e) {
       enqueueSnackbar('Cập nhật người dùng thất bại', { variant: 'error' });
-      console.error(error);
+      if (typeof e?.errors == 'object') {
+        for (let message of Object.values(e?.errors)) {
+          enqueueSnackbar(message, { variant: 'error' });
+        }
+      }
     }
   };
 
@@ -84,7 +92,7 @@ export default function UserUpdateForm() {
             <Stack spacing={3}>
               <Stack direction="column" spacing={1}>
                 <Typography>Tên đăng nhập</Typography>
-                <RHFTextField name="username" />
+                <RHFTextField disabled name="username" />
               </Stack>
               <Stack direction="column" spacing={1}>
                 <Typography>Tên người dùng</Typography>

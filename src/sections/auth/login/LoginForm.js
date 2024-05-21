@@ -1,27 +1,25 @@
 import * as Yup from 'yup';
 import { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 // form
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
-import { Link, Stack, Alert, IconButton, InputAdornment } from '@mui/material';
+import { Alert, IconButton, InputAdornment, Stack } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // routes
-import { PATH_AUTH } from '../../../routes/paths';
 // hooks
 import useAuth from '../../../hooks/useAuth';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 // components
 import Iconify from '../../../components/Iconify';
-import { FormProvider, RHFTextField, RHFCheckbox } from '../../../components/hook-form';
+import { FormProvider, RHFTextField } from '../../../components/hook-form';
 import { useSnackbar } from 'notistack';
 
 // ----------------------------------------------------------------------
 
 export default function LoginForm() {
   const { login } = useAuth();
-  const {enqueueSnackBar} = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   const isMountedRef = useIsMountedRef();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -53,8 +51,12 @@ export default function LoginForm() {
     try {
       await login(data.email, data.password);
     } catch (error) {
-      console.error(error);
-      enqueueSnackBar('Có lỗi xảy ra trong quá trình đăng nhập', {variant:  'error'})
+      enqueueSnackbar('Đăng nhập thất bại!', { variant: 'error' });
+      if (typeof error?.errors == 'object') {
+        for (let message of Object.values(error?.errors)) {
+          enqueueSnackbar(message, { variant: 'error' });
+        }
+      }
       reset();
       if (isMountedRef.current) {
         setError('afterSubmit', error);

@@ -79,7 +79,11 @@ export default function ClubScheduleList({ editable }) {
         setClubScheduleList(records);
       } catch (e) {
         enqueueSnackbar('Lấy danh sách thời khóa biểu thất bại!', { variant: 'error' });
-        console.error(e);
+        if (typeof e?.errors == 'object') {
+          for (let message of Object.values(e?.errors)) {
+            enqueueSnackbar(message, { variant: 'error' });
+          }
+        }
       }
     }
 

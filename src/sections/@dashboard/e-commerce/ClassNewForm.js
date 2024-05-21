@@ -1,28 +1,16 @@
-import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router-dom';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 // form
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
-import { styled } from '@mui/material/styles';
-import { LoadingButton } from '@mui/lab';
-import { Card, Chip, Grid, Stack, TextField, Typography, Autocomplete, InputAdornment, Button } from '@mui/material';
+import { Button, Card, Grid, Stack, Typography } from '@mui/material';
 // routes
 import { PATH_DASHBOARD } from '../../../routes/paths';
 // components
-import {
-  FormProvider,
-  RHFSwitch,
-  RHFSelect,
-  RHFEditor,
-  RHFTextField,
-  RHFRadioGroup,
-  RHFUploadMultiFile,
-} from '../../../components/hook-form';
-import { getAllUser, getUser } from '../../../api/user';
+import { FormProvider, RHFSelect, RHFTextField } from '../../../components/hook-form';
 import { storeClass } from '../../../api/class';
 import { getAllTeachers } from '../../../api/teacher';
 
@@ -67,12 +55,17 @@ export default function ClassNewForm() {
     async function fetchTeacher() {
       try {
         const teachers = await getAllTeachers();
-        setTeacherList(teachers.data)
+        setTeacherList(teachers.data);
       } catch (e) {
-        enqueueSnackbar('Lấy danh sách giáo viên thất bại!', {variant: 'error'});
-        console.error(e)
+        enqueueSnackbar('Lấy danh sách giáo viên thất bại!', { variant: 'error' });
+        if (typeof e?.errors == 'object') {
+          for (let message of Object.values(e?.errors)) {
+            enqueueSnackbar(message, { variant: 'error' });
+          }
+        }
       }
     }
+
     fetchTeacher();
   }, []);
 
@@ -82,9 +75,13 @@ export default function ClassNewForm() {
       reset();
       enqueueSnackbar(res.message || 'Tạo lớp học thành công!');
       navigate(PATH_DASHBOARD.class.list);
-    } catch (error) {
-      enqueueSnackbar('Tạo lớp học thất bại!', {variant: 'error'});
-      console.error(error);
+    } catch (e) {
+      enqueueSnackbar('Tạo lớp học thất bại!', { variant: 'error' });
+      if (typeof e?.errors == 'object') {
+        for (let message of Object.values(e?.errors)) {
+          enqueueSnackbar(message, { variant: 'error' });
+        }
+      }
     }
   };
 
@@ -94,18 +91,18 @@ export default function ClassNewForm() {
         <Grid item xs={12} md={8}>
           <Card sx={{ p: 3 }}>
             <Stack spacing={3}>
-              <Stack direction='column' spacing={1}>
+              <Stack direction="column" spacing={1}>
                 <Typography>Mã lớp học</Typography>
-                <RHFTextField name="class_code"/>
+                <RHFTextField name="class_code" />
               </Stack>
-              <Stack direction='column' spacing={1}>
+              <Stack direction="column" spacing={1}>
                 <Typography>Tên lớp học</Typography>
-                <RHFTextField name="class_name"/>
+                <RHFTextField name="class_name" />
               </Stack>
-              <Stack direction='column' spacing={1}>
+              <Stack direction="column" spacing={1}>
                 <Typography>Giáo viên</Typography>
                 <RHFSelect name="teacher_code">
-                  <option key='' value=''>
+                  <option key="" value="">
                     -- Chọn giáo viên --
                   </option>
                   {teacherList.map((teacher) => (
@@ -115,7 +112,7 @@ export default function ClassNewForm() {
                   ))}
                 </RHFSelect>
               </Stack>
-              <Stack direction='row' justifyContent='flex-end' spacing={3}>
+              <Stack direction="row" justifyContent="flex-end" spacing={3}>
                 <Button variant="outlined" type="submit">Tạo</Button>
                 <Button variant="outlined" onClick={() => navigate(PATH_DASHBOARD.class.list)}>Hủy</Button>
               </Stack>
