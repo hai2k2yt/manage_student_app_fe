@@ -29,6 +29,16 @@ export default function ClubScheduleCreateForm() {
     teacher_code: Yup.string().required('Giáo viên không được để trống'),
     schedule_name: Yup.string().required('Tên thời khóa biểu không được để trống'),
     day_of_week: Yup.string().required('Ngày trong tuần không được để trống'),
+    student_fee: Yup
+      .number()
+      .typeError('Học phí học sinh phải là dạng số')
+      .required('Học phí học sinh không được để trống')
+      .positive('Học phí học sinh phải lớn hơn 0'),
+    teacher_fee: Yup
+      .number()
+      .typeError('Lương giáo viên phải là dạng số')
+      .required('Lương giáo viên không được để trống')
+      .positive('Lương giáo viên phải lớn hơn 0')
   });
 
   const defaultValues = {
@@ -37,6 +47,8 @@ export default function ClubScheduleCreateForm() {
     teacher_code: '',
     schedule_name: '',
     day_of_week: '',
+    teacher_fee: 0,
+    student_fee: 0
   };
 
   const methods = useForm({
@@ -82,7 +94,7 @@ export default function ClubScheduleCreateForm() {
       enqueueSnackbar('Tạo thời khóa biểu thành công!');
       navigate(`${PATH_DASHBOARD.club.root}/${club_code}/detail`);
     } catch (e) {
-      enqueueSnackbar('Tạo thời khóa biểu thất bại! ', { variant: 'error' });
+      enqueueSnackbar('Tạo thời khóa biểu thất bại!', { variant: 'error' });
       if (typeof e?.errors == 'object') {
         for (let message of Object.values(e?.errors)) {
           enqueueSnackbar(message, { variant: 'error' });
@@ -150,6 +162,14 @@ export default function ClubScheduleCreateForm() {
                     Thứ bảy
                   </option>
                 </RHFSelect>
+              </Stack>
+              <Stack direction="column" spacing={1}>
+                <Typography>Học phí học sinh</Typography>
+                <RHFTextField type='number' name="student_fee" />
+              </Stack>
+              <Stack direction="column" spacing={1}>
+                <Typography>Lương giáo viên</Typography>
+                <RHFTextField type='number' name="teacher_fee" />
               </Stack>
               <Stack direction="row" justifyContent="flex-end" spacing={3}>
                 <Button variant="outlined" type="submit">Tạo mới</Button>

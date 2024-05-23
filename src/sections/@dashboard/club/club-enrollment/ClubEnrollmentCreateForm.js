@@ -76,8 +76,12 @@ export default function ClubEnrollmentCreateForm() {
         const schedules = await getAllStudents(club_code);
         setStudentList(schedules.data);
       } catch (e) {
-        enqueueSnackbar('Lấy danh sách học sinh that bại!', {variant: 'error'});
-        console.error(e)
+        enqueueSnackbar('Lấy danh sách học sinh thất bại!', {variant: 'error'});
+        if (typeof e?.errors == 'object') {
+          for (let message of Object.values(e?.errors)) {
+            enqueueSnackbar(message, { variant: 'error' });
+          }
+        }
       }
     }
 
@@ -99,8 +103,12 @@ export default function ClubEnrollmentCreateForm() {
         setEnrollmentHistory([])
       }
     } catch (e) {
-      enqueueSnackbar('Lấy lịch sử đăng ký CLB that bại!', {variant: 'error'});
-      console.error(e)
+      enqueueSnackbar('Lấy lịch sử đăng ký CLB thất bại!', {variant: 'error'});
+      if (typeof e?.errors == 'object') {
+        for (let message of Object.values(e?.errors)) {
+          enqueueSnackbar(message, { variant: 'error' });
+        }
+      }
     }
   }
 
@@ -115,9 +123,13 @@ export default function ClubEnrollmentCreateForm() {
       reset();
       enqueueSnackbar('Tạo đăng ký CLB thành công!');
       navigate(`${PATH_DASHBOARD.club.root}/${club_code}/detail`);
-    } catch (error) {
+    } catch (e) {
       enqueueSnackbar('Tạo đăng ký CLB thất bại! ', {variant: 'error'});
-      console.error(error);
+      if (typeof e?.errors == 'object') {
+        for (let message of Object.values(e?.errors)) {
+          enqueueSnackbar(message, { variant: 'error' });
+        }
+      }
     }
   };
 
@@ -179,7 +191,7 @@ export default function ClubEnrollmentCreateForm() {
                       {historyRow?.id}
                     </TableCell>
                     <TableCell>{historyRow?.from}</TableCell>
-                    <TableCell>{historyRow?.to ?? 'Không có'}</TableCell>
+                    <TableCell>{historyRow?.to ?? '---'}</TableCell>
                     <TableCell>
                       {historyRow?.status == 1 ? 'Đang học' : 'Đã hủy'}
                     </TableCell>

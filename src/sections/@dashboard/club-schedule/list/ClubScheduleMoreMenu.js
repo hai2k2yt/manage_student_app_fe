@@ -34,8 +34,8 @@ export default function ClubScheduleMoreMenu({ scheduleCode }) {
   const handleDeleteSchedule = async () => {
     try {
       await destroyClubSchedule(scheduleCode);
-      navigate(0);
       enqueueSnackbar('Xóa thời khóa biểu thành công!')
+      navigate(0);
     } catch (e) {
       enqueueSnackbar('Xóa thời khóa biểu thất bại!', {variant: 'error'})
       console.error(e)

@@ -13,7 +13,6 @@ import { ClubSessionList } from '../../../sections/@dashboard/club-session/list'
 import Iconify from '../../../components/Iconify';
 import ClubEnrollmentList from '../../../sections/@dashboard/club/club-enrollment/ClubEnrollmentList';
 import ClubScheduleList from '../../../sections/@dashboard/club-schedule/list/ClubScheduleList';
-import useAuth from '../../../hooks/useAuth';
 import { useEffect, useState } from 'react';
 import { showClub } from '../../../api/club';
 import { useSnackbar } from 'notistack';

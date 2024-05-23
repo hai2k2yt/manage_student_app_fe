@@ -149,9 +149,9 @@ export default function StudentList() {
                       >
                         <TableCell align="left">{student_code}</TableCell>
                         <TableCell align="left">{name}</TableCell>
-                        <TableCell align="left">{student_class?.class_name || 'No data'}</TableCell>
+                        <TableCell align="left">{student_class?.class_name || ''}</TableCell>
                         <TableCell align="left">
-                          {parent?.name || 'No data'}
+                          {parent?.name || ''}
                         </TableCell>
                         <TableCell align="right">
                           {user?.role === 1 &&

@@ -99,7 +99,7 @@ function Row({ data, editable }) {
                         {historyRow?.date}
                       </TableCell>
                       <TableCell>{historyRow?.from}</TableCell>
-                      <TableCell>{historyRow?.to ?? 'Không có'}</TableCell>
+                      <TableCell>{historyRow?.to ?? '---'}</TableCell>
                       <TableCell>
                         {historyRow?.status == 1 ? 'Đang học' : 'Đã hủy'}
                       </TableCell>
